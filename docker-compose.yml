@@ -1,0 +1,28 @@
+version: '3'
+services:
+  db:
+    container_name: app_db
+    platform: linux/x86_64
+    image:  postgres:14.4
+    ports:
+      - '3306:3306'    
+    env_file:
+      - ./db.env
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+  web:
+    container_name: app_web
+    build: .
+    command: /bin/sh -c "rm -f tmp/pids/server.pid && ./bin/dev"
+    env_file:
+      - ./db.env
+    environment:
+      - RAILS_ENV=development
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true

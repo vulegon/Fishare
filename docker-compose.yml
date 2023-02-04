@@ -10,6 +10,8 @@ services:
       - ./db.env
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=password
   web:
     container_name: app_web
     build: .

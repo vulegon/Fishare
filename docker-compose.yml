@@ -11,6 +11,7 @@ services:
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
     environment:
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
   web:
     container_name: app_web

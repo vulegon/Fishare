@@ -85,5 +85,4 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   config.hosts << "fishare.onrender.com"
-  config.web_console.allowed_ips = '0.0.0.0/0'
 end

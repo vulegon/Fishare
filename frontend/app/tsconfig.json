@@ -24,6 +24,7 @@
       "@constants": ["constants/"],
       "@features": ["features/"],
       "@components": ["components/"],
+      "@pages": ["pages/"],
     }
   },
   "include": [

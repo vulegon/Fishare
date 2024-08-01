@@ -1,5 +1,5 @@
 import React from "react";
-import { List, ListItem, ListItemButton, ListItemText, ListItemIcon } from '@mui/material';
+import { List, ListItem, ListItemButton, ListItemText, ListItemIcon, Box } from '@mui/material';
 import MapIcon from '@mui/icons-material/Map';
 import ListIcon from '@mui/icons-material/List';
 
@@ -8,23 +8,25 @@ const sideBarItems = [
   { text: '地図から探す', icon: <MapIcon /> },
 ];
 
-const Header: React.FC = () => {
+const SideBar: React.FC = () => {
   return (
     <>
-      <List>
-        {sideBarItems.map((item) => (
-          <ListItem key={item.text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      <Box sx={{width: '12rem'}}>
+        <List>
+          {sideBarItems.map((item) => (
+            <ListItem key={item.text} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
     </>
   );
 };
 
-export default Header;
+export default SideBar;

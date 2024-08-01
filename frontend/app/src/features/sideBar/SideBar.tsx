@@ -11,7 +11,7 @@ const sideBarItems = [
 const SideBar: React.FC = () => {
   return (
     <>
-      <Box sx={{ display: 'flex', height: '100vh' }}>
+      <Box sx={{ display: 'flex', height: '100%' }}>
         <Box sx={{
           width: '14rem',
           bgcolor: 'background.paper',

@@ -4,8 +4,7 @@ import { Header } from "features/header";
 const Home: React.FC = () => {
   return (
     <>
-     <Header>
-     </Header>
+     <Header/>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { AppBar, Toolbar, Typography } from '@mui/material';
-import { SERVICE_NAME } from "@constants";
+import { SERVICE_NAME } from "constants/index";
 
 const Header: React.FC = () => {
   return (

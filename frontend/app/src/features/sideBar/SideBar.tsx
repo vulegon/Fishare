@@ -11,19 +11,25 @@ const sideBarItems = [
 const SideBar: React.FC = () => {
   return (
     <>
-      <Box sx={{width: '12rem'}}>
-        <List>
-          {sideBarItems.map((item) => (
-            <ListItem key={item.text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText primary={item.text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+      <Box sx={{ display: 'flex', height: '100vh' }}>
+        <Box sx={{
+          width: '14rem',
+          bgcolor: 'background.paper',
+          display: 'flex',
+          flexDirection: 'column',
+          borderRight: '1px solid rgba(0, 0, 0, 0.1)'
+        }}>
+          <List sx={{ flexGrow: 1 }}>
+            {sideBarItems.map((item) => (
+              <ListItem key={item.text} disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
       </Box>
     </>
   );

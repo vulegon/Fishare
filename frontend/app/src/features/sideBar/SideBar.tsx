@@ -6,8 +6,7 @@ import {
   ListItemText,
   ListItemIcon,
   Box,
-  Drawer,
-  Toolbar
+  Drawer
 } from '@mui/material';
 import MapIcon from '@mui/icons-material/Map';
 import ListIcon from '@mui/icons-material/List';

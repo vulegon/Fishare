@@ -5,9 +5,9 @@ import { SERVICE_NAME } from "constants/index";
 const Header: React.FC = () => {
   return (
     <>
-      <AppBar position="static" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
+      <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
         <Toolbar>
-          <Typography variant="h6">
+          <Typography variant="h6" noWrap component="div">
             { SERVICE_NAME }
           </Typography>
         </Toolbar>

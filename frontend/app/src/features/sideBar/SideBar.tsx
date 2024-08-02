@@ -5,39 +5,48 @@ import {
   ListItemButton,
   ListItemText,
   ListItemIcon,
-  Box
+  Box,
+  Drawer,
+  Toolbar
 } from '@mui/material';
 import MapIcon from '@mui/icons-material/Map';
 import ListIcon from '@mui/icons-material/List';
 
 const sideBarItems = [
-  { text: '一覧から探す', icon: <ListIcon /> },
-  { text: '地図から探す', icon: <MapIcon /> },
+  { label: '一覧から探す', icon: <ListIcon /> },
+  { label: '地図から探す', icon: <MapIcon /> },
 ];
+
+const drawerWidth = 240;
 
 const SideBar: React.FC = () => {
   return (
     <>
-      <Box sx={{ display: 'flex', height: '100%' }}>
-        <Box sx={{
-          width: '14rem',
-          bgcolor: 'background.paper',
-          display: 'flex',
-          flexDirection: 'column',
-          borderRight: '1px solid rgba(0, 0, 0, 0.1)'
-        }}>
-          <List sx={{ flexGrow: 1 }}>
+      <Drawer
+        open={true}
+        variant="persistent"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+        }}
+      >
+        <Toolbar />
+        <Box
+          sx={{ width: '14rem', overflow: 'auto' }}
+        >
+          <List>
             {sideBarItems.map((item) => (
-              <ListItem key={item.text} disablePadding>
+              <ListItem key={item.label} disablePadding>
                 <ListItemButton>
                   <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.text} />
+                  <ListItemText primary={item.label} />
                 </ListItemButton>
               </ListItem>
             ))}
           </List>
         </Box>
-      </Box>
+      </Drawer>
     </>
   );
 };

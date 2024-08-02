@@ -1,1 +1,3 @@
-export const SERVICE_NAME = 'Fishare';
+// 他のファイルからインポートする際はconstants/indexで書くことで、一箇所で管理できるようになります。
+export * from './layout';
+export * from './app';

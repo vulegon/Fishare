@@ -11,13 +11,12 @@ import {
 import MapIcon from '@mui/icons-material/Map';
 import ListIcon from '@mui/icons-material/List';
 import { CustomToolbar } from "components/common";
+import { DRAWER_WIDTH } from "constants/index";
 
 const sideBarItems = [
   { label: '一覧から探す', icon: <ListIcon /> },
   { label: '地図から探す', icon: <MapIcon /> },
 ];
-
-const drawerWidth = 240;
 
 const SideBar: React.FC = () => {
   return (
@@ -26,9 +25,9 @@ const SideBar: React.FC = () => {
         open={true}
         variant="persistent"
         sx={{
-          width: drawerWidth,
+          width: DRAWER_WIDTH,
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+          [`& .MuiDrawer-paper`]: { width: DRAWER_WIDTH, boxSizing: 'border-box' },
         }}
       >
         <CustomToolbar />

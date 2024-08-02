@@ -8,7 +8,13 @@ import { SERVICE_NAME } from "constants/index";
 import { CustomToolbar } from "components/common";
 import MenuIcon from '@mui/icons-material/Menu';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  handleDrawerOpen: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({
+  handleDrawerOpen
+}) => {
   return (
     <>
       <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
@@ -16,7 +22,7 @@ const Header: React.FC = () => {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            // onClick={handleDrawerOpen}
+            onClick={handleDrawerOpen}
             edge="start"
             sx={{ marginRight: 2 }}
           >

@@ -18,16 +18,25 @@ const sideBarItems = [
   { label: '地図から探す', icon: <MapIcon /> },
 ];
 
-const SideBar: React.FC = () => {
+interface SideBarProps {
+  isDrawerOpen: boolean;
+}
+
+const SideBar: React.FC<SideBarProps> = (
+  { isDrawerOpen }
+) => {
   return (
     <>
       <Drawer
-        open={true}
+        open={isDrawerOpen}
         variant="persistent"
         sx={{
           width: DRAWER_WIDTH,
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: DRAWER_WIDTH, boxSizing: 'border-box' },
+          [`& .MuiDrawer-paper`]: {
+            width:  isDrawerOpen ? DRAWER_WIDTH : 56,
+            boxSizing: 'border-box',
+          },
         }}
       >
         <CustomToolbar />
@@ -39,7 +48,10 @@ const SideBar: React.FC = () => {
               <ListItem key={item.label} disablePadding>
                 <ListItemButton>
                   <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.label} />
+                  <ListItemText
+                    primary={item.label}
+                    sx={{ opacity: isDrawerOpen ? 1 : 0 }}
+                  />
                 </ListItemButton>
               </ListItem>
             ))}

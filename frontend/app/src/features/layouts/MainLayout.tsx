@@ -9,12 +9,20 @@ interface MainLayoutProps {
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+
+  const handleDrawerOpen = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  }
+
   return (
     <>
       <CssBaseline />
       <Box sx={{ display: 'flex' }}>
-        <Header/>
-        <SideBar/>
+        <Header
+          handleDrawerOpen={handleDrawerOpen}
+        />
+        <SideBar isDrawerOpen={isDrawerOpen}/>
         <Box
           component="main"
           sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${DRAWER_WIDTH}px)` } }}

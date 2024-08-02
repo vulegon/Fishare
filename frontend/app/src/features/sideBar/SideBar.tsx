@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import MapIcon from '@mui/icons-material/Map';
 import ListIcon from '@mui/icons-material/List';
+import { CustomToolbar } from "components/common";
 
 const sideBarItems = [
   { label: '一覧から探す', icon: <ListIcon /> },
@@ -31,7 +32,7 @@ const SideBar: React.FC = () => {
           [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
         }}
       >
-        <Toolbar />
+        <CustomToolbar />
         <Box
           sx={{ width: '14rem', overflow: 'auto' }}
         >

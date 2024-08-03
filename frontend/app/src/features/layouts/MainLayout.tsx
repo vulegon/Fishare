@@ -9,7 +9,7 @@ interface MainLayoutProps {
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(true);
 
   const handleDrawerOpen = () => {
     setIsDrawerOpen(!isDrawerOpen);

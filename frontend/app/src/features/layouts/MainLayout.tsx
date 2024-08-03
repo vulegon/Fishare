@@ -19,13 +19,15 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     <>
       <CssBaseline />
       <Box sx={{ display: 'flex' }}>
-        <Header
-          handleDrawerOpen={handleDrawerOpen}
-        />
+        <Header handleDrawerOpen={handleDrawerOpen}/>
         <SideBar open={isDrawerOpen}/>
         <Box
           component="main"
-          sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${DRAWER_WIDTH}px)` } }}
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            width: { sm: `calc(100% - ${DRAWER_WIDTH}px)` }
+          }}
         >
           {children}
         </Box>

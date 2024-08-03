@@ -22,7 +22,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         <Header
           handleDrawerOpen={handleDrawerOpen}
         />
-        <SideBar isDrawerOpen={isDrawerOpen}/>
+        <SideBar open={isDrawerOpen}/>
         <Box
           component="main"
           sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${DRAWER_WIDTH}px)` } }}

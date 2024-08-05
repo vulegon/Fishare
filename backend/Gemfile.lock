@@ -176,7 +176,6 @@ DEPENDENCIES
   bootsnap
   debug
   mysql2 (~> 0.5)
-  pry
   pry-rails
   puma (~> 5.0)
   rack-cors

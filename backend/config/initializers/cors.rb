@@ -7,7 +7,8 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "example.com"
+    origins '*' if Rails.env.development? # 開発環境ではすべてのオリジンを許可
+    origins 'https://your-production-site.com' if Rails.env.production? # 本番環境では特定のオリジンのみを許可
 
     resource "*",
       headers: :any,

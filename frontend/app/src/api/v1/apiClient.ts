@@ -6,7 +6,7 @@ class ApiClient {
   private client: AxiosInstance;
 
   constructor(baseURL: string) {
-    this.client= axios.create({
+    this.client = axios.create({
       baseURL: `${API_VERSION_PATH}`,
       headers: {
         'Content-Type': 'application/json',
@@ -14,7 +14,10 @@ class ApiClient {
     });
   }
 
-  public async getPrefectures(): Promise<{ message: string, prefectures: { id: string, name: string }[] }> {
+  public async getPrefectures(): Promise<{
+    message: string;
+    prefectures: { id: string; name: string }[];
+  }> {
     try {
       const response = await this.client.get('prefectures');
       const data = response.data;

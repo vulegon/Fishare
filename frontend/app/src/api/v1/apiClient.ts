@@ -1,14 +1,13 @@
 import axios, { AxiosInstance } from 'axios';
 
-const baseURL = process.env.REACT_APP_API_BASE_URL;
-const apiVersionPath = '/api/v1/';
+const API_VERSION_PATH = '/api/v1/';
 
-class apiClient {
+class ApiClient {
   private client: AxiosInstance;
 
   constructor(baseURL: string) {
     this.client= axios.create({
-      baseURL: `$${baseURL}${apiVersionPath}`,
+      baseURL: `$${baseURL}${API_VERSION_PATH}`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -26,3 +25,7 @@ class apiClient {
     }
   }
 }
+const baseURL = process.env.REACT_APP_API_BASE_URL || '';
+
+const apiClient = new ApiClient(baseURL);
+export default apiClient;

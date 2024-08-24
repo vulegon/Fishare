@@ -3,6 +3,7 @@ import { Header } from 'features/header';
 import { SideBar } from 'features/sideBar';
 import { Box, CssBaseline } from '@mui/material';
 import { DRAWER_WIDTH } from 'constants/index';
+import { Toolbar } from '@mui/material';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -29,6 +30,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             width: { sm: `calc(100% - ${DRAWER_WIDTH}px)` },
           }}
         >
+          <Toolbar />
           {children}
         </Box>
       </Box>

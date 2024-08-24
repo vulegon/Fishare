@@ -2,6 +2,7 @@ import React from 'react';
 import { AppBar, Typography, IconButton } from '@mui/material';
 import { SERVICE_NAME } from 'constants/index';
 import { CustomToolbar } from 'components/common';
+import { Link } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 
 interface HeaderProps {
@@ -25,9 +26,11 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerOpen }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            {SERVICE_NAME}
-          </Typography>
+          <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
+            <Typography variant="h6" noWrap>
+              {SERVICE_NAME}
+            </Typography>
+          </Link>
         </CustomToolbar>
       </AppBar>
     </>

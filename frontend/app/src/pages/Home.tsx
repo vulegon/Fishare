@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { MainLayout } from 'features/layouts';
-import { Toolbar } from '@mui/material';
 import apiClient from 'api/v1/apiClient';
 
 const Home: React.FC = () => {

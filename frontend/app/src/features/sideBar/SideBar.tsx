@@ -14,7 +14,6 @@ import { DRAWER_WIDTH } from 'constants/index';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import { Link } from 'react-router-dom';
-import path from 'path';
 
 // MUIのDrawerコンポーネントをカスタマイズする
 // 参考

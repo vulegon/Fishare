@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import MapIcon from '@mui/icons-material/Map';
 import ListIcon from '@mui/icons-material/List';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import { CustomToolbar } from 'components/common';
 import { DRAWER_WIDTH } from 'constants/index';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
@@ -57,6 +58,7 @@ const Drawer = styled(MuiDrawer, {
 const sideBarItems = [
   { label: '一覧から探す', icon: <ListIcon /> },
   { label: '地図から探す', icon: <MapIcon /> },
+  { label: 'お問い合わせ', icon: <SupportAgentIcon /> },
 ];
 
 interface SideBarProps {

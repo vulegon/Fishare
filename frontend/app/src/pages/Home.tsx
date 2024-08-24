@@ -14,7 +14,7 @@ const Home: React.FC = () => {
   return (
     <>
       <MainLayout>
-        <Toolbar />
+        <div>Home</div>
       </MainLayout>
     </>
   );

@@ -5,7 +5,7 @@ export const Contact: React.FC = () => {
   return (
     <>
       <MainLayout>
-        <div>ああああああ</div>
+        <div>お問い合わせフォーム</div>
       </MainLayout>
     </>
   );

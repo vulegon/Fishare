@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   List,
   ListItem,
@@ -8,8 +8,8 @@ import {
 } from '@mui/material';
 import MapIcon from '@mui/icons-material/Map';
 import ListIcon from '@mui/icons-material/List';
-import { CustomToolbar } from "components/common";
-import { DRAWER_WIDTH } from "constants/index";
+import { CustomToolbar } from 'components/common';
+import { DRAWER_WIDTH } from 'constants/index';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 
@@ -37,22 +37,22 @@ const closedMixin = (theme: Theme): CSSObject => ({
   },
 });
 
-const Drawer = styled(MuiDrawer,{ shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    width: DRAWER_WIDTH,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-    boxSizing: 'border-box',
-    ...(open && {
-      ...openedMixin(theme),
-      '& .MuiDrawer-paper': openedMixin(theme),
-    }),
-    ...(!open && {
-      ...closedMixin(theme),
-      '& .MuiDrawer-paper': closedMixin(theme),
-    }),
+const Drawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+  width: DRAWER_WIDTH,
+  flexShrink: 0,
+  whiteSpace: 'nowrap',
+  boxSizing: 'border-box',
+  ...(open && {
+    ...openedMixin(theme),
+    '& .MuiDrawer-paper': openedMixin(theme),
   }),
-);
+  ...(!open && {
+    ...closedMixin(theme),
+    '& .MuiDrawer-paper': closedMixin(theme),
+  }),
+}));
 
 const sideBarItems = [
   { label: '一覧から探す', icon: <ListIcon /> },
@@ -86,7 +86,10 @@ const SideBar: React.FC<SideBarProps> = ({ open }) => {
               >
                 {item.icon}
               </ListItemIcon>
-              <ListItemText primary={item.label} sx={{ opacity: open ? 1 : 0 }} />
+              <ListItemText
+                primary={item.label}
+                sx={{ opacity: open ? 1 : 0 }}
+              />
             </ListItemButton>
           </ListItem>
         ))}

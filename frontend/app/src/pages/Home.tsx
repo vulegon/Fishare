@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import MainLayout from 'features/layouts/MainLayout';
+import { MainLayout } from 'features/layouts/MainLayout';
 import { Toolbar } from '@mui/material';
 import apiClient from 'api/v1/apiClient';
 

@@ -8,7 +8,7 @@ interface MainLayoutProps {
   children: ReactNode;
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(true);
 
   const handleDrawerOpen = () => {
@@ -35,5 +35,3 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     </>
   );
 };
-
-export default MainLayout;

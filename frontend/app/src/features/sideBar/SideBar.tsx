@@ -13,6 +13,8 @@ import { CustomToolbar } from 'components/common';
 import { DRAWER_WIDTH } from 'constants/index';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
+import { Link } from 'react-router-dom';
+import path from 'path';
 
 // MUIのDrawerコンポーネントをカスタマイズする
 // 参考
@@ -56,9 +58,9 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const sideBarItems = [
-  { label: '一覧から探す', icon: <ListIcon /> },
-  { label: '地図から探す', icon: <MapIcon /> },
-  { label: 'お問い合わせ', icon: <SupportAgentIcon /> },
+  { label: '一覧から探す', icon: <ListIcon />, path: '/' },
+  { label: '地図から探す', icon: <MapIcon />, path: '/map' },
+  { label: 'お問い合わせ', icon: <SupportAgentIcon />, path: '/contact' },
 ];
 
 interface SideBarProps {
@@ -73,6 +75,8 @@ const SideBar: React.FC<SideBarProps> = ({ open }) => {
         {sideBarItems.map((item) => (
           <ListItem key={item.label} disablePadding>
             <ListItemButton
+              component={Link}
+              to={item.path}
               sx={{
                 minHeight: 48,
                 justifyContent: open ? 'initial' : 'center',

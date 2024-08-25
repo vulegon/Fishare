@@ -66,7 +66,7 @@ interface SideBarProps {
   open: boolean;
 }
 
-const SideBar: React.FC<SideBarProps> = ({ open }) => {
+export const SideBar: React.FC<SideBarProps> = ({ open }) => {
   return (
     <Drawer variant="permanent" open={open}>
       <CustomToolbar />
@@ -102,5 +102,3 @@ const SideBar: React.FC<SideBarProps> = ({ open }) => {
     </Drawer>
   );
 };
-
-export default SideBar;

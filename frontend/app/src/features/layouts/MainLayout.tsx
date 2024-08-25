@@ -9,6 +9,7 @@ interface MainLayoutProps {
   children: ReactNode;
 }
 
+// ヘッダーとサイドバーを表示するレイアウト
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(true);
 
@@ -30,6 +31,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             width: { sm: `calc(100% - ${DRAWER_WIDTH}px)` },
           }}
         >
+          {/* 要素が埋もれないようにするために、ToolBarを挟む。Header分のスペースを確保する。 */}
           <Toolbar />
           {children}
         </Box>

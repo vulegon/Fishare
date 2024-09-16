@@ -6,6 +6,8 @@ const Home: React.FC = () => {
   useEffect(() => {
     try {
       const response = apiClient.getPrefectures();
+      // eslint-disable-next-line no-console
+      console.log(response);
     } catch (error) {}
   }, []);
 

@@ -1,7 +1,20 @@
 {
-  "extends": ["react-app", "prettier"],
-  "plugins": ["prettier"],
-  "rules": {
-    "prettier/prettier": ["error"]
+  "name": "fishare",
+  "version": "0.1.0",
+  "private": true,
+  "description": "釣り場を共有するアプリ",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vulegon/Fishare.git"
+  },
+  "workspaces": [
+    "app"
+  ],
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3"
+  },
+  "scripts": {
+    "prepare": "husky install"
   }
 }

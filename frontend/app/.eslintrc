@@ -1,20 +1,115 @@
 {
-  "name": "fishare",
-  "version": "0.1.0",
-  "private": true,
-  "description": "釣り場を共有するアプリ",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vulegon/Fishare.git"
+  "env": {
+    "browser": true,
+    "es2021": true
   },
-  "workspaces": [
-    "app"
+  "extends": [
+    "react-app",
+    "react-app/jest",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:react-hooks/recommended"
   ],
-  "devDependencies": {
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.3"
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./frontend/app/tsconfig.json",
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
   },
-  "scripts": {
-    "prepare": "husky install"
+  "plugins": [
+    "react",
+    "react-hooks",
+    "@typescript-eslint"
+  ],
+  "ignorePatterns": [
+    "node_modules",
+    "public",
+    "/*.js"
+  ],
+  "rules": {
+    "brace-style": [
+      "warn", // TODO: change to error
+      "1tbs",
+      {
+        "allowSingleLine": true
+      }
+    ],
+    "keyword-spacing": [
+      "warn" // TODO: change to error
+    ],
+    "indent": [
+      "error",
+      2
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "jsx-quotes": [
+      "warn",
+      "prefer-single"
+    ],
+    "object-curly-spacing": [
+      "warn", // TODO: change to error
+      "always"
+    ],
+    "comma-dangle": [
+      "warn", // TODO: change to error
+      "never"
+    ],
+    "object-shorthand": "warn",
+    "no-return-await": "error",
+    "react/jsx-curly-spacing": [
+      "warn", // TODO: change to error
+      {
+        "when": "always",
+        "allowMultiline": true,
+        "children": true,
+        "spacing": {
+          "objectLiterals": "never"
+        }
+      }
+    ],
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ],
+    "react/void-dom-elements-no-children": "error",
+    "react/jsx-curly-brace-presence": "warn", // TODO: change to error
+    "react/self-closing-comp": "warn", // TODO: change to error
+    "react/jsx-boolean-value": "warn", // TODO: change to error
+    "react/jsx-handler-names": "warn", // TODO: change to error
+    "react/jsx-key": "error",
+    "react/jsx-no-comment-textnodes": "error",
+    "react/jsx-no-constructed-context-values": "warn", // TODO: change to error
+    "react/jsx-no-duplicate-props": "error",
+    "react/jsx-pascal-case": "error",
+    "react/no-array-index-key": "warn", // TODO: change to error
+    "react/jsx-no-leaked-render": "warn", // TODO: change to error
+    "react/prefer-stateless-function": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "react/jsx-uses-react": "off", // React 17 no longer requires the import of React in each file
+    "react/react-in-jsx-scope": "off", // React 17 no longer requires the import of React in each file
+    "react/prop-types": "off", // TypeScript already checks the types
+    "@typescript-eslint/no-unsafe-member-access": "off", // This is a temporary fix for the error: "Property 'value' does not exist on type 'EventTarget & Element'."
+    "@typescript-eslint/no-unsafe-assignment": "off", // This is a temporary fix for the error: "Type 'EventTarget & Element' is not assignable to type 'HTMLInputElement'."
+    "@typescript-eslint/no-unsafe-return": "off"
   }
 }

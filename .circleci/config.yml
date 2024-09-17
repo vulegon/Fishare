@@ -6,10 +6,10 @@ jobs:
   build:
     docker:
       - image: cimg/ruby:3.1.1
-    working_directory: ~/fishare
+    working_directory: ~/fishare/backend
     steps:
       - checkout:
-          path: ~/fishare
+          path: ~/fishare/backend
       - ruby/install-deps
   test:
     docker:
@@ -24,10 +24,10 @@ jobs:
       BUNDLE_RETRY: "3"
       POSTGRES_HOST: "127.0.0.1"
       RAILS_ENV: test
-    working_directory: ~/fishare
+    working_directory: ~/fishare/backend
     steps:
       - checkout:
-          path: ~/fishare
+          path: ~/fishare/backend
       - ruby/install-deps
       - run:
           name: Create Database

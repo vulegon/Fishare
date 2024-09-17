@@ -11,10 +11,4 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2024_08_05_114610) do
-  create_table "prefectures", id: { type: :string, comment: "プライマリキー" }, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", comment: "都道府県", force: :cascade do |t|
-    t.string "name", null: false, comment: "都道府県名"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
 end

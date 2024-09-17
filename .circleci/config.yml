@@ -9,8 +9,23 @@ jobs:
     working_directory: ~/fishare/backend
     steps:
       - checkout:
-          path: ~/fishare/backend
-      - ruby/install-deps
+          path: ~/fishare
+      - run:
+          name: Ensure backend directory exists
+          command: ls ~/fishare/backend
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "backend/Gemfile.lock" }}
+            - v1-deps-
+      - run:
+          name: Install Ruby dependencies
+          command: |
+            cd backend
+            bundle install
+      - save_cache:
+          paths:
+            - backend/vendor/bundle
+          key: v1-deps-{{ checksum "backend/Gemfile.lock" }}
   test:
     docker:
       - image: cimg/ruby:3.1.1
@@ -27,8 +42,15 @@ jobs:
     working_directory: ~/fishare/backend
     steps:
       - checkout:
-          path: ~/fishare/backend
-      - ruby/install-deps
+          path: ~/fishare
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "backend/Gemfile.lock" }}
+      - run:
+          name: Install Ruby dependencies
+          command: |
+            cd backend
+            bundle install
       - run:
           name: Create Database
           command: bundle exec rails db:create RAILS_ENV=test

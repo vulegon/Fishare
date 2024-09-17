@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import MainLayout from 'features/layouts/MainLayout';
+import { MainLayout } from 'features/layouts';
 import apiClient from 'api/v1/apiClient';
 
 const Home: React.FC = () => {
@@ -14,7 +14,7 @@ const Home: React.FC = () => {
   return (
     <>
       <MainLayout>
-        <div>aaa</div>
+        <div>Home</div>
       </MainLayout>
     </>
   );

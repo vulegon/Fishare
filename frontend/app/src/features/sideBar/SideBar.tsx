@@ -8,10 +8,12 @@ import {
 } from '@mui/material';
 import MapIcon from '@mui/icons-material/Map';
 import ListIcon from '@mui/icons-material/List';
+import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import { CustomToolbar } from 'components/common';
 import { DRAWER_WIDTH } from 'constants/index';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
+import { Link } from 'react-router-dom';
 
 // MUIのDrawerコンポーネントをカスタマイズする
 // 参考
@@ -55,15 +57,16 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const sideBarItems = [
-  { label: '一覧から探す', icon: <ListIcon /> },
-  { label: '地図から探す', icon: <MapIcon /> },
+  { label: '一覧から探す', icon: <ListIcon />, path: '/' },
+  { label: '地図から探す', icon: <MapIcon />, path: '/map' },
+  { label: 'お問い合わせ', icon: <SupportAgentIcon />, path: '/contact' },
 ];
 
 interface SideBarProps {
   open: boolean;
 }
 
-const SideBar: React.FC<SideBarProps> = ({ open }) => {
+export const SideBar: React.FC<SideBarProps> = ({ open }) => {
   return (
     <Drawer variant="permanent" open={open}>
       <CustomToolbar />
@@ -71,6 +74,8 @@ const SideBar: React.FC<SideBarProps> = ({ open }) => {
         {sideBarItems.map((item) => (
           <ListItem key={item.label} disablePadding>
             <ListItemButton
+              component={Link}
+              to={item.path}
               sx={{
                 minHeight: 48,
                 justifyContent: open ? 'initial' : 'center',
@@ -97,5 +102,3 @@ const SideBar: React.FC<SideBarProps> = ({ open }) => {
     </Drawer>
   );
 };
-
-export default SideBar;

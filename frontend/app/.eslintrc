@@ -13,7 +13,7 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./frontend/app/tsconfig.json",
+    "project": "./tsconfig.json",
     "ecmaFeatures": {
       "jsx": true
     },

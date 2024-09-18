@@ -4,7 +4,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  ListItemIcon,
+  ListItemIcon
 } from '@mui/material';
 import MapIcon from '@mui/icons-material/Map';
 import ListIcon from '@mui/icons-material/List';
@@ -22,25 +22,25 @@ const openedMixin = (theme: Theme): CSSObject => ({
   width: DRAWER_WIDTH,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.enteringScreen,
+    duration: theme.transitions.duration.enteringScreen
   }),
-  overflowX: 'hidden',
+  overflowX: 'hidden'
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
+    duration: theme.transitions.duration.leavingScreen
   }),
   overflowX: 'hidden',
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
+    width: `calc(${theme.spacing(8)} + 1px)`
+  }
 });
 
 const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== 'open',
+  shouldForwardProp: (prop) => prop !== 'open'
 })(({ theme, open }) => ({
   width: DRAWER_WIDTH,
   flexShrink: 0,
@@ -48,18 +48,18 @@ const Drawer = styled(MuiDrawer, {
   boxSizing: 'border-box',
   ...(open && {
     ...openedMixin(theme),
-    '& .MuiDrawer-paper': openedMixin(theme),
+    '& .MuiDrawer-paper': openedMixin(theme)
   }),
   ...(!open && {
     ...closedMixin(theme),
-    '& .MuiDrawer-paper': closedMixin(theme),
-  }),
+    '& .MuiDrawer-paper': closedMixin(theme)
+  })
 }));
 
 const sideBarItems = [
   { label: '一覧から探す', icon: <ListIcon />, path: '/' },
   { label: '地図から探す', icon: <MapIcon />, path: '/map' },
-  { label: 'お問い合わせ', icon: <SupportAgentIcon />, path: '/contact' },
+  { label: 'お問い合わせ', icon: <SupportAgentIcon />, path: '/contact' }
 ];
 
 interface SideBarProps {
@@ -68,36 +68,36 @@ interface SideBarProps {
 
 export const SideBar: React.FC<SideBarProps> = ({ open }) => {
   return (
-    <Drawer variant="permanent" open={open}>
+    <Drawer variant='permanent' open={ open }>
       <CustomToolbar />
       <List>
-        {sideBarItems.map((item) => (
-          <ListItem key={item.label} disablePadding>
+        { sideBarItems.map((item) => (
+          <ListItem key={ item.label } disablePadding>
             <ListItemButton
-              component={Link}
-              to={item.path}
+              component={ Link }
+              to={ item.path }
               sx={{
                 minHeight: 48,
                 justifyContent: open ? 'initial' : 'center',
-                px: 2.5,
+                px: 2.5
               }}
             >
               <ListItemIcon
                 sx={{
                   minWidth: 0,
                   mr: open ? 3 : 'auto',
-                  justifyContent: 'center',
+                  justifyContent: 'center'
                 }}
               >
-                {item.icon}
+                { item.icon }
               </ListItemIcon>
               <ListItemText
-                primary={item.label}
+                primary={ item.label }
                 sx={{ opacity: open ? 1 : 0 }}
               />
             </ListItemButton>
           </ListItem>
-        ))}
+        )) }
       </List>
     </Drawer>
   );

@@ -1,12 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Home, NotFound, Contact } from 'pages';
+import { Home, NotFound, Contact, PrefectureSpots } from 'pages';
 
 const AppRoutes: React.FC = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/prefectures/:id/spots" element={<PrefectureSpots />} />
         <Route path="/google_maps" element={<Home />} />
         <Route path="/contacts" element={<Contact />} />
 

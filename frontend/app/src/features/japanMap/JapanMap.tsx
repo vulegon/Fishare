@@ -128,7 +128,7 @@ export const JapanMap: React.FC = () => {
         console.log(prefectures);
         const target_prefecture = prefectures.find((prefecture) => prefecture.name === prefectureName);
         if (!target_prefecture) return;
-        navigate(`/prefecture/${target_prefecture.id}/spots`);
+        navigate(`/prefectures/${target_prefecture.id}/spots`);
       })
 
       /**

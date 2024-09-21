@@ -56,6 +56,7 @@ const drawJapanMap = async () => {
      * 都道府県領域の MouseOver イベントハンドラ
      */
     .on(`mouseover`, function (item: any) {
+      const centroid = path.centroid(item); // 都道府県の重心座標を取得
       // ラベル用のグループ
       const group = svg.append(`g`).attr(`id`, `label-group`);
 
@@ -74,7 +75,10 @@ const drawJapanMap = async () => {
       const textElement = group
         .append(`text`)
         .attr(`id`, `label-text`)
-        .text(label);
+        .attr("x", 10)  // x座標
+        .attr("y", 20) // y座標
+        .text(label)
+        .attr("font-size", "10px");
 
       // テキストのサイズから矩形のサイズを調整
       const padding = { x: 5, y: 0 };
@@ -86,6 +90,7 @@ const drawJapanMap = async () => {
         .attr(`width`, textSize.width + padding.x * 2)
         .attr(`height`, textSize.height + padding.y * 2);
 
+        group.attr(`transform`, `translate(${centroid[0]}, ${centroid[1]})`);
       // マウス位置の都道府県領域を赤色に変更
       d3.select(this).attr(`fill`, `#CC4C39`);
       d3.select(this).attr(`stroke-width`, `1`);
@@ -106,10 +111,6 @@ const drawJapanMap = async () => {
         y: event.offsetY - textSize.height,
       };
 
-      // ラベルの位置を移動
-      // svg
-      //   .select('#label-group')
-      //   .attr(`transform`, `translate(${labelPos.x}, ${labelPos.y})`);
     })
 
     /**

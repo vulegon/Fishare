@@ -10,6 +10,10 @@ module Api
   class Application < Rails::Application
     config.load_defaults 7.0
     config.api_only = true
-    config.active_record.primary_key = :uuid
+    config.generators do |g|
+      g.orm :active_record, primary_key_type: :uuid
+    end
+    # lib ディレクトリをオートロードパスに追加
+    config.autoload_paths << Rails.root.join('lib')
   end
 end

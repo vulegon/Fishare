@@ -10,8 +10,8 @@ export const JapanMap: React.FC = () => {
 // GeoJsonファイルを読み込み
 
 const drawJapanMap = async () => {
-  const width = 400; // 描画サイズ: 幅
-  const height = 400; // 描画サイズ: 高さ
+  const width = 500; // 描画サイズ: 幅
+  const height = 500; // 描画サイズ: 高さ
   const centerPos: [number, number] = [137.0, 38.2]; // 地図のセンター位置
   const scale = 1000; // 地図のスケール
 
@@ -50,14 +50,7 @@ const drawJapanMap = async () => {
     .attr(`d`, path as any)
     .attr(`stroke`, `#666`)
     .attr(`stroke-width`, 0.25)
-    .attr(`fill`, `#2566CC`)
-    .attr(`fill-opacity`, (item: any) => {
-      // メモ
-      // item.properties.name_ja に都道府県名が入っている
-
-      // 透明度をランダムに指定する (0.0 - 1.0)
-      return Math.random();
-    })
+    .attr(`fill`, `#98E4C1`)
 
     /**
      * 都道府県領域の MouseOver イベントハンドラ
@@ -113,7 +106,7 @@ const drawJapanMap = async () => {
         y: event.offsetY - textSize.height,
       };
 
-      // // ラベルの位置を移動
+      // ラベルの位置を移動
       // svg
       //   .select('#label-group')
       //   .attr(`transform`, `translate(${labelPos.x}, ${labelPos.y})`);
@@ -127,7 +120,7 @@ const drawJapanMap = async () => {
       svg.select('#label-group').remove();
 
       // マウス位置の都道府県領域を青色に戻す
-      d3.select(this).attr(`fill`, `#2566CC`);
+      d3.select(this).attr(`fill`, `#98E4C1`);
       d3.select(this).attr(`stroke-width`, `0.25`);
     });
 };

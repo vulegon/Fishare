@@ -1,12 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as d3 from 'd3';
 import geoJson from './mapData/japan.geo.json';
 import { useNavigate } from 'react-router-dom';
 import apiClient from 'api/v1/apiClient';
+import { Prefecture } from 'types';
 
+type GeoJsonFeature = {
+  properties: {
+    name_ja: string;
+  };
+};
 
 export const JapanMap: React.FC = () => {
   const navigate = useNavigate();
+  const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
+  const [isPrefectureLoad, setIsPrefectureLoad] = useState(false);
+
   const drawJapanMap = async () => {
     const width = 500; // 描画サイズ: 幅
     const height = 500; // 描画サイズ: 高さ
@@ -115,9 +124,11 @@ export const JapanMap: React.FC = () => {
       * 都道府県領域の Click イベントハンドラ
       */
       .on(`click`, function (event: any, item: any) {
-        // クリック時にページ遷移させる
-        const prefectureName = item.properties.name_en.toLowerCase(); // 英語名を使ってURLを生成
-        navigate(`/prefecture/${prefectureName}`);
+        const prefectureName = d3.select<SVGPathElement, GeoJsonFeature>(this).datum().properties.name_ja;
+        console.log(prefectures);
+        const target_prefecture = prefectures.find((prefecture) => prefecture.name === prefectureName);
+        if (!target_prefecture) return;
+        navigate(`/prefecture/${target_prefecture.id}`);
       })
 
       /**
@@ -138,7 +149,8 @@ export const JapanMap: React.FC = () => {
   const fetchPrefectures = async () => {
     try {
       const res = await apiClient.getPrefectures();
-      console.log(res);
+      setPrefectures(res.prefectures);
+      setIsPrefectureLoad(true);
     } catch (err) {
       console.error(err);
     }
@@ -147,12 +159,11 @@ export const JapanMap: React.FC = () => {
   useEffect(() => {
     fetchPrefectures();
     drawJapanMap();
-  }, []);
+  }, [isPrefectureLoad]);
+
   return (
-    <>
-      <div>
-        <div id="map-container"></div>
-      </div>
-    </>
+    <div>
+      <div id="map-container"></div>
+    </div>
   );
 };

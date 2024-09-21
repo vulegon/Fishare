@@ -4,6 +4,7 @@ import { SERVICE_NAME } from 'constants/index';
 import { CustomToolbar } from 'components/common';
 import { Link } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
+import { HEADER_HEIGHT } from 'constants/index';
 
 interface HeaderProps {
   handleDrawerOpen: () => void;
@@ -13,22 +14,25 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerOpen }) => {
   return (
     <>
       <AppBar
-        position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        position='fixed'
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          height: `${HEADER_HEIGHT}px`
+        }}
       >
         <CustomToolbar>
           <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
+            color='inherit'
+            aria-label='open drawer'
+            onClick={ handleDrawerOpen }
+            edge='start'
             sx={{ marginRight: 2 }}
           >
             <MenuIcon />
           </IconButton>
-          <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
-            <Typography variant="h6" noWrap>
-              {SERVICE_NAME}
+          <Link to='/' style={{ textDecoration: 'none', color: 'white' }}>
+            <Typography variant='h6' noWrap>
+              { SERVICE_NAME }
             </Typography>
           </Link>
         </CustomToolbar>

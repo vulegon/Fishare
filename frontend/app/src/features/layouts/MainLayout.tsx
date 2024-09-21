@@ -2,8 +2,7 @@ import React, { ReactNode } from 'react';
 import { Header } from 'features/header';
 import { SideBar } from 'features/sideBar';
 import { Box, CssBaseline } from '@mui/material';
-import { DRAWER_WIDTH } from 'constants/index';
-import { Toolbar } from '@mui/material';
+import { HEADER_HEIGHT } from 'constants/index';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -21,19 +20,18 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     <>
       <CssBaseline />
       <Box sx={{ display: 'flex' }}>
-        <Header handleDrawerOpen={handleDrawerOpen} />
-        <SideBar open={isDrawerOpen} />
+        <Header handleDrawerOpen={ handleDrawerOpen } />
+        <SideBar open={ isDrawerOpen } />
         <Box
-          component="main"
+          component='main'
           sx={{
             flexGrow: 1,
             p: 3,
-            width: { sm: `calc(100% - ${DRAWER_WIDTH}px)` },
+            width: { sm: '100%' },
+            marginTop: `${HEADER_HEIGHT}px`
           }}
         >
-          {/* 要素が埋もれないようにするために、ToolBarを挟む。Header分のスペースを確保する。 */}
-          <Toolbar />
-          {children}
+          { children }
         </Box>
       </Box>
     </>

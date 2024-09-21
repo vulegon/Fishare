@@ -14,7 +14,7 @@ const Home: React.FC = () => {
   return (
     <>
       <MainLayout>
-        <div>Home</div>
+        <div>Homeああああああああああああああああああああああああああああ</div>
       </MainLayout>
     </>
   );

@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { MainLayout } from 'features/layouts';
-import apiClient from 'api/v1/apiClient';
 import { JapanMap } from 'features/japanMap/JapanMap';
 import { Typography, Box } from '@mui/material';
 
-
 const Home: React.FC = () => {
-
   return (
     <>
       <MainLayout>

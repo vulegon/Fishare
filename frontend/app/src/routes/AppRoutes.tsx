@@ -7,7 +7,7 @@ const AppRoutes: React.FC = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/prefectures/:id/spots" element={<PrefectureSpots />} />
+        <Route path="/prefectures/:id/fishing_spots" element={<PrefectureSpots />} />
         <Route path="/google_maps" element={<Home />} />
         <Route path="/contacts" element={<Contact />} />
 

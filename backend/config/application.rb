@@ -13,5 +13,7 @@ module Api
     config.generators do |g|
       g.orm :active_record, primary_key_type: :uuid
     end
+    # lib ディレクトリをオートロードパスに追加
+    config.autoload_paths << Rails.root.join('lib')
   end
 end

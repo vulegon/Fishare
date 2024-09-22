@@ -8,5 +8,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
+# 都道府県マスターテーブル
 class Prefecture < ApplicationRecord
+  has_many :fishing_spot_locations
 end

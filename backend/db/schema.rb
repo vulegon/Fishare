@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_21_233133) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_22_085126) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,6 +29,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_21_233133) do
     t.index ["fishing_spot_id"], name: "index_fishing_spot_fishes_on_fishing_spot_id"
   end
 
+  create_table "fishing_spot_locations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "fishing_spot_id", null: false, comment: "釣り場ID"
+    t.uuid "prefecture_id", null: false, comment: "都道府県ID"
+    t.decimal "latitude", precision: 10, scale: 8, null: false, comment: "緯度"
+    t.decimal "longitude", precision: 11, scale: 8, null: false, comment: "経度"
+    t.string "address", null: false, comment: "住所"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fishing_spot_id"], name: "index_fishing_spot_locations_on_fishing_spot_id"
+    t.index ["prefecture_id"], name: "index_fishing_spot_locations_on_prefecture_id"
+  end
+
   create_table "fishing_spots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -45,4 +57,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_21_233133) do
 
   add_foreign_key "fishing_spot_fishes", "fish"
   add_foreign_key "fishing_spot_fishes", "fishing_spots"
+  add_foreign_key "fishing_spot_locations", "fishing_spots"
+  add_foreign_key "fishing_spot_locations", "prefectures"
 end

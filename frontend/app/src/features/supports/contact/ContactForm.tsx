@@ -7,11 +7,9 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { FormSectionTitle } from './components/FormSectionTitle';
-import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import Chip from '@mui/material/Chip';
-import { FormRow } from './components/FormRow';
+import { SectionTitle } from './components/SectionTitle';
+import { InputField } from './components/InputField';
+import { FileUploaderField } from './components/FileUploaderField';
 
 const STEP_LABELS = [
   '情報の入力',
@@ -20,6 +18,8 @@ const STEP_LABELS = [
 ];
 
 export const ContactForm: React.FC = () => {
+  const [images, setImages] = React.useState<File[]>([]);
+
   return (
     <>
       <CssBaseline />
@@ -34,12 +34,12 @@ export const ContactForm: React.FC = () => {
             ))}
           </Stepper>
 
-          <FormSectionTitle text="お問い合わせ内容を入力してください" />
-          <FormRow label="お問い合わせ内容" isRequired placeholder="ご質問内容を入力してください" multiline rows={10} />
-          <FormSectionTitle text="お客様情報を入力してください" />
-
-          <FormRow label="お名前" isRequired placeholder="例）山田 太郎" />
-          <FormRow label="メールアドレス" isRequired placeholder="例）example@gmail.com" />
+          <SectionTitle text="お問い合わせ内容を入力してください" />
+          <InputField label="お問い合わせ内容" isRequired placeholder="ご質問内容を入力してください" multiline rows={10} />
+          <FileUploaderField images={images} setImages={setImages} />
+          <SectionTitle text="お客様情報を入力してください" />
+          <InputField label="お名前" isRequired placeholder="例）山田 太郎" />
+          <InputField label="メールアドレス" isRequired placeholder="例）example@gmail.com" />
         </Stack>
       </Container>
     </>

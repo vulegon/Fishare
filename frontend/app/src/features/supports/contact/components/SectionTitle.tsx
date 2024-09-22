@@ -6,7 +6,7 @@ interface SectionTitleProps {
   text: string;
 }
 
-export const FormSectionTitle: React.FC<SectionTitleProps> = ({ text }) => {
+export const SectionTitle: React.FC<SectionTitleProps> = ({ text }) => {
   return (
     <Box
       sx={{

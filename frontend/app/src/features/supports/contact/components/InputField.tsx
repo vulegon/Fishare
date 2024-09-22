@@ -4,7 +4,7 @@ import Chip from '@mui/material/Chip';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-interface FormRowProps {
+interface InputFieldProps {
   label: string;
   isRequired?: boolean;
   placeholder: string;
@@ -12,7 +12,14 @@ interface FormRowProps {
   rows?: number;
 }
 
-export const FormRow: React.FC<FormRowProps> = ({ label, isRequired = false, placeholder, multiline = false, rows = 1 }) => {
+export const InputField: React.FC<InputFieldProps> = ({
+  label,
+  isRequired = false,
+  placeholder,
+  multiline = false,
+  rows = 1,
+}) => {
+
   return (
     <Grid container spacing={2} sx={{ border: '1px solid #ddd', padding: 2 }}>
       {/* 左側のラベル部分 */}

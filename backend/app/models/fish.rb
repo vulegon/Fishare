@@ -7,6 +7,7 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #
+# 魚のマスターテーブル
 class Fish < ApplicationRecord
   has_many :fishing_spot_fishes
   has_many :fishing_spots, through: :fishing_spot_fishes

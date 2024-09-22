@@ -18,6 +18,7 @@
 #  fk_rails_...  (fish_id => fish.id)
 #  fk_rails_...  (fishing_spot_id => fishing_spots.id)
 #
+# 釣り場と魚の中間テーブル
 class FishingSpotFish < ApplicationRecord
   belongs_to :fishing_spot
   belongs_to :fish

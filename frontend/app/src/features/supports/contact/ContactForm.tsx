@@ -11,6 +11,7 @@ import { FormSectionTitle } from './components/FormSectionTitle';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Chip from '@mui/material/Chip';
+import { FormRow } from './components/FormRow';
 
 const STEP_LABELS = [
   '情報の入力',
@@ -34,29 +35,11 @@ export const ContactForm: React.FC = () => {
           </Stepper>
 
           <FormSectionTitle text="お問い合わせ内容を入力してください" />
-          <Grid container spacing={2} sx={{ border: '1px solid #ddd', padding: 2 }}>
-            {/* 左側のラベル部分 */}
-            <Grid item xs={3} sx={{ backgroundColor: '#EBF5FF', padding: 2 }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                  お問い合わせ内容
-                </Typography>
-                <Chip label="必須" color="warning" size="small" />
-              </Box>
-            </Grid>
-
-            {/* 右側の入力フィールド */}
-            <Grid item xs={9}>
-              <TextField
-                fullWidth
-                multiline
-                rows={4}
-                variant="outlined"
-                placeholder="お問い合わせ内容を入力してください"
-              />
-            </Grid>
-          </Grid>
+          <FormRow label="お問い合わせ内容" isRequired placeholder="ご質問内容を入力してください" multiline rows={10} />
           <FormSectionTitle text="お客様情報を入力してください" />
+
+          <FormRow label="お名前" isRequired placeholder="例）山田 太郎" />
+          <FormRow label="メールアドレス" isRequired placeholder="例）example@gmail.com" />
         </Stack>
       </Container>
     </>

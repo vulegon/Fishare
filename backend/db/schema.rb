@@ -10,17 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_22_012854) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_21_233133) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "cities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "prefecture_id", null: false, comment: "都道府県ID"
-    t.string "name", null: false, comment: "市区町村名"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["prefecture_id"], name: "index_cities_on_prefecture_id"
-  end
 
   create_table "fish", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false, comment: "魚の名前"
@@ -51,7 +43,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_22_012854) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "cities", "prefectures"
   add_foreign_key "fishing_spot_fishes", "fish"
   add_foreign_key "fishing_spot_fishes", "fishing_spots"
 end

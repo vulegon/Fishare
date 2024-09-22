@@ -61,25 +61,27 @@ export const ContactForm: React.FC = () => {
           </Stepper>
           <SectionTitle text="お問い合わせ内容を入力してください" />
           <form onSubmit={handleSubmit(onSubmit)}>
-            <InputFieldGroup
-              label="お問い合わせ内容"
-              isRequired
-              placeholder="ご質問内容を入力してください"
-              multiline
-              rows={10}
-            />
-            <FileUploaderField images={images} setImages={setImages} />
-            <SectionTitle text="お客様情報を入力してください" />
-            <InputFieldGroup
-              label="お名前"
-              isRequired
-              placeholder="例）山田 太郎"
-            />
-            <InputFieldGroup
-              label="メールアドレス"
-              isRequired
-              placeholder="例）example@gmail.com"
-            />
+            <Stack spacing={4}>
+              <InputFieldGroup
+                label="お問い合わせ内容"
+                isRequired
+                placeholder="ご質問内容を入力してください"
+                multiline
+                rows={10}
+              />
+              <FileUploaderField images={images} setImages={setImages} />
+              <SectionTitle text="お客様情報を入力してください" />
+              <InputFieldGroup
+                label="お名前"
+                isRequired
+                placeholder="例）山田 太郎"
+              />
+              <InputFieldGroup
+                label="メールアドレス"
+                isRequired
+                placeholder="例）example@gmail.com"
+              />
+            </Stack>
           </form>
         </Stack>
       </Container>

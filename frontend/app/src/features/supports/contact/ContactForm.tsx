@@ -6,7 +6,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { SectionTitle, FileUploaderField, InputField } from './components/';
+import { SectionTitle, FileUploaderField, InputFieldGroup } from './components/';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { EmailSchema } from 'validators/email';
@@ -61,7 +61,7 @@ export const ContactForm: React.FC = () => {
           </Stepper>
           <SectionTitle text="お問い合わせ内容を入力してください" />
           <form onSubmit={handleSubmit(onSubmit)}>
-            <InputField
+            <InputFieldGroup
               label="お問い合わせ内容"
               isRequired
               placeholder="ご質問内容を入力してください"
@@ -70,12 +70,12 @@ export const ContactForm: React.FC = () => {
             />
             <FileUploaderField images={images} setImages={setImages} />
             <SectionTitle text="お客様情報を入力してください" />
-            <InputField
+            <InputFieldGroup
               label="お名前"
               isRequired
               placeholder="例）山田 太郎"
             />
-            <InputField
+            <InputFieldGroup
               label="メールアドレス"
               isRequired
               placeholder="例）example@gmail.com"

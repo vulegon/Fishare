@@ -1,10 +1,8 @@
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import Chip from '@mui/material/Chip';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { InputFieldLabel } from './InputFieldLabel';
 
-interface InputFieldProps {
+interface InputFieldGroupProps {
   label: string;
   isRequired?: boolean;
   placeholder: string;
@@ -12,7 +10,7 @@ interface InputFieldProps {
   rows?: number;
 }
 
-export const InputField: React.FC<InputFieldProps> = ({
+export const InputFieldGroup: React.FC<InputFieldGroupProps> = ({
   label,
   isRequired = false,
   placeholder,
@@ -23,14 +21,10 @@ export const InputField: React.FC<InputFieldProps> = ({
   return (
     <Grid container spacing={2} sx={{ border: '1px solid #ddd', padding: 2 }}>
       {/* 左側のラベル部分 */}
-      <Grid item xs={3} sx={{ backgroundColor: '#EBF5FF', padding: 2 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-            {label}
-          </Typography>
-          {isRequired && <Chip label="必須" color="warning" size="small" />}
-        </Box>
-      </Grid>
+      <InputFieldLabel
+        label={label}
+        isRequired={isRequired}
+      />
 
       {/* 右側の入力フィールド */}
       <Grid item xs={9}>

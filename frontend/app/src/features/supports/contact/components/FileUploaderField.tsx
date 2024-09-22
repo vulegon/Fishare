@@ -2,9 +2,9 @@ import React from 'react'
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { InputFieldLabel } from './InputFieldLabel';
 
 interface FileUploaderFieldProps {
   images: File[];
@@ -37,13 +37,10 @@ export const FileUploaderField: React.FC<FileUploaderFieldProps> = (props: FileU
 
   return (
     <Grid container spacing={2} sx={{ border: '1px solid #ddd', padding: 2 }}>
-      <Grid item xs={3} sx={{ backgroundColor: '#EBF5FF', padding: 2 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-            添付ファイル(最大{MAX_IMAGES}枚まで)
-          </Typography>
-        </Box>
-      </Grid>
+      <InputFieldLabel
+        label="添付ファイル"
+        isRequired={false}
+      />
       <Grid item xs={9}>
         <label htmlFor="file-upload">
           <input

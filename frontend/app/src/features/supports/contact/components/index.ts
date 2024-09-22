@@ -1,3 +1,4 @@
 export { SectionTitle } from './SectionTitle';
-export { InputField } from './InputField';
+export { InputFieldGroup } from './InputFieldGroup';
 export { FileUploaderField } from './FileUploaderField';
+export { InputFieldLabel } from './InputFieldLabel';

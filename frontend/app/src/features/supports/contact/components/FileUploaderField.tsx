@@ -14,11 +14,15 @@ interface FileUploaderFieldProps {
 // 下記を参考にして作成
 // https://tsukurue.com/archives/301
 export const FileUploaderField: React.FC<FileUploaderFieldProps> = (props: FileUploaderFieldProps) => {
+  const MAX_IMAGES = 9;
   const handleOnAddFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const files: File[] = []
 
-    for (let i = 0; i < e.target.files.length; i++) {
+    // 現在の画像数とアップロードされたファイルの数をチェック
+    const remainingSlots = MAX_IMAGES - props.images.length;
+
+    for (let i = 0; i < Math.min(e.target.files.length, remainingSlots); i++) {
       files.push(e.target.files[i]);
     }
     props.setImages([...props.images, ...files]);
@@ -36,26 +40,26 @@ export const FileUploaderField: React.FC<FileUploaderFieldProps> = (props: FileU
       <Grid item xs={3} sx={{ backgroundColor: '#EBF5FF', padding: 2 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-            添付ファイル
+            添付ファイル(最大{MAX_IMAGES}枚まで)
           </Typography>
         </Box>
       </Grid>
-
       <Grid item xs={9}>
         <label htmlFor="file-upload">
           <input
             id="file-upload"
             type="file"
             style={{ display: 'none' }}
-            accept="image/*,.png,.jpg,.jpeg,.pdf"
+            accept="image/*,.png,.jpg,.jpeg,.gif"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleOnAddFile(e) }}
             multiple
           />
-          <Button variant="contained" component="span">
+          <Button variant="contained" component="span" disabled={props.images.length >= MAX_IMAGES }>
             ファイルを選択
           </Button>
         </label>
-        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 8, sm: 12, md: 12 }}>
+        <Box sx={{height: '2rem'}}></Box>
+        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 8, sm: 12, md: 12 }} sx={{margin: 0}}>
           {props.images.map((image, index) => (
             <Grid
               item
@@ -68,6 +72,7 @@ export const FileUploaderField: React.FC<FileUploaderFieldProps> = (props: FileU
                 justifyContent: 'start',
                 alignItems: 'center',
                 position: 'relative',
+                margin: 0
               }}
             >
               <IconButton

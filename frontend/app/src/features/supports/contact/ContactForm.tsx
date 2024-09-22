@@ -36,7 +36,7 @@ export const ContactForm: React.FC = () => {
       name: '',
       email: '',
       contactContent: '',
-      images: [],
+      images: [] as File[],
     }
   });
 

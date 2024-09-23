@@ -73,9 +73,10 @@ export const ContactForm: React.FC = () => {
     setValue('images', updatedImages);
   };
 
-  const handleNext = () => {
+  // zodのバリデーションを効かせるためにhandleSubmitをラップ
+  const handleNext = handleSubmit(() => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
+  });
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -139,6 +140,7 @@ export const ContactForm: React.FC = () => {
                       fontWeight: 'bold'
                     }}
                     startIcon={<ArrowForwardIosIcon />}
+                    onClick={handleNext}
                   >
                     入力内容の確認
                   </Button>

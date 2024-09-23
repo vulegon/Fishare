@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import { InputFieldLabel } from './InputFieldLabel';
 import { useFormContext } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
+import Typography from '@mui/material/Typography';
 
 interface InputFieldGroupProps {
   label: string;
@@ -11,6 +12,7 @@ interface InputFieldGroupProps {
   multiline?: boolean;
   rows?: number;
   name: string; // このnameはreact-hook-formのname属性として使われる
+  activeStep: number;
 }
 
 export const InputFieldGroup: React.FC<InputFieldGroupProps> = ({
@@ -20,6 +22,7 @@ export const InputFieldGroup: React.FC<InputFieldGroupProps> = ({
   multiline = false,
   rows = 1,
   name,
+  activeStep
 }) => {
   const {
     control,
@@ -40,6 +43,7 @@ export const InputFieldGroup: React.FC<InputFieldGroupProps> = ({
           name={name}
           control={control}
           render={({ field }) => (
+            activeStep === 0 ? (
               <TextField
                 id={name}
                 fullWidth
@@ -51,6 +55,12 @@ export const InputFieldGroup: React.FC<InputFieldGroupProps> = ({
                 helperText={errors[name]?.message?.toString()}
                 {...field}
               />
+            ) : (
+              <Typography>
+                {field.value}
+              </Typography>
+            )
+            
           )}
         />
       </Grid>

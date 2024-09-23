@@ -107,11 +107,13 @@ export const ContactForm: React.FC = () => {
                   multiline
                   rows={10}
                   name="contactContent"
+                  activeStep={activeStep}
                 />
                 <FileUploaderField
                   images={images}
                   handleOnAddFile={handleOnAddFile}
                   handleOnDeleteFile={handleOnDeleteFile}
+                  activeStep={activeStep}
                 />
                 <SectionTitle text="お客様情報を入力してください" />
                 <InputFieldGroup
@@ -119,12 +121,14 @@ export const ContactForm: React.FC = () => {
                   isRequired
                   placeholder="例）山田 太郎"
                   name="name"
+                  activeStep={activeStep}
                 />
                 <InputFieldGroup
                   label="メールアドレス"
                   isRequired
                   placeholder="例）example@gmail.com"
                   name="email"
+                  activeStep={activeStep}
                 />
 
                 <Stack direction="row" justifyContent="center">

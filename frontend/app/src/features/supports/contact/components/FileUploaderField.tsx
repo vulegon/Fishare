@@ -10,6 +10,7 @@ interface FileUploaderFieldProps {
   images: File[];
   handleOnAddFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleOnDeleteFile: (index: number) => void;
+  activeStep: number;
 }
 
 // 下記を参考にして作成
@@ -17,7 +18,8 @@ interface FileUploaderFieldProps {
 export const FileUploaderField: React.FC<FileUploaderFieldProps> = ({
   images,
   handleOnAddFile,
-  handleOnDeleteFile
+  handleOnDeleteFile,
+  activeStep
 }) => {
   const MAX_IMAGES = 9;
 
@@ -28,19 +30,22 @@ export const FileUploaderField: React.FC<FileUploaderFieldProps> = ({
         isRequired={false}
       />
       <Grid item xs={9}>
-        <label htmlFor="file-upload">
-          <input
-            id="file-upload"
-            type="file"
-            style={{ display: 'none' }}
-            accept="image/*,.png,.jpg,.jpeg,.gif"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleOnAddFile(e) }}
-            multiple
-          />
-          <Button variant="contained" component="span" disabled={images.length >= MAX_IMAGES }>
-            ファイルを選択
-          </Button>
-        </label>
+        {activeStep === 0 ? (
+          <label htmlFor="file-upload">
+            <input
+              id="file-upload"
+              type="file"
+              style={{ display: 'none' }}
+              accept="image/*,.png,.jpg,.jpeg,.gif"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleOnAddFile(e) }}
+              multiple
+            />
+            <Button variant="contained" component="span" disabled={images.length >= MAX_IMAGES }>
+              ファイルを選択
+            </Button>
+          </label>
+          ): (null)
+        }
         <Box sx={{height: '2rem'}}></Box>
         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 8, sm: 12, md: 12 }} sx={{margin: 0}}>
           {images.map((image, index) => (
@@ -58,13 +63,16 @@ export const FileUploaderField: React.FC<FileUploaderFieldProps> = ({
                 margin: 0
               }}
             >
-              <IconButton
-                area-label="画像削除"
-                style={{ position: 'absolute', top: 10, right: 0, color: '#aaa' }}
-                onClick={() => { handleOnDeleteFile(index) }}
-              >
-                <CancelIcon/>
-              </IconButton>
+              {activeStep === 0 ? (
+                <IconButton
+                  area-label="画像削除"
+                  style={{ position: 'absolute', top: 10, right: 0, color: '#aaa' }}
+                  onClick={() => { handleOnDeleteFile(index) }}
+                >
+                  <CancelIcon/>
+                </IconButton>
+                ): (null)
+              }
               <img
                 src={URL.createObjectURL(image)}
                 alt="アップロード済み画像"

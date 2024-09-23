@@ -18,7 +18,7 @@ export const InputFieldLabel: React.FC<InputFieldLabelProps> = ({
         <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
           {label}
         </Typography>
-        {isRequired && <Chip label="必須" color="warning" size="small" />}
+        {isRequired && <Chip label="必須" color="error" size="small" />}
       </Box>
     </Grid>
   );

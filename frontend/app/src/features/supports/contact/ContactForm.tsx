@@ -93,8 +93,9 @@ export const ContactForm: React.FC = () => {
                     borderRadius: '50px', // 丸みを帯びたボタンにする
                     padding: '10px 20px',
                     fontSize: '1.2rem',
-                    width: '30%',
-                    backgroundColor: '#ED6C03'
+                    width: '300px',
+                    backgroundColor: '#ED6C03',
+                    fontWeight: 'bold'
                   }}
                   startIcon={<ArrowForwardIosIcon />}
                 >

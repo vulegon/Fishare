@@ -6,13 +6,14 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { SectionTitle, FileUploaderField, InputFieldGroup } from './components/';
+import { SectionTitle, FileUploaderField, InputFieldGroup, FormButton } from './components/';
 import { FormProvider, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { EmailSchema } from 'validators/email';
 import Button from '@mui/material/Button';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { zodResolver } from '@hookform/resolvers/zod';
+import SendIcon from '@mui/icons-material/Send';
 
 const schema = z.object({
   name: z.string().min(1, '名前は必須です').max(50, '名前は50文字以内で入力してください'),
@@ -127,23 +128,28 @@ export const ContactForm: React.FC = () => {
                 />
 
                 <Stack direction="row" justifyContent="center">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    style={{
-                      borderRadius: '50px', // 丸みを帯びたボタンにする
-                      padding: '10px 20px',
-                      fontSize: '1.2rem',
-                      width: '300px',
-                      backgroundColor: '#ED6C03',
-                      fontWeight: 'bold'
-                    }}
-                    startIcon={<ArrowForwardIosIcon />}
-                    onClick={handleNext}
-                  >
-                    入力内容の確認
-                  </Button>
+                  {activeStep === 0 ? (
+                    <FormButton
+                      label="入力内容の確認"
+                      backgroundColor="#ED6C03"
+                      handleOnClick={handleNext}
+                      setIcon={<ArrowForwardIosIcon />}
+                    />
+                    ) : (
+                      <Stack direction="row" justifyContent="center" spacing={10}>
+                        <FormButton
+                          label="戻る"
+                          variant="outlined"
+                          isSubmit={false}
+                          handleOnClick={handleBack}
+                        />
+                        <FormButton
+                          label="送信"
+                          handleOnClick={handleSubmit(onSubmit)}
+                          setIcon={<SendIcon />}
+                        />
+                      </Stack>
+                    )}
                 </Stack>
                 <Box sx={{height: '5rem'}}/>
               </Stack>

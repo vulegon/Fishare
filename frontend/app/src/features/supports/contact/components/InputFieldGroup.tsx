@@ -21,7 +21,10 @@ export const InputFieldGroup: React.FC<InputFieldGroupProps> = ({
   rows = 1,
   name
 }) => {
-  const { control } = useFormContext();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <Grid container spacing={2} sx={{ border: '1px solid #ddd', padding: 2 }}>
@@ -44,6 +47,8 @@ export const InputFieldGroup: React.FC<InputFieldGroupProps> = ({
               rows={rows}
               variant="outlined"
               placeholder={placeholder}
+              error={!!errors[name]}
+              helperText={errors[name]?.message?.toString()}
               {...field}
             />
           )}

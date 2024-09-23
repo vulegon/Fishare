@@ -10,10 +10,11 @@ import { SectionTitle, FileUploaderField, InputFieldGroup, FormButton } from './
 import { FormProvider, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { EmailSchema } from 'validators/email';
-import Button from '@mui/material/Button';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { zodResolver } from '@hookform/resolvers/zod';
 import SendIcon from '@mui/icons-material/Send';
+import { Alert } from '@mui/material';
+import AlertTitle from '@mui/material/AlertTitle';
 
 const schema = z.object({
   name: z.string().min(1, '名前は必須です').max(50, '名前は50文字以内で入力してください'),
@@ -50,6 +51,7 @@ export const ContactForm: React.FC = () => {
 
   const onSubmit = (data: any) => {
     console.log(data);
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
   // 画像の追加処理
@@ -88,7 +90,7 @@ export const ContactForm: React.FC = () => {
       <CssBaseline />
       <Container fixed>
         <Stack spacing={4}>
-          <Box sx={{height: 10}}/>
+          <Box sx={{height: 30}}/>
           <Stepper activeStep={activeStep} >
             {STEP_LABELS.map((label) => (
               <Step key={label}>
@@ -96,69 +98,78 @@ export const ContactForm: React.FC = () => {
               </Step>
             ))}
           </Stepper>
-          <SectionTitle text="お問い合わせ内容を入力してください" />
-          <FormProvider {...useFormMethods}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Stack spacing={4}>
-                <InputFieldGroup
-                  label="お問い合わせ内容"
-                  isRequired
-                  placeholder="ご質問内容を入力してください"
-                  multiline
-                  rows={10}
-                  name="contactContent"
-                  activeStep={activeStep}
-                />
-                <FileUploaderField
-                  images={images}
-                  handleOnAddFile={handleOnAddFile}
-                  handleOnDeleteFile={handleOnDeleteFile}
-                  activeStep={activeStep}
-                />
-                <SectionTitle text="お客様情報を入力してください" />
-                <InputFieldGroup
-                  label="お名前"
-                  isRequired
-                  placeholder="例）山田 太郎"
-                  name="name"
-                  activeStep={activeStep}
-                />
-                <InputFieldGroup
-                  label="メールアドレス"
-                  isRequired
-                  placeholder="例）example@gmail.com"
-                  name="email"
-                  activeStep={activeStep}
-                />
-
-                <Stack direction="row" justifyContent="center">
-                  {activeStep === 0 ? (
-                    <FormButton
-                      label="入力内容の確認"
-                      backgroundColor="#ED6C03"
-                      handleOnClick={handleNext}
-                      setIcon={<ArrowForwardIosIcon />}
+          {activeStep !== 2 ? (
+            <>
+              <SectionTitle text={`お問い合わせ内容を${activeStep === 0 ? '入力' : '確認'}してください`} />
+              <FormProvider {...useFormMethods}>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <Stack spacing={4}>
+                    <InputFieldGroup
+                      label="お問い合わせ内容"
+                      isRequired
+                      placeholder="ご質問内容を入力してください"
+                      multiline
+                      rows={10}
+                      name="contactContent"
+                      activeStep={activeStep}
                     />
-                    ) : (
-                      <Stack direction="row" justifyContent="center" spacing={10}>
+                    <FileUploaderField
+                      images={images}
+                      handleOnAddFile={handleOnAddFile}
+                      handleOnDeleteFile={handleOnDeleteFile}
+                      activeStep={activeStep}
+                    />
+                    <SectionTitle text={`お客様情報を${activeStep === 0 ? '入力' : '確認'}してください`} />
+                    <InputFieldGroup
+                      label="お名前"
+                      isRequired
+                      placeholder="例）山田 太郎"
+                      name="name"
+                      activeStep={activeStep}
+                    />
+                    <InputFieldGroup
+                      label="メールアドレス"
+                      isRequired
+                      placeholder="例）example@gmail.com"
+                      name="email"
+                      activeStep={activeStep}
+                    />
+
+                    <Stack direction="row" justifyContent="center">
+                      {activeStep === 0 ? (
                         <FormButton
-                          label="戻る"
-                          variant="outlined"
-                          isSubmit={false}
-                          handleOnClick={handleBack}
+                          label="入力内容の確認"
+                          backgroundColor="#ED6C03"
+                          handleOnClick={handleNext}
+                          setIcon={<ArrowForwardIosIcon />}
                         />
-                        <FormButton
-                          label="送信"
-                          handleOnClick={handleSubmit(onSubmit)}
-                          setIcon={<SendIcon />}
-                        />
-                      </Stack>
-                    )}
-                </Stack>
-                <Box sx={{height: '5rem'}}/>
-              </Stack>
-            </form>
-          </FormProvider>
+                        ) : (
+                          <Stack direction="row" justifyContent="center" spacing={10}>
+                            <FormButton
+                              label="戻る"
+                              variant="outlined"
+                              isSubmit={false}
+                              handleOnClick={handleBack}
+                            />
+                            <FormButton
+                              label="送信"
+                              handleOnClick={handleSubmit(onSubmit)}
+                              setIcon={<SendIcon />}
+                            />
+                          </Stack>
+                        )}
+                    </Stack>
+                    <Box sx={{height: '5rem'}}/>
+                  </Stack>
+                </form>
+              </FormProvider>
+            </>
+          ):(
+            <Alert severity="success">
+              <AlertTitle>お問い合わせ完了</AlertTitle>
+              お問い合わせを受け付けました。ご入力いただいたメールアドレスに確認メールを送信しましたのでご確認ください。
+            </Alert>
+          )}
         </Stack>
       </Container>
     </>

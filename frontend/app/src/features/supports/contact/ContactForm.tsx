@@ -11,6 +11,8 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { EmailSchema } from 'validators/email';
 import { zodResolver } from "@hookform/resolvers/zod";
+import Button from '@mui/material/Button';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const schema = z.object({
   name: z.string().min(1).max(50),
@@ -81,6 +83,25 @@ export const ContactForm: React.FC = () => {
                 isRequired
                 placeholder="例）example@gmail.com"
               />
+
+              <Stack direction="row" justifyContent="center">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  style={{
+                    borderRadius: '50px', // 丸みを帯びたボタンにする
+                    padding: '10px 20px',
+                    fontSize: '1.2rem',
+                    width: '30%',
+                    backgroundColor: '#ED6C03'
+                  }}
+                  startIcon={<ArrowForwardIosIcon />}
+                >
+                  入力内容の確認
+                </Button>
+              </Stack>
+              <Box sx={{height: '5rem'}}/>
             </Stack>
           </form>
         </Stack>

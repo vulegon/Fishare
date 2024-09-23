@@ -17,7 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 const schema = z.object({
   name: z.string().min(1, '名前は必須です').max(50, '名前は50文字以内で入力してください'),
   email: EmailSchema,
-  contactContent: z.string().min(1, 'お問い合わせ内容は必須です').max(1000, 'お問い合わせ内容は1000文字以内で入力してください'),
+  contactContent: z.string().min(10, 'お問い合わせ内容は10文字以上である必要があります').max(1000, 'お問い合わせ内容は1000文字以内で入力してください'),
   images: z.array(z.instanceof(File)).max(9, '画像は最大9枚までです'),
 });
 

@@ -19,7 +19,7 @@ export const InputFieldGroup: React.FC<InputFieldGroupProps> = ({
   placeholder,
   multiline = false,
   rows = 1,
-  name
+  name,
 }) => {
   const {
     control,
@@ -40,17 +40,17 @@ export const InputFieldGroup: React.FC<InputFieldGroupProps> = ({
           name={name}
           control={control}
           render={({ field }) => (
-            <TextField
-              id={name}
-              fullWidth
-              multiline={multiline}
-              rows={rows}
-              variant="outlined"
-              placeholder={placeholder}
-              error={!!errors[name]}
-              helperText={errors[name]?.message?.toString()}
-              {...field}
-            />
+              <TextField
+                id={name}
+                fullWidth
+                multiline={multiline}
+                rows={rows}
+                variant="outlined"
+                placeholder={placeholder}
+                error={!!errors[name]}
+                helperText={errors[name]?.message?.toString()}
+                {...field}
+              />
           )}
         />
       </Grid>

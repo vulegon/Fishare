@@ -28,6 +28,7 @@ const STEP_LABELS = [
 ];
 
 export const ContactForm: React.FC = () => {
+  const [activeStep, setActiveStep] = React.useState(0);
   const useFormMethods = useForm({
     defaultValues: {
       name: '',
@@ -41,7 +42,7 @@ export const ContactForm: React.FC = () => {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors }
+    formState: { errors },
   } = useFormMethods;
 
   const images = watch('images');
@@ -72,13 +73,21 @@ export const ContactForm: React.FC = () => {
     setValue('images', updatedImages);
   };
 
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
   return (
     <>
       <CssBaseline />
       <Container fixed>
         <Stack spacing={4}>
           <Box sx={{height: 10}}/>
-          <Stepper activeStep={1} >
+          <Stepper activeStep={activeStep} >
             {STEP_LABELS.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>

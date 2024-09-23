@@ -7,10 +7,9 @@ import StepLabel from '@mui/material/StepLabel';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { SectionTitle, FileUploaderField, InputFieldGroup } from './components/';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { EmailSchema } from 'validators/email';
-import { zodResolver } from "@hookform/resolvers/zod";
 import Button from '@mui/material/Button';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
@@ -28,12 +27,7 @@ const STEP_LABELS = [
 ];
 
 export const ContactForm: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    resolver: zodResolver(schema),
+  const useFormMethods = useForm({
     defaultValues: {
       name: '',
       email: '',
@@ -41,12 +35,41 @@ export const ContactForm: React.FC = () => {
       images: [] as File[],
     }
   });
+  const {
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors }
+  } = useFormMethods;
+
+  const images = watch('images');
 
   const onSubmit = (data: any) => {
 
   };
 
-  const [images, setImages] = React.useState<File[]>([]);
+
+  // 画像の追加処理
+  const handleOnAddFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const files: File[] = [];
+    const remainingSlots = 9 - images.length;
+
+    for (let i = 0; i < Math.min(e.target.files.length, remainingSlots); i++) {
+      files.push(e.target.files[i]);
+    }
+
+    // react-hook-formのsetValueでimagesを更新
+    setValue('images', [...images, ...files]);
+    e.target.value = '';
+  };
+
+  // 画像の削除処理
+  const handleOnDeleteFile = (index: number) => {
+    const updatedImages = [...images];
+    updatedImages.splice(index, 1);
+    setValue('images', updatedImages);
+  };
 
   return (
     <>
@@ -62,26 +85,33 @@ export const ContactForm: React.FC = () => {
             ))}
           </Stepper>
           <SectionTitle text="お問い合わせ内容を入力してください" />
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack spacing={4}>
+          <FormProvider {...useFormMethods}>
+            <Stack spacing={4} onSubmit={handleSubmit(onSubmit)}>
               <InputFieldGroup
                 label="お問い合わせ内容"
                 isRequired
                 placeholder="ご質問内容を入力してください"
                 multiline
                 rows={10}
+                name="contactContent"
               />
-              <FileUploaderField images={images} setImages={setImages} />
+              <FileUploaderField
+                images={images}
+                handleOnAddFile={handleOnAddFile}
+                handleOnDeleteFile={handleOnDeleteFile}
+              />
               <SectionTitle text="お客様情報を入力してください" />
               <InputFieldGroup
                 label="お名前"
                 isRequired
                 placeholder="例）山田 太郎"
+                name="name"
               />
               <InputFieldGroup
                 label="メールアドレス"
                 isRequired
                 placeholder="例）example@gmail.com"
+                name="email"
               />
 
               <Stack direction="row" justifyContent="center">
@@ -104,7 +134,7 @@ export const ContactForm: React.FC = () => {
               </Stack>
               <Box sx={{height: '5rem'}}/>
             </Stack>
-          </form>
+          </FormProvider>
         </Stack>
       </Container>
     </>

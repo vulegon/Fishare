@@ -8,32 +8,18 @@ import { InputFieldLabel } from './InputFieldLabel';
 
 interface FileUploaderFieldProps {
   images: File[];
-  setImages: React.Dispatch<React.SetStateAction<File[]>>;
+  handleOnAddFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleOnDeleteFile: (index: number) => void;
 }
 
 // 下記を参考にして作成
 // https://tsukurue.com/archives/301
-export const FileUploaderField: React.FC<FileUploaderFieldProps> = (props: FileUploaderFieldProps) => {
+export const FileUploaderField: React.FC<FileUploaderFieldProps> = ({
+  images,
+  handleOnAddFile,
+  handleOnDeleteFile
+}) => {
   const MAX_IMAGES = 9;
-  const handleOnAddFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const files: File[] = []
-
-    // 現在の画像数とアップロードされたファイルの数をチェック
-    const remainingSlots = MAX_IMAGES - props.images.length;
-
-    for (let i = 0; i < Math.min(e.target.files.length, remainingSlots); i++) {
-      files.push(e.target.files[i]);
-    }
-    props.setImages([...props.images, ...files]);
-    e.target.value = '';
-  }
-
-  const handleOnDeleteFile = (index: number) => {
-    const newImages = [...props.images];
-    newImages.splice(index, 1);
-    props.setImages(newImages);
-  }
 
   return (
     <Grid container spacing={2} sx={{ border: '1px solid #ddd', padding: 2 }}>
@@ -51,13 +37,13 @@ export const FileUploaderField: React.FC<FileUploaderFieldProps> = (props: FileU
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleOnAddFile(e) }}
             multiple
           />
-          <Button variant="contained" component="span" disabled={props.images.length >= MAX_IMAGES }>
+          <Button variant="contained" component="span" disabled={images.length >= MAX_IMAGES }>
             ファイルを選択
           </Button>
         </label>
         <Box sx={{height: '2rem'}}></Box>
         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 8, sm: 12, md: 12 }} sx={{margin: 0}}>
-          {props.images.map((image, index) => (
+          {images.map((image, index) => (
             <Grid
               item
               xs={4}

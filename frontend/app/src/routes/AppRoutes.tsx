@@ -9,7 +9,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/prefectures/:id/fishing_spots" element={<PrefectureSpots />} />
         <Route path="/google_maps" element={<Home />} />
-        <Route path="/contacts" element={<Contact />} />
+        <Route path="/supports/contact" element={<Contact />} />
 
         {/*どのルーティングにも当てはまらないとき*/}
         {/* NotFoundは一番最後に置くこと。 */}

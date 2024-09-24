@@ -59,7 +59,7 @@ const Drawer = styled(MuiDrawer, {
 const sideBarItems = [
   { label: '一覧から探す', icon: <ListIcon />, path: '/' },
   { label: '地図から探す', icon: <MapIcon />, path: '/google_maps' },
-  { label: 'お問い合わせ', icon: <SupportAgentIcon />, path: '/contacts' }
+  { label: 'お問い合わせ', icon: <SupportAgentIcon />, path: '/supports/contact' }
 ];
 
 interface SideBarProps {

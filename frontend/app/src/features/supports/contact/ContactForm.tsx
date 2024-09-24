@@ -107,7 +107,7 @@ export const ContactForm: React.FC = () => {
                     <InputFieldGroup
                       label="お問い合わせ内容"
                       isRequired
-                      placeholder="ご質問内容を入力してください"
+                      placeholder="お問い合わせ内容を入力してください"
                       multiline
                       rows={10}
                       name="contactContent"

@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { s3Client } from './s3Client';
+import { S3Image } from 'interfaces/api/s3/S3Image';
 
 const API_VERSION_PATH = '/api/v1/';
 
@@ -35,15 +36,18 @@ class ApiClient {
     contactContent: string;
     images: File[];
   }): Promise<{ message: string }> {
-   try {
-      data.images.forEach(async (image) => {
-        await s3Client.uploadContactFile(image);
-      });
+    try {
+      const s3Images: S3Image[] = await Promise.all(
+        data.images.map(async (image) => {
+          return await s3Client.uploadContactFile(image);
+        })
+      );
 
       const response = await this.client.post('supports/contact', {
         name: data.name,
         email: data.email,
         contact_content: data.contactContent,
+        images: s3Images,
       });
 
       const responseData = response.data;

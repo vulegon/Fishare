@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import geoJson from './mapData/japan.geo.json';
 import { useNavigate } from 'react-router-dom';
 import apiClient from 'api/v1/apiClient';
-import { Prefecture } from 'types';
+import { Prefecture } from 'interfaces/api';
 
 type GeoJsonFeature = {
   properties: {

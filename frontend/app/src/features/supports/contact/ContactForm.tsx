@@ -15,6 +15,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import SendIcon from '@mui/icons-material/Send';
 import { Alert } from '@mui/material';
 import AlertTitle from '@mui/material/AlertTitle';
+import apiClient from 'api/v1/apiClient';
+import { ContactData } from './interfaces/ContactData';
 
 const schema = z.object({
   name: z.string().min(1, '名前は必須です').max(50, '名前は50文字以内で入力してください'),
@@ -49,9 +51,20 @@ export const ContactForm: React.FC = () => {
 
   const images = watch('images');
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const onSubmit = async (data: ContactData) => {
+    try {
+      const res = await apiClient.postContact(
+        {
+          name: data.name,
+          email: data.email,
+          contactContent: data.contactContent,
+          images: data.images,
+        }
+      );
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   // 画像の追加処理
@@ -175,5 +188,3 @@ export const ContactForm: React.FC = () => {
     </>
   );
 };
-
-

@@ -1,6 +1,6 @@
 module Api
   module V1
-    class PrefecturesController < ApplicationController
+    class PrefecturesController < ::Api::V1::ApplicationController
       def index
         prefectures = Prefecture.all.order(sort: :asc)
         serialized_prefectures = ActiveModelSerializers::SerializableResource.new(prefectures, each_serializer: ::Api::V1::PrefectureSerializer).as_json

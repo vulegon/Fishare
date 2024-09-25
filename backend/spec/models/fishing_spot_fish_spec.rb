@@ -2,11 +2,11 @@
 #
 # Table name: fishing_spot_fishes
 #
-#  id              :uuid             not null, primary key
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  fish_id         :uuid             not null
-#  fishing_spot_id :uuid             not null
+#  id                        :uuid             not null, primary key
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  fish_id(魚ID)             :uuid             not null
+#  fishing_spot_id(釣り場ID) :uuid             not null
 #
 # Indexes
 #

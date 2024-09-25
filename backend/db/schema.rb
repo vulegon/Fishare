@@ -29,8 +29,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_25_214317) do
   end
 
   create_table "fishing_spot_fishes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "fishing_spot_id", null: false
-    t.uuid "fish_id", null: false
+    t.uuid "fishing_spot_id", null: false, comment: "釣り場ID"
+    t.uuid "fish_id", null: false, comment: "魚ID"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["fish_id"], name: "index_fishing_spot_fishes_on_fish_id"

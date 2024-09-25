@@ -9,10 +9,11 @@ module Api
           attribute :name, :string
           attribute :email, :string
           attribute :contact_content, :string
-          attribute :images, :array
+          attribute :images, array: true
 
           validates :name,:email, :contact_content, presence: true
           validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+          validates :name, length: { minimum: 2 , maximum: 50 }
           validates :contact_content, length: { minimum: 2 , maximum: 1000 }
 
           def initialize(params)

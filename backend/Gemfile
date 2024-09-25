@@ -11,6 +11,7 @@ gem "bootsnap", require: false
 gem "rack-cors"
 gem 'pry-rails'
 gem 'active_model_serializers'
+gem 'audited'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]

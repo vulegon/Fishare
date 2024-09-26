@@ -16,7 +16,7 @@ module Supports
 
     has_many :images, class_name: 'Supports::ContactImage', dependent: :destroy, foreign_key: :contact_id, inverse_of: :contact
 
-    validates :name, :email, :contact_content, presence: true
+    validates :name, :email, :content, presence: true
     validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   end
 end

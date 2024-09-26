@@ -46,7 +46,7 @@ class ApiClient {
       const response = await this.client.post('supports/contact', {
         name: data.name,
         email: data.email,
-        contact_content: data.contactContent,
+        content: data.contactContent,
         images: s3Images,
       });
 

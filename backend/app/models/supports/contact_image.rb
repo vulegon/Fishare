@@ -25,6 +25,6 @@ module Supports
     self.table_name = 'support_contact_images'
     audited
 
-    belongs_to :contact, class_name: 'Supports::Contact', foreign_key: :contact_id, inverse_of: :images
+    belongs_to :contact, class_name: 'Supports::Contact', foreign_key: :support_contact_id, inverse_of: :images
   end
 end

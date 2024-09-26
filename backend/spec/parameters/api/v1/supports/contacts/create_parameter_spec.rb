@@ -11,7 +11,7 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
             {
               name: '山田太郎',
               email: 'walkurepqrt@gmail.com',
-              contact_content: '1234567890',
+              content: '1234567890',
               images: [
                 {
                   s3_key: 'S3キー',
@@ -32,7 +32,7 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
             {
               name: '山田太郎',
               email: 'walkurepqrt@gmail.com',
-              contact_content: '1234567890',
+              content: '1234567890',
               images: []
             }
           }
@@ -48,7 +48,7 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
           {
             name: '',
             email: 'walkurepqrt@gmail.com',
-            contact_content: '1234567890',
+            content: '1234567890',
             images: []
           }
         }
@@ -61,7 +61,7 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
           {
             name: '山田太郎',
             email: 'walkurepqrt@gmail.com',
-            contact_content: '',
+            content: '',
             images: []
           }
         }
@@ -74,7 +74,7 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
           {
             name: '山田太郎',
             email: 'walkurepqrt',
-            contact_content: '1234567890',
+            content: '1234567890',
             images: []
           }
         }
@@ -87,7 +87,7 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
           {
             name: '山',
             email: 'walkurepqrt@gmail.com',
-            contact_content: '1234567890',
+            content: '1234567890',
             images: []
           }
         }
@@ -100,7 +100,7 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
           {
             name: '1234567890' * 5 + '1',
             email: 'walkurepqrt@gmail.com',
-            contact_content: '1234567890',
+            content: '1234567890',
             images: []
           }
         }
@@ -116,7 +116,7 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
       {
         name: '山田太郎',
         email: 'walkurepqrt@gmail.com',
-        contact_content: '1234567890',
+        content: '1234567890',
         images: [
           {
             s3_key: 'S3キー',

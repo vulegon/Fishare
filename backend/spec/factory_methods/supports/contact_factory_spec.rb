@@ -8,7 +8,7 @@ RSpec.describe Supports::ContactFactory do
       {
         name: 'name',
         email: 'walkurepqrt@gmail.com',
-        contact_content: 'content'
+        content: 'content'
       }
     }
 
@@ -18,7 +18,7 @@ RSpec.describe Supports::ContactFactory do
       expect(subject).to have_attributes(
         name:  params[:name],
         email: params[:email],
-        content: params[:contact_content]
+        content: params[:content]
       )
       expect(subject).not_to be_persisted
     end

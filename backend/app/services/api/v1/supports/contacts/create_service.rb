@@ -13,6 +13,7 @@ module Api
 
               ActiveRecord::Base.transaction do
                 ::Supports::ContactRepository.save!(contact)
+                ::Supports::ContactImageRepository.save_all!(contact_images)
               end
 
               contact

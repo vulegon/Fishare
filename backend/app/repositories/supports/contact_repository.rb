@@ -1,7 +1,7 @@
 module Supports
   class ContactRepository
     # Contactを永続化します
-    # @param contact [Supports::Contact] お問い合わせ
+    # @param entity [Supports::Contact] お問い合わせ
     class << self
       def save!(entity)
         entity.save!

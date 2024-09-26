@@ -14,26 +14,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_25_215649) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "contact_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "contact_id", null: false, comment: "お問い合わせID"
-    t.string "s3_key", null: false, comment: "S3キー"
-    t.string "s3_url", null: false, comment: "S3のURL"
-    t.string "file_name", null: false, comment: "ファイル名"
-    t.string "content_type", null: false, comment: "ファイルの拡張子"
-    t.integer "file_size", null: false, comment: "ファイルサイズ"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["contact_id"], name: "index_contact_images_on_contact_id"
-  end
-
-  create_table "contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.string "email", null: false
-    t.text "content", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "fish", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false, comment: "魚の名前"
     t.datetime "created_at", null: false
@@ -75,9 +55,29 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_25_215649) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "contact_images", "contacts"
+  create_table "support_contact_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "support_contact_id", null: false, comment: "お問い合わせID"
+    t.string "s3_key", null: false, comment: "S3キー"
+    t.string "s3_url", null: false, comment: "S3のURL"
+    t.string "file_name", null: false, comment: "ファイル名"
+    t.string "content_type", null: false, comment: "ファイルの拡張子"
+    t.integer "file_size", null: false, comment: "ファイルサイズ"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["support_contact_id"], name: "index_support_contact_images_on_support_contact_id"
+  end
+
+  create_table "support_contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "fishing_spot_fishes", "fish"
   add_foreign_key "fishing_spot_fishes", "fishing_spots"
   add_foreign_key "fishing_spot_locations", "fishing_spots"
   add_foreign_key "fishing_spot_locations", "prefectures"
+  add_foreign_key "support_contact_images", "support_contacts"
 end

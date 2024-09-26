@@ -4,9 +4,9 @@ module TestData
       class << self
         def load
           10.times do |i|
-            contact = ::Suports::Contact.create!(name: "test#{i}", email: "test#{i}@example.com")
+            contact = ::Supports::Contact.create!(name: "test#{i}", email: "test#{i}@example.com", content: "content_sample#{i}")
             2.times do |j|
-              ::Suports::ContactImage.create!(
+              ::Supports::ContactImage.create!(
                 support_contact_id: contact.id,
                 s3_key: "supports/contact/#{SecureRandom.uuid}/image#{j}.jpg",
                 s3_url: "https://s3-ap-northeast-1.amazonaws.com/supports/contact/#{SecureRandom.uuid}/image#{j}.jpg",

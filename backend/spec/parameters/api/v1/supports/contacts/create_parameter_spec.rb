@@ -13,11 +13,13 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
               email: 'walkurepqrt@gmail.com',
               contact_content: '1234567890',
               images: [
-                s3_key: 'S3キー',
-                s3_url: 'S3のURL',
-                file_name:  'ファイル名',
-                content_type: 'ファイルの拡張子',
-                file_size: 'ファイルサイズ'
+                {
+                  s3_key: 'S3キー',
+                  s3_url: 'S3のURL',
+                  file_name:  'ファイル名',
+                  content_type: 'ファイルの拡張子',
+                  file_size: 'ファイルサイズ'
+                }
               ]
             }
           }
@@ -106,5 +108,39 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
         it { expect(subject).to eq false }
       end
     end
+  end
+
+  describe '#images' do
+    subject { described_class.new(ActionController::Parameters.new(params)).images }
+    let(:params) {
+      {
+        name: '山田太郎',
+        email: 'walkurepqrt@gmail.com',
+        contact_content: '1234567890',
+        images: [
+          {
+            s3_key: 'S3キー',
+            s3_url: 'S3のURL',
+            file_name:  'ファイル名',
+            content_type: 'ファイルの拡張子',
+            file_size: 'ファイルサイズ'
+          }
+        ]
+      }
+    }
+
+    it {
+      expect(subject).to eq(
+        [
+          {
+            s3_key: 'S3キー',
+            s3_url: 'S3のURL',
+            file_name:  'ファイル名',
+            content_type: 'ファイルの拡張子',
+            file_size: 'ファイルサイズ'
+          }
+        ]
+      )
+    }
   end
 end

@@ -17,7 +17,8 @@ module Api
           validates :contact_content, length: { minimum: 2 , maximum: 1000 }
 
           def initialize(params)
-            super(params.permit(:name, :email, :contact_content, :name, images: []))
+            permitted_params = params.permit(:name, :email, :contact_content, images: [:file_name, :s3_key, :content_type, :file_size, :s3_url])
+            super(permitted_params.to_h.deep_symbolize_keys)
           end
         end
       end

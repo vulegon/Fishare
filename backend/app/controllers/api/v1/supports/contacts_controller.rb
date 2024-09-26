@@ -3,7 +3,7 @@ module Api
     module Supports
       class ContactsController < ::Api::V1::ApplicationController
         def create
-          create_params = ::Api::V1::Supports::Contacts::CreateParams.new(params)
+          create_params = ::Api::V1::Supports::Contacts::CreateParameter.new(params)
 
           if create_params.invalid?
             render_form_error(create_params) and return

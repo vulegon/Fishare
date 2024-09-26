@@ -11,7 +11,7 @@ module Api
 
           ::Api::V1::Supports::Contacts::CreateService.create!(create_params)
 
-          render json: { message: 'お問い合わせを受け付けました' }, status: :ok
+          render status: :ok, json: { message: 'お問い合わせを受け付けました' }
         end
       end
     end

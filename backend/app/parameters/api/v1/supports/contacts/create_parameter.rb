@@ -14,7 +14,7 @@ module Api
           validates :name,:email, :content, presence: true
           validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
           validates :name, length: { minimum: 2 , maximum: 50 }
-          validates :content, length: { minimum: 2 , maximum: 1000 }
+          validates :content, length: { minimum: 10 , maximum: 1000 }
 
           def initialize(params)
             permitted_params = params.permit(:name, :email, :content, images: [:file_name, :s3_key, :content_type, :file_size, :s3_url])

@@ -7,6 +7,13 @@ ja:
         restrict_dependent_destroy:
           has_one: "%{record}が存在しているので削除できません"
           has_many: "%{record}が存在しているので削除できません"
+  activemodel:
+    attributes:
+      api/v1/supports/contacts/create_parameter:
+        name: 名前
+        email: メールアドレス
+        content: お問い合わせ内容
+        images: 画像
   date:
     abbr_day_names:
     - 日

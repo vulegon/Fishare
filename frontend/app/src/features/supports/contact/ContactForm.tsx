@@ -40,7 +40,8 @@ export const ContactForm: React.FC = () => {
       contactContent: '',
       images: [] as File[],
     },
-    resolver: zodResolver(schema)
+    resolver: zodResolver(schema),
+    mode: 'onBlur'
   });
   const {
     handleSubmit,

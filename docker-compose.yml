@@ -37,5 +37,13 @@ services:
     depends_on:
       - api
       - db
+  mailcatcher:
+    container_name: fishare-mailcatcher
+    image: schickling/mailcatcher
+    ports:
+      - 1080:1080 # Webインターフェース用
+      - 1025:1025 # SMTP用
+    depends_on:
+      - api
 volumes:
   db-volume: {}

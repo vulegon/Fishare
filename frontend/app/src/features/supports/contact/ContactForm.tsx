@@ -1,21 +1,21 @@
-import React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
-import Container from '@mui/material/Container';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import { SectionTitle, FileUploaderField, InputFieldGroup, FormButton } from './components/';
-import { FormProvider, useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { EmailSchema } from 'validators/email';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { zodResolver } from '@hookform/resolvers/zod';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SendIcon from '@mui/icons-material/Send';
 import { Alert } from '@mui/material';
 import AlertTitle from '@mui/material/AlertTitle';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import Stack from '@mui/material/Stack';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import Stepper from '@mui/material/Stepper';
 import apiClient from 'api/v1/apiClient';
+import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { EmailSchema } from 'validators/email';
+import * as z from 'zod';
+import { FileUploaderField, FormButton, InputFieldGroup, SectionTitle } from './components/';
 import { ContactData } from './interfaces/ContactData';
 
 const schema = z.object({
@@ -53,7 +53,7 @@ export const ContactForm: React.FC = () => {
 
   const onSubmit = async (data: ContactData) => {
     try {
-      const res = await apiClient.postContact(
+      const res = await apiClient.createContact(
         {
           name: data.name,
           email: data.email,

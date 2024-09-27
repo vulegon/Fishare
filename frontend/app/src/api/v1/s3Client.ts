@@ -40,14 +40,11 @@ class S3Client {
         s3_url: `https://${bucketName}.s3-${region}.amazonaws.com/${s3Key}`
       };
     } catch (error) {
-      notifyError(error);
-      return {
-        s3_key: '',
-        file_name: '',
-        content_type: '',
-        file_size: 0,
-        s3_url: '',
-      }
+      notifyError(
+        error,
+        'ファイルのアップロード中にエラーが発生しました。ファイルの容量が大きすぎる、ファイルを移動されている、通信環境が悪いなどが考えられます。時間をおいてファイルを再度選択してお試しください。'
+      );
+      throw error;
     }
   }
 }

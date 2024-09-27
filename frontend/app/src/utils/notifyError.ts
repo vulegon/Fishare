@@ -2,7 +2,7 @@ import { toast, Bounce } from 'react-toastify';
 import { isError } from './typeGuard';
 import Axios from 'axios';
 
-export function notifyError(error: unknown): void {
+export function notifyError(error: unknown, message?: string): void {
   let errorMessage = 'エラーが発生しました';
 
   if (Axios.isAxiosError(error)) {
@@ -11,11 +11,16 @@ export function notifyError(error: unknown): void {
     errorMessage = error.message;
   }
 
+  // エラーメッセージが指定されている場合はそれを表示
+  if (message) {
+    errorMessage = message;
+  }
+
   // トースト通知でエラーメッセージを表示
   toast.error(errorMessage, {
     position: "top-right",
-    autoClose: 7000,
-    hideProgressBar: false,
+    autoClose: 10000,
+    hideProgressBar: true,
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,

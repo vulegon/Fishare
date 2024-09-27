@@ -46,7 +46,11 @@ export const ContactForm: React.FC = () => {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: {
+      errors,
+      isValid,
+      isSubmitting,
+    },
   } = useFormMethods;
 
   const images = watch('images');
@@ -155,6 +159,7 @@ export const ContactForm: React.FC = () => {
                           backgroundColor="#ED6C03"
                           handleOnClick={handleNext}
                           setIcon={<ArrowForwardIosIcon />}
+                          disabled={!isValid}
                         />
                         ) : (
                           <Stack direction="row" justifyContent="center" spacing={10}>
@@ -168,6 +173,7 @@ export const ContactForm: React.FC = () => {
                               label="送信"
                               handleOnClick={handleSubmit(onSubmit)}
                               setIcon={<SendIcon />}
+                              disabled={!isValid || isSubmitting}
                             />
                           </Stack>
                         )}

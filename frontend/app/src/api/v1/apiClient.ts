@@ -1,6 +1,7 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosError } from 'axios';
 import { s3Client } from './s3Client';
 import { S3Image } from 'interfaces/api/s3/S3Image';
+import { notifyError } from 'utils/notifyError';
 
 const API_VERSION_PATH = '/api/v1/';
 
@@ -53,9 +54,8 @@ class ApiClient {
       const responseData = response.data;
       return { message: responseData.message };
     } catch (error) {
-      console.error(error);
-
-      return { message: 'エラーが発生しました' };
+      notifyError(error);
+      throw error;
     }
   }
 }

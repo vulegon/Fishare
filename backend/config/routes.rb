@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       resources :prefectures, only: [:index]
 
       namespace :supports do
-        resources :contacts, only: [:create]
+        resource :contact, only: [:create]
       end
     end
   end

@@ -16,5 +16,6 @@ module Api
     # lib ディレクトリをオートロードパスに追加
     config.autoload_paths << Rails.root.join('lib')
     Faker::Config.locale = :ja
+    config.i18n.default_locale = :ja
   end
 end

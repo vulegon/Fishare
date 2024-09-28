@@ -36,9 +36,6 @@ services:
     stdin_open: true
     environment:
       - CHOKIDAR_USEPOLLING=true
-    depends_on:
-      - api
-      - db
   mailcatcher:
     container_name: fishare-mailcatcher
     image: schickling/mailcatcher

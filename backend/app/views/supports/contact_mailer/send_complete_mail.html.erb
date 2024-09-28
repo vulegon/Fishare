@@ -1,4 +1,61 @@
-<h1><%= @contact.name %> 様</h1>
-<p>お問い合わせありがとうございます。</p>
-<p>内容を確認し次第、返信させていただきます。</p>
-<p>お問い合わせ内容: <%= @contact.content %></p>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #333333;
+      font-size: 24px;
+    }
+    p {
+      color: #666666;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #999999;
+      text-align: center;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><%= @contact.name %> 様</h1>
+
+    <p>お問い合わせいただき、誠にありがとうございます。</p>
+    <p>内容を確認次第、担当者よりご連絡させていただきますので、今しばらくお待ちください。</p>
+
+    <h2>お問い合わせ内容:</h2>
+    <p><%= @contact.content %></p>
+
+    <div class="footer">
+      <p>このメールは、お問い合わせの確認のために自動送信されています。</p>
+    </div>
+  </div>
+</body>
+</html>

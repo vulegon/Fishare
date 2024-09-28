@@ -1,6 +1,4 @@
-FROM ruby:3.3.4
-
-ARG RUBYGEMS_VERSION=3.4.6
+FROM ruby:3.2.2
 
 RUN mkdir /api
 
@@ -10,7 +8,7 @@ COPY Gemfile /api/Gemfile
 
 COPY Gemfile.lock /api/Gemfile.lock
 
-RUN gem update --system ${RUBYGEMS_VERSION} && \
+RUN gem update --system && \
     bundle install
 
 COPY . /api

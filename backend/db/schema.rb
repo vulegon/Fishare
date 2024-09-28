@@ -10,9 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_22_085126) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_26_144111) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "audits", force: :cascade do |t|
+    t.uuid "auditable_id"
+    t.string "auditable_type"
+    t.integer "associated_id"
+    t.string "associated_type"
+    t.integer "user_id"
+    t.string "user_type"
+    t.string "username"
+    t.string "action"
+    t.text "audited_changes"
+    t.integer "version", default: 0
+    t.string "comment"
+    t.string "remote_address"
+    t.string "request_uuid"
+    t.datetime "created_at"
+    t.index ["associated_type", "associated_id"], name: "associated_index"
+    t.index ["auditable_type", "auditable_id", "version"], name: "auditable_index"
+    t.index ["created_at"], name: "index_audits_on_created_at"
+    t.index ["request_uuid"], name: "index_audits_on_request_uuid"
+    t.index ["user_id", "user_type"], name: "user_index"
+  end
 
   create_table "fish", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false, comment: "魚の名前"
@@ -21,8 +43,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_22_085126) do
   end
 
   create_table "fishing_spot_fishes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "fishing_spot_id", null: false
-    t.uuid "fish_id", null: false
+    t.uuid "fishing_spot_id", null: false, comment: "釣り場ID"
+    t.uuid "fish_id", null: false, comment: "魚ID"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["fish_id"], name: "index_fishing_spot_fishes_on_fish_id"
@@ -55,8 +77,29 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_22_085126) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "support_contact_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "support_contact_id", null: false, comment: "お問い合わせID"
+    t.string "s3_key", null: false, comment: "S3キー"
+    t.string "s3_url", null: false, comment: "S3のURL"
+    t.string "file_name", null: false, comment: "ファイル名"
+    t.string "content_type", null: false, comment: "ファイルの拡張子"
+    t.integer "file_size", null: false, comment: "ファイルサイズ"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["support_contact_id"], name: "index_support_contact_images_on_support_contact_id"
+  end
+
+  create_table "support_contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.text "content", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "fishing_spot_fishes", "fish"
   add_foreign_key "fishing_spot_fishes", "fishing_spots"
   add_foreign_key "fishing_spot_locations", "fishing_spots"
   add_foreign_key "fishing_spot_locations", "prefectures"
+  add_foreign_key "support_contact_images", "support_contacts"
 end

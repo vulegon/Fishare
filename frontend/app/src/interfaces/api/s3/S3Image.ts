@@ -1,7 +1,7 @@
 export interface S3Image {
-  s3Key: string;
-  fileName: string;
-  contentType: string;
-  fileSize: number;
-  s3Url: string;
+  s3_key: string;
+  file_name: string;
+  content_type: string;
+  file_size: number;
+  s3_url: string;
 }

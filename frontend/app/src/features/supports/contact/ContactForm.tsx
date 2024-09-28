@@ -1,25 +1,25 @@
-import React from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
-import Container from '@mui/material/Container';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import { SectionTitle, FileUploaderField, InputFieldGroup, FormButton } from './components/';
-import { FormProvider, useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { EmailSchema } from 'validators/email';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { zodResolver } from '@hookform/resolvers/zod';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SendIcon from '@mui/icons-material/Send';
 import { Alert } from '@mui/material';
 import AlertTitle from '@mui/material/AlertTitle';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import CssBaseline from '@mui/material/CssBaseline';
+import Stack from '@mui/material/Stack';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import Stepper from '@mui/material/Stepper';
 import apiClient from 'api/v1/apiClient';
+import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { EmailSchema } from 'validators/email';
+import * as z from 'zod';
+import { FileUploaderField, FormButton, InputFieldGroup, SectionTitle } from './components/';
 import { ContactData } from './interfaces/ContactData';
 
 const schema = z.object({
-  name: z.string().min(1, '名前は必須です').max(50, '名前は50文字以内で入力してください'),
+  name: z.string().min(2, '名前は2文字以上である必要があります').max(50, '名前は50文字以内で入力してください'),
   email: EmailSchema,
   contactContent: z.string().min(10, 'お問い合わせ内容は10文字以上である必要があります').max(1000, 'お問い合わせ内容は1000文字以内で入力してください'),
   images: z.array(z.instanceof(File)).max(9, '画像は最大9枚までです'),
@@ -40,20 +40,25 @@ export const ContactForm: React.FC = () => {
       contactContent: '',
       images: [] as File[],
     },
-    resolver: zodResolver(schema)
+    resolver: zodResolver(schema),
+    mode: 'onChange'
   });
   const {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: {
+      errors,
+      isValid,
+      isSubmitting,
+    },
   } = useFormMethods;
 
   const images = watch('images');
 
   const onSubmit = async (data: ContactData) => {
     try {
-      const res = await apiClient.postContact(
+      const res = await apiClient.createContact(
         {
           name: data.name,
           email: data.email,
@@ -155,6 +160,7 @@ export const ContactForm: React.FC = () => {
                           backgroundColor="#ED6C03"
                           handleOnClick={handleNext}
                           setIcon={<ArrowForwardIosIcon />}
+                          disabled={!isValid}
                         />
                         ) : (
                           <Stack direction="row" justifyContent="center" spacing={10}>
@@ -168,6 +174,7 @@ export const ContactForm: React.FC = () => {
                               label="送信"
                               handleOnClick={handleSubmit(onSubmit)}
                               setIcon={<SendIcon />}
+                              disabled={!isValid || isSubmitting}
                             />
                           </Stack>
                         )}

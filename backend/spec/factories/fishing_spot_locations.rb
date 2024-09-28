@@ -23,6 +23,10 @@
 #
 FactoryBot.define do
   factory :fishing_spot_location do
-    
+    association :fishing_spot
+    association :prefecture
+    address { "テスト住所1" }
+    latitude { 35.65858 }
+    longitude { 139.745433 }
   end
 end

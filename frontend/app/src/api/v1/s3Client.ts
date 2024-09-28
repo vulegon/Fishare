@@ -7,8 +7,8 @@ import { v4 as uuidv4 } from 'uuid';
 const accessKeyId = process.env.REACT_APP_S3_ACCESS_KEY_ID;
 // IAMユーザのシークレットアクセスキー。アクセスキーを作ったときだけ見れるやつです。
 const secretAccessKey = process.env.REACT_APP_S3_SECRET_ACCESS_KEY;
-const bucketName = 'fishare-dev'; // 保存先のバケット名
-const region = 'ap-northeast-1'; // リージョン
+const bucketName = process.env.REACT_APP_S3_BUCKET_NAME ?? ''; // バケット名
+const region = process.env.REACT_APP_S3_REGION; // リージョン
 
 // S3クライアントの設定
 const s3 = new S3({
@@ -42,7 +42,7 @@ class S3Client {
     } catch (error) {
       notifyError(
         error,
-        'ファイルのアップロード中にエラーが発生しました。ファイルの容量が大きすぎる、ファイルを移動されている、通信環境が悪いなどが考えられます。時間をおいてファイルを再度選択してお試しください。'
+        'ファイルのアップロード中にエラーが発生しました。ファイルの容量が大きすぎる、ファイルを移動されている、通信環境が悪いなどが考えられます。時間を置くかファイルを再度選択してお試しください。'
       );
       throw error;
     }

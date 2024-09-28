@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Home, NotFound, Contact, PrefectureSpots } from 'pages';
+import { Home, NotFound, Contact, PrefectureSpots, LoginPage } from 'pages';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -10,6 +10,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/prefectures/:id/fishing_spots" element={<PrefectureSpots />} />
         <Route path="/google_maps" element={<Home />} />
         <Route path="/supports/contact" element={<Contact />} />
+        <Route path="/admin/login" element={<LoginPage />} />
 
         {/*どのルーティングにも当てはまらないとき*/}
         {/* NotFoundは一番最後に置くこと。 */}

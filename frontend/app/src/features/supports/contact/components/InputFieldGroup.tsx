@@ -60,7 +60,6 @@ export const InputFieldGroup: React.FC<InputFieldGroupProps> = ({
                 {field.value}
               </Typography>
             )
-            
           )}
         />
       </Grid>

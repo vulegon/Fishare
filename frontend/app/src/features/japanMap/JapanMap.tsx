@@ -161,7 +161,7 @@ export const JapanMap: React.FC = () => {
 
   return (
     <div>
-      <div id="map-container"></div>
+      <div id="map-container" style={{ width: '100%', height: '900px' }}></div>
     </div>
   );
 };

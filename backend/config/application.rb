@@ -17,5 +17,6 @@ module Api
     config.autoload_paths << Rails.root.join('lib')
     Faker::Config.locale = :ja
     config.i18n.default_locale = :ja
+    config.active_job.queue_adapter = :sidekiq
   end
 end

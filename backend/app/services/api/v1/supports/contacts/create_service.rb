@@ -16,6 +16,7 @@ module Api
                 ::Supports::ContactImageRepository.save_all!(contact_images)
               end
 
+              ::Supports::ContactMailer.send_complete_mail(contact).deliver_later
               contact
             end
           end

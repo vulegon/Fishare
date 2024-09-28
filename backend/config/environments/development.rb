@@ -67,4 +67,6 @@ Rails.application.configure do
     address: 'mailcatcher',
     port: 1025
   }
+  config.action_mailer.perform_deliveries = true
+  config.cache_store = :redis_cache_store, { url: 'redis://redis:6379/1' }
 end

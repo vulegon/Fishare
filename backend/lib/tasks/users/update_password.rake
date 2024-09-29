@@ -1,11 +1,10 @@
 
-# nameは任意の引数で、デフォルト値は「管理者」
+
 # example:
-#  rake "admin:create[test_admin@gmail.com,Password123]"
-namespace :admin do
-  desc "管理者ユーザーを作成する（引数: email, password, name）"
-  task :create, [:email, :password, :name] => :environment do |task, args|
-    name = args[:name]
+#  rake "users:update_password[test_admin@gmail.com,Password123]"
+namespace :users do
+  desc "ユーザーのパスワードを変更する（引数: email, password）"
+  task :update_password, [:email, :password] => :environment do |task, args|
     email = args[:email]
     password = args[:password]
 
@@ -33,7 +32,7 @@ namespace :admin do
 
     role = ::UserRole.find_by!(role: :admin)
 
-    ::Api::V1::Users::CreateService.create_user_with_role!(name, email, password, role)
+    ::Api::V1::UserService.update_password!(email, password, role, name: name)
 
     puts "管理者ユーザーを作成しました: name: #{name} email: #{email}, password: #{password}"
   end

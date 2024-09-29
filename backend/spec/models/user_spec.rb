@@ -40,6 +40,101 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  describe 'valid?' do
+    subject { user.valid? }
+
+    context '正常な値の場合' do
+      let!(:user) { build(:user) }
+
+      it { is_expected.to be true }
+    end
+
+    context 'nameに関して' do
+      context 'nameがnilの場合' do
+        let!(:user) { build(:user, name: nil) }
+
+        it { is_expected.to be false }
+      end
+
+      context 'nameが空文字の場合' do
+        let!(:user) { build(:user, name: '') }
+
+        it { is_expected.to be false }
+      end
+    end
+
+    context 'emailに関して' do
+      context 'emailがnilの場合' do
+        let!(:user) { build(:user, email: nil) }
+
+        it { is_expected.to be false }
+      end
+
+      context 'emailが空文字の場合' do
+        let!(:user) { build(:user, email: '') }
+
+        it { is_expected.to be false }
+      end
+
+      context 'emailがメールアドレスの形式でない場合' do
+        let!(:user) { build(:user, email: 'test') }
+
+        it { is_expected.to be false }
+      end
+
+      context 'emailが重複している場合' do
+        let!(:user) { build(:user, email: 'test_admin@fisharebackend.com') }
+        let!(:user2) { create(:user, email: user.email) }
+
+        it { is_expected.to be false }
+      end
+    end
+
+    context 'passwordに関して' do
+      context 'passwordがnilの場合' do
+        let!(:user) { build(:user, password: nil) }
+
+        it { is_expected.to be false }
+      end
+
+      context 'passwordが空文字の場合' do
+        let!(:user) { build(:user, password: '') }
+
+        it { is_expected.to be false }
+      end
+
+      context 'passwordが8文字未満の場合' do
+        let!(:user) { build(:user, password: 'Pass123') }
+
+        it { is_expected.to be false }
+      end
+
+      context 'passwordが128文字以上の場合' do
+        let!(:user) { build(:user, password: 'Password12' * 12 + '123456789') }
+
+        it { is_expected.to be false }
+      end
+
+      context 'passwordに大文字が含まれていない場合' do
+        let!(:user) { build(:user, password: 'password123') }
+
+        it { is_expected.to be false }
+      end
+
+      context 'passwordに小文字が含まれていない場合' do
+        let!(:user) { build(:user, password: 'PASSWORD123') }
+
+        it { is_expected.to be false }
+      end
+
+      context 'passwordに数字が含まれていない場合' do
+        let!(:user) { build(:user, password: 'Password') }
+
+        it { is_expected.to be false }
+      end
+    end
+
+  end
   describe 'admin?' do
     subject { user.admin? }
 

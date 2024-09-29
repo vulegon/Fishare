@@ -38,15 +38,13 @@ RSpec.describe User, type: :model do
     subject { user.admin? }
 
     context '管理者ユーザー場合' do
-      let(:user) { create(:user) }
-      let!(:user_role) { create(:user_role, role: :admin) }
-      let!(:user_roleship) { create(:user_roleship, user: user, user_role: user_role) }
+      let!(:user) { create(:user, :admin) }
 
       it { is_expected.to be true }
     end
 
-    context '一般ユーザーの場合' do
-      let(:user) { create(:user) }
+    context '管理者権限以外のユーザーの場合' do
+      let!(:user) { create(:user) }
 
       it { is_expected.to be false }
     end

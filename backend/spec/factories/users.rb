@@ -36,5 +36,12 @@ FactoryBot.define do
     name { 'test' }
     email { 'test123@fishare.com' }
     password { 'password' }
+
+    trait :admin do
+      after(:create) do |user|
+        admin_role = create(:user_role, role: :admin)
+        create(:user_roleship, user: user, user_role: admin_role)
+      end
+    end
   end
 end

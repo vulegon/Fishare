@@ -31,7 +31,9 @@ namespace :admin do
       name = "管理者"
     end
 
-    ::Api::V1::Admin::UserService.create_admin_user!(email, password, name: name)
+    role = ::UserRole.find_by!(role: :admin)
+
+    ::Api::V1::Admin::UserService.create_user_with_role!(email, password, role, name: name)
 
     puts "管理者ユーザーを作成しました: name: #{name} email: #{email}, password: #{password}"
   end

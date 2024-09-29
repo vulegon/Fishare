@@ -6,9 +6,9 @@ module Api
           # 管理者ユーザーを作成する
           # @param email [String] メールアドレス
           # @param password [String] パスワード
+          # @param role [UserRole] ユーザー権限
           # @param name [String] 名前
-          def create_admin_user!(email, password, name: 'admin')
-            role = UserRole.find_by!(role: :admin)
+          def create_user_with_role!(email, password, role, name: 'user')
             admin_user = ::User.new(name: name, email: email, password: password, password_confirmation: password)
 
             ActiveRecord::Base.transaction do

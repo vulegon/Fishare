@@ -269,6 +269,7 @@ DEPENDENCIES
   audited
   bootsnap
   debug
+  devise
   devise_token_auth
   factory_bot_rails (~> 6.0)
   faker

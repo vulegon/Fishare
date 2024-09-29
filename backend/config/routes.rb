@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
-  # mount_devise_token_auth_for 'User', at: 'auth'
   namespace :api do
     namespace :v1 do
-      # devise_for :users
+      mount_devise_token_auth_for 'User', at: 'auth'
       resources :prefectures, only: [:index]
 
       namespace :supports do

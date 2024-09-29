@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: users
@@ -33,16 +31,23 @@
 #  index_users_on_uid_and_provider      (uid,provider) UNIQUE
 #  index_users_on_unlock_token          (unlock_token) UNIQUE
 #
-class User < ActiveRecord::Base
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :confirmable, :lockable, :trackable
-  include DeviseTokenAuth::Concerns::User
-  audited except: :encrypted_password
 
-  has_many :user_roleships, dependent: :destroy, inverse_of: :user
-  has_many :user_roles, through: :user_roleships
+require 'rails_helper'
 
-  def admin?
-    user_roles.exists?(role: :admin)
+RSpec.describe User, type: :model do
+  describe 'admin?' do
+    subject { user.admin? }
+
+    context '管理者ユーザー場合' do
+      let!(:user) { create(:user, :admin) }
+
+      it { is_expected.to be true }
+    end
+
+    context '管理者権限以外のユーザーの場合' do
+      let!(:user) { create(:user) }
+
+      it { is_expected.to be false }
+    end
   end
 end

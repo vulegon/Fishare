@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: users
@@ -33,16 +31,18 @@
 #  index_users_on_uid_and_provider      (uid,provider) UNIQUE
 #  index_users_on_unlock_token          (unlock_token) UNIQUE
 #
-class User < ActiveRecord::Base
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :confirmable, :lockable, :trackable
-  include DeviseTokenAuth::Concerns::User
-  audited except: :encrypted_password
+FactoryBot.define do
+  factory :user do
+    name { "Test User" }
+    email { "test@example.com" }
+    password { "password123" }
+    password_confirmation { "password123" }
+    confirmed_at { Time.now }
 
-  has_many :user_roleships, dependent: :destroy, inverse_of: :user
-  has_many :user_roles, through: :user_roleships
-
-  def admin?
-    user_roles.exists?(role: :admin)
+    trait :admin do
+      after(:create) do |user|
+        user.user_roleships.create(user_role: UserRole.find_or_create_by(role: :admin))
+      end
+    end
   end
 end

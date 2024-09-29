@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_29_035456) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_29_040145) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -97,6 +97,21 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_29_035456) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "role", null: false, comment: "権限"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "user_roleships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false, comment: "ユーザーID"
+    t.uuid "user_role_id", null: false, comment: "ユーザー権限ID"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_user_roleships_on_user_id"
+    t.index ["user_role_id"], name: "index_user_roleships_on_user_role_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false, comment: "名前"
     t.string "email", null: false, comment: "メールアドレス"
@@ -129,4 +144,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_29_035456) do
   add_foreign_key "fishing_spot_locations", "fishing_spots"
   add_foreign_key "fishing_spot_locations", "prefectures"
   add_foreign_key "support_contact_images", "support_contacts"
+  add_foreign_key "user_roleships", "user_roles"
+  add_foreign_key "user_roleships", "users"
 end

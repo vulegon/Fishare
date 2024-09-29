@@ -48,8 +48,8 @@ class User < ActiveRecord::Base
   has_many :user_roles, through: :user_roleships
 
   validates :name, presence: true
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: 'メールアドレスの形式が正しくありません' }
-  validate :password_complexity
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: 'メールアドレスの形式が正しくありません' }, uniqueness: true
+  validates :password, format: { with: PasswordFormatValidator::PASSWORD_REGEX, message: 'パスワードは8〜128文字で、大文字、小文字、数字を含む必要があります' }, if: :password_required?
 
   def admin?
     user_roles.exists?(role: :admin)
@@ -57,9 +57,8 @@ class User < ActiveRecord::Base
 
   private
 
-  def password_complexity
-    return if password.blank? || password =~ /^(?=.*[a-zA-Z])(?=.*[0-9])/
-
-    errors.add :password, 'には少なくとも1つの文字と1つの数字が含まれている必要があります'
+  # パスワードのバリデーションを必要な場合にのみ適用する
+  def password_required?
+    new_record? || password.present?
   end
 end

@@ -1,5 +1,5 @@
 require 'rails_helper'
 
-RSpec.describe ContactImage, type: :model do
+RSpec.describe ::Supports::ContactImage, type: :model do
   pending "add some examples to (or delete) #{__FILE__}"
 end

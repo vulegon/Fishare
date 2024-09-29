@@ -11,7 +11,7 @@ describe Api::V1::Admin::Auth::SessionsController, type: :request do
     let!(:user) { create(:user, email: 'not_admin@fishare.com') }
 
     context 'パラメータが正しいとき' do
-      let(:params) { { email: admin_user.email, password: 'password123'} }
+      let(:params) { { email: admin_user.email, password: 'Password123'} }
 
       it 'ステータスコード200が返ってくること' do
         expect(subject).to have_http_status(:ok)
@@ -21,7 +21,7 @@ describe Api::V1::Admin::Auth::SessionsController, type: :request do
 
     context 'パラメータが不正なとき' do
       context '管理者権限を持っていないとき' do
-        let(:params) { { email: user.email, password: 'password123'} }
+        let(:params) { { email: user.email, password: 'Password123'} }
 
         it '403を返すこと' do
           expect(subject).to have_http_status(:forbidden)

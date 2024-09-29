@@ -1,3 +1,7 @@
+
+# nameは任意の引数で、デフォルト値は「管理者」
+# example:
+#  rake "admin:create[test_admin@gmail.com,password123]"
 namespace :admin do
   desc "管理者ユーザーを作成する（引数: name, email, password）"
   task :create, [:email, :password, :name] => :environment do |task, args|
@@ -15,15 +19,19 @@ namespace :admin do
     end
 
     # パスワードの複雑さをチェック (アルファベットと数字の両方を含む)
-    unless password.match?(/^(?=.*[a-zA-Z])(?=.*[0-9])/)
-      abort("パスワードには少なくとも1つのアルファベットと1つの数字を含める必要があります")
+    unless ::PasswordFormatValidator.valid_password?(password)
+      abort("パスワードは8文字以上、128以下。また、パスワードには少なくとも1つのアルファベット大文字・小文字と1つの数字を含める必要があります")
+    end
+
+    if ::User.exists?(email: email)
+      abort("既に同じメールアドレスのユーザーが存在します: #{email}")
     end
 
     if name.blank?
       name = "管理者"
     end
 
-    ::Api::V1::Admin::CreateService.create_admin_user!(email, password, name: name)
+    ::Api::V1::Admin::UserService.create_admin_user!(email, password, name: name)
 
     puts "管理者ユーザーを作成しました: name: #{name} email: #{email}, password: #{password}"
   end

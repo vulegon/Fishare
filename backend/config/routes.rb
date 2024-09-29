@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  mount_devise_token_auth_for 'User', at: 'auth'
+  # mount_devise_token_auth_for 'User', at: 'auth'
   namespace :api do
     namespace :v1 do
-      devise_for :users
+      # devise_for :users
       resources :prefectures, only: [:index]
 
       namespace :supports do
@@ -13,10 +13,10 @@ Rails.application.routes.draw do
       namespace :admin do
         get 'dashboards', to: 'dashboards#index' # 管理者用のダッシュボード
 
-        devise_scope :user do
-          post 'sign_in', to: 'sessions#create'
-          delete 'sign_out', to: 'sessions#destroy'
-        end
+        # devise_scope :user do
+        #   post 'sign_in', to: 'sessions#create'
+        #   delete 'sign_out', to: 'sessions#destroy'
+        # end
       end
     end
   end

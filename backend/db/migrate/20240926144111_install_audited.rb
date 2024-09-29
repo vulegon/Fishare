@@ -2,7 +2,7 @@
 
 class InstallAudited < ActiveRecord::Migration[7.0]
   def self.up
-    create_table :audits, :force => true do |t|
+    create_table :audits, :force => true, id: :uuid do |t|
       t.column :auditable_id, :uuid
       t.column :auditable_type, :string
       t.column :associated_id, :integer

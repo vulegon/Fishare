@@ -2,25 +2,55 @@ module Api
   module V1
     module Admin
       module Auth
-        class SessionsController < Devise::SessionsController
+        class SessionsController < DeviseTokenAuth::SessionsController
+          def current_user
+            current_api_v1_admin_user
+          end
+
           # 管理者ログイン処理
           def create
-            self.resource = warden.authenticate!(auth_options)
+            user = User.find_by(email: params[:email])
 
-            # 管理者でない場合、ログアウトしてエラーレスポンスを返す
-            unless resource.admin?
-              sign_out resource
-              return render json: { message: '管理者権限を持っていません' }, status: :unauthorized
+            unless user && user.valid_password?(params[:password])
+              return render json: { message: 'メールアドレスまたはパスワードに誤りがあります' }, status: :unauthorized
             end
 
-            # 管理者の場合、通常のトークン認証処理
-            create_new_auth_token = resource.create_new_auth_token
+            unless user.admin?
+              return render json: { message: '管理者権限を持っていません' }, status: :forbidden
+            end
+
+            auth_token = user.create_new_auth_token
+            response.headers.merge!(auth_token)
+
             json = {
-              data: resource.as_json(only: [:id, :name, :email]),
-              token: create_new_auth_token
+              message: 'ログインに成功しました',
+              user: {
+                id: user.id,
+                email: user.email,
+                name: user.name
+              },
             }
 
             render status: :ok, json: json
+          end
+
+          # 管理者のログアウト処理
+          def destroy
+            client = request.headers['client']
+            token = request.headers['access-token']
+            uid = request.headers['uid']
+
+            if client.blank? || token.blank? || uid.blank?
+              return render json: { message: '認証情報が不足しています' }, status: :unauthorized
+            end
+
+            if current_user.nil? || current_user.tokens[client].nil?
+              return render json: { message: 'ユーザーが見つかりません' }, status: :not_found
+            end
+
+            current_user.tokens.delete(client)
+            current_user.save
+            render json: { message: 'ログアウトしました' }, status: :ok
           end
         end
       end

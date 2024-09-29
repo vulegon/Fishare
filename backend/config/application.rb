@@ -19,5 +19,8 @@ module Api
     config.i18n.default_locale = :ja
     config.active_job.queue_adapter = :sidekiq
     config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone, BCrypt::Password]
+    config.session_store :cookie_store, key: '_interslice_session'
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use config.session_store, config.session_options
   end
 end

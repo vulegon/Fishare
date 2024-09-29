@@ -7,11 +7,12 @@ Rails.application.routes.draw do
         resource :contact, only: [:create]
       end
 
-      # 管理者用のダッシュボードやその他の管理ページ
       namespace :admin do
-        get 'dashboards', to: 'dashboards#index' # 管理者用のダッシュボード
+        get 'dashboards', to: 'dashboards#index'
 
-        mount_devise_token_auth_for 'User', at: 'auth'
+        mount_devise_token_auth_for 'User', at: 'auth', controllers: {
+          sessions: 'api/v1/admin/auth/sessions'
+        }
       end
     end
   end

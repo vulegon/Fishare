@@ -6,9 +6,10 @@ module TestData
           admin_role = ::UserRole.find_or_create_by!(role: :admin)
 
           1..5.times do |i|
-            admin_user = ::User.new(name: "管理者_#{i}", email: "test_admin#{i}@fishare.com", password: "password123", password_confirmation: "password123")
-            admin_user.save!
-            admin_user.user_roleships.create!(user_role: admin_role)
+            name = "管理者_#{i}"
+            email = "test_admin#{i}@fishare.com"
+            password = "Password123"
+            ::Api::V1::Users::CreateService.create_user_with_role!(name, email, password, admin_role)
           end
         end
       end

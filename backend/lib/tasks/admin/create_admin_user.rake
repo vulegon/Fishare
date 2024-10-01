@@ -1,7 +1,7 @@
 
 # nameは任意の引数で、デフォルト値は「管理者」
 # example:
-#  rake "admin:create[test_admin@gmail.com,Password123]"
+#  rake "admin:create[test_admin@gmail.com,Password123,管理者]"
 namespace :admin do
   desc "管理者ユーザーを作成する（引数: email, password, name）"
   task :create, [:email, :password, :name] => :environment do |task, args|

@@ -13,6 +13,8 @@ import { useForm } from 'react-hook-form';
 import { EmailSchema } from 'validators/email';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import adminApiClient from 'api/v1/admin/adminApiClient';
+import { useNavigate } from 'react-router-dom';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -57,7 +59,13 @@ const schema = z.object({
   password: z.string().min(8, 'パスワードは8文字以上である必要があります'),
 });
 
+interface SignIn {
+  email: string;
+  password: string;
+}
+
 export const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
@@ -75,8 +83,13 @@ export const LoginPage: React.FC = () => {
     mode: 'all',
   });
 
-  const onSubmit = async (data: any) => {
-    console.log(data);
+  const onSubmit = async (data: SignIn) => {
+    try {
+      await adminApiClient.signIn(data.email, data.password);
+      navigate('/admin/dashboards');
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (

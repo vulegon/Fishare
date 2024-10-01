@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe PasswordFormatValidator do
-  describe '.valid_password?' do
-    subject { described_class.valid_password?(password) }
+  describe '.valid_password_format?' do
+    subject { described_class.valid_password_format?(password) }
 
     context 'パラメータが有効の場合' do
       context 'パスワードは8〜128文字で、大文字、小文字、数字を含んでいる場合' do

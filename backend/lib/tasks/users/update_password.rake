@@ -10,7 +10,7 @@ namespace :users do
       abort("引数に password を指定してください")
     end
 
-    unless ::PasswordFormatValidator.valid_password?(password)
+    unless ::PasswordFormatValidator.valid_password_format?(password)
       abort("パスワードは8文字以上、128以下。また、パスワードには少なくとも1つのアルファベット大文字・小文字と1つの数字を含める必要があります")
     end
 

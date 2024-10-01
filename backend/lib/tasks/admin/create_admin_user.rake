@@ -19,7 +19,7 @@ namespace :admin do
     end
 
     # パスワードの複雑さをチェック (アルファベットと数字の両方を含む)
-    unless ::PasswordFormatValidator.valid_password?(password)
+    unless ::PasswordFormatValidator.valid_password_format?(password)
       abort("パスワードは8文字以上、128以下。また、パスワードには少なくとも1つのアルファベット大文字・小文字と1つの数字を含める必要があります")
     end
 

@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
 
   validates :name, presence: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: 'メールアドレスの形式が正しくありません' }, uniqueness: true
-  validates :password, format: { with: PasswordFormatValidator::PASSWORD_REGEX, message: 'パスワードは8〜128文字で、大文字、小文字、数字を含む必要があります' }, if: :password_required?
+  validates :password, password_format: true, if: :password_required?
 
   def admin?
     user_roles.exists?(role: :admin)

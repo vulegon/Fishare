@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { notifyError } from 'utils/notifyError';
-
+import { User } from 'interfaces/contexts/User';
 const ADMIN_API_VERSION_PATH = '/api/v1/admin/';
 
 class AdminApiClient {
@@ -15,13 +15,13 @@ class AdminApiClient {
     });
   }
 
-  public async signIn(email: string, password: string): Promise<{ message: string }> {
+  public async signIn(email: string, password: string): Promise<User> {
     try {
       const response = await this.client.post('auth/sign_in', {
         email,
         password,
       });
-
+      const user: User = response.data;
       const token = response.headers['access-token'];
       const client = response.headers['client'];
       const uid = response.headers['uid'];
@@ -31,10 +31,10 @@ class AdminApiClient {
         localStorage.setItem('client', response.headers['client']);
         localStorage.setItem('uid', response.headers['uid']);
       } else {
-        throw new Error('トークンが見つかりません');
+        throw new Error('認証トークンが見つかりません');
       }
 
-      return { message: '管理者でログインしました' };
+      return user;
     } catch (error) {
       notifyError(error);
       throw error;

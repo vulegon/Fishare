@@ -15,6 +15,8 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import adminApiClient from 'api/v1/admin/adminApiClient';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from 'contexts/UserContext';
+import { notifySuccess } from 'utils/notifySuccess';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -65,6 +67,7 @@ interface SignIn {
 }
 
 export const LoginPage: React.FC = () => {
+  const { signIn } = useUser();
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -85,7 +88,9 @@ export const LoginPage: React.FC = () => {
 
   const onSubmit = async (data: SignIn) => {
     try {
-      await adminApiClient.signIn(data.email, data.password);
+      const user = await adminApiClient.signIn(data.email, data.password);
+      signIn(user);
+      notifySuccess('管理者でログインしました');
       navigate('/admin/dashboards');
     } catch (error) {
       console.error(error);

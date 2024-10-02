@@ -5,14 +5,17 @@ import AppRoutes from 'routes/AppRoutes';
 import './index.css';
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { UserProvider } from 'contexts/UserContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <ToastContainer/>
-    <AppRoutes />
+    <UserProvider>
+      <ToastContainer/>
+      <AppRoutes />
+    </UserProvider>
   </React.StrictMode>
 );
 

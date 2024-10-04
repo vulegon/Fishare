@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { Header } from 'features/header';
 import { SideBar } from 'features/sideBar';
 import { Box, CssBaseline } from '@mui/material';
@@ -10,10 +10,19 @@ interface MainLayoutProps {
 
 // ヘッダーとサイドバーを表示するレイアウト
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-  const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(true);
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(()=>{
+    const storedDrawerState = localStorage.getItem('drawerState');
+    if (storedDrawerState) {
+      return storedDrawerState === 'true';
+    } else {
+      return true;
+    }
+  })
 
   const handleDrawerOpen = () => {
-    setIsDrawerOpen(!isDrawerOpen);
+    const openState = !isDrawerOpen;
+    setIsDrawerOpen(openState);
+    localStorage.setItem('drawerState', String(openState));
   };
 
   return (

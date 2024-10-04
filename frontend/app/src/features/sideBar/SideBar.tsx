@@ -1,10 +1,8 @@
 import React from 'react';
 import {
   List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  ListItemIcon
+  Divider,
+  Box
 } from '@mui/material';
 import MapIcon from '@mui/icons-material/Map';
 import ListIcon from '@mui/icons-material/List';
@@ -13,7 +11,9 @@ import { CustomToolbar } from 'components/common';
 import { DRAWER_WIDTH } from 'constants/index';
 import { styled, Theme, CSSObject } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
-import { Link } from 'react-router-dom';
+import { useUser } from 'contexts/UserContext';
+import { SideBarListItem } from './components';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 // MUIのDrawerコンポーネントをカスタマイズする
 // 参考
@@ -62,42 +62,47 @@ const sideBarItems = [
   { label: 'お問い合わせ', icon: <SupportAgentIcon />, path: '/supports/contact' }
 ];
 
+const adminSideBarItems = [
+  { label: 'ダッシュボード', icon: <DashboardIcon />, path: '/admin/dashboards' }
+];
+
 interface SideBarProps {
   open: boolean;
 }
 
 export const SideBar: React.FC<SideBarProps> = ({ open }) => {
+  const { user } = useUser();
+
   return (
     <Drawer variant='permanent' open={ open }>
       <CustomToolbar />
       <List>
         { sideBarItems.map((item) => (
-          <ListItem key={ item.label } disablePadding>
-            <ListItemButton
-              component={ Link }
-              to={ item.path }
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? 'initial' : 'center',
-                px: 2.5
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : 'auto',
-                  justifyContent: 'center'
-                }}
-              >
-                { item.icon }
-              </ListItemIcon>
-              <ListItemText
-                primary={ item.label }
-                sx={{ opacity: open ? 1 : 0 }}
-              />
-            </ListItemButton>
-          </ListItem>
-        )) }
+          <SideBarListItem
+            key={ item.label }
+            label={ item.label }
+            path={ item.path }
+            icon={ item.icon }
+            open={ open }
+          />
+          ))
+        }
+        <Box sx={{height: '10px'}}/>
+        { user && (
+            <>
+              <Divider />
+              <Box sx={{height: '20px'}}/>
+              {adminSideBarItems.map((item) => (
+                <SideBarListItem
+                  key={item.label}
+                  label={item.label}
+                  path={item.path}
+                  icon={item.icon}
+                  open={open}
+                />
+              ))}
+            </>
+        )}
       </List>
     </Drawer>
   );

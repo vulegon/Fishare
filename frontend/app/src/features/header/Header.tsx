@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppBar, Typography, IconButton, Menu, MenuItem } from '@mui/material';
+import { AppBar, Typography, IconButton, Menu } from '@mui/material';
 import { SERVICE_NAME } from 'constants/index';
 import { CustomToolbar } from 'components/common';
 import { Link } from 'react-router-dom';

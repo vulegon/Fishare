@@ -27,7 +27,8 @@ module Api
               user: {
                 id: user.id,
                 email: user.email,
-                name: user.name
+                name: user.name,
+                is_admin: user.admin?,
               },
             }
 

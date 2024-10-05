@@ -3,9 +3,7 @@ module Api
     module Admin
       module Auth
         class SessionsController < DeviseTokenAuth::SessionsController
-          def current_user
-            current_api_v1_admin_user
-          end
+          include ::Admin::UserHelper
 
           # 管理者ログイン処理
           def create

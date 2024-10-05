@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppBar, Typography, IconButton, Menu } from '@mui/material';
+import { AppBar, Typography, IconButton, Menu, Divider } from '@mui/material';
 import { SERVICE_NAME } from 'constants/index';
 import { CustomToolbar } from 'components/common';
 import { Link } from 'react-router-dom';
@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { notifySuccess } from 'utils/notifySuccess';
 import { UserMenuItem } from './components/UserMenuItem';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import { Height } from '@mui/icons-material';
 
 interface HeaderProps {
   handleDrawerOpen: () => void;
@@ -45,8 +46,8 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerOpen }) => {
   }
 
   const userMenuItems = [
-    { label: 'ダッシュボード', onClick: handleDashboard, icon: <DashboardIcon sx={{marginRight: 1}}/> },
-    { label: 'ログアウト', onClick: handleSignOut, icon: <LogoutIcon sx={{marginRight: 1}}/> }
+    { label: 'ダッシュボード', onClick: handleDashboard, icon: <DashboardIcon sx={{marginRight: 2}}/> },
+    { label: 'ログアウト', onClick: handleSignOut, icon: <LogoutIcon sx={{marginRight: 2}}/> }
   ];
 
   return (
@@ -99,7 +100,25 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerOpen }) => {
                 vertical: 'top',
                 horizontal: 'right',
               }}
+              PaperProps={{
+                sx: {
+                  width: 250,  // メニューの幅を指定
+                  padding: 2,  // 内側のパディングを指定
+                }
+              }}
             >
+               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 1 }}>
+                <Avatar sx={{ width: 56, height: 56 }} />
+                <Typography variant="subtitle1" sx={{ marginTop: 1, fontWeight: 'bold' }}>
+                  {user?.name}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  {user?.email}
+                </Typography>
+              </Box>
+              <Box sx={{height: "5px"}}/>
+              <Divider />
+              <Box sx={{height: "5px"}}/>
               {userMenuItems.map((item) => (
                 <UserMenuItem
                   key={item.label}

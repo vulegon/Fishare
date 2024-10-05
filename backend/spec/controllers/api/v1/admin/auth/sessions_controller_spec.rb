@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Api::V1::Admin::Auth::SessionsController, type: :request do
   describe 'POST #create' do
     subject {
-      post api_v1_admin_user_session_path, params: params
+      post api_v1_admin_auth_sign_in_path, params: params
       response
     }
 
@@ -15,7 +15,9 @@ describe Api::V1::Admin::Auth::SessionsController, type: :request do
 
       it 'ステータスコード200が返ってくること' do
         expect(subject).to have_http_status(:ok)
-        expect(subject.headers).to include('access-token', 'token-type', 'client', 'expiry', 'uid')
+        expect(subject.headers['Set-Cookie']).to include('access_token')
+        expect(subject.headers['Set-Cookie']).to include('uid')
+        expect(subject.headers['Set-Cookie']).to include('client')
       end
     end
 
@@ -42,28 +44,35 @@ describe Api::V1::Admin::Auth::SessionsController, type: :request do
 
   describe 'DELETE #destroy' do
     subject {
-      delete destroy_api_v1_admin_user_session_path, headers: headers
+      delete api_v1_admin_auth_sign_out_path
       response
     }
-
     let!(:admin_user) { create(:user, :admin) }
-    let(:headers) { admin_user.create_new_auth_token } # 正しいヘッダー情報を作成
+    let(:auth_token) { admin_user.create_new_auth_token }
 
-    context 'ヘッダー情報が正しいとき' do
-      it 'ログアウトが成功し、ステータスコード200が返ること' do
-        expect(subject).to have_http_status(:ok)
-        expect(JSON.parse(subject.body)['message']).to eq('ログアウトしました')
+    context 'クッキーが正しいとき' do
+      before do
+        cookies[:access_token] = auth_token['access-token']
+        cookies[:uid] = auth_token['uid']
+        cookies[:client] = auth_token['client']
+        sign_in(admin_user)
       end
 
-      it 'トークンが削除されていること' do
-        subject
-        admin_user.reload
-        expect(admin_user.tokens).to be_empty
+      it 'ログアウトが成功し、ステータスコード200が返ること' do
+        expect{ subject }.to change{ cookies[:access_token] }.from(auth_token['access-token']).to('').
+          and change{ cookies[:uid] }.from(auth_token['uid']).to('').
+          and change{ cookies[:client] }.from(auth_token['client']).to('')
+        expect(admin_user.reload.tokens[auth_token['client']]).to be_nil
+        expect(subject).to have_http_status(:ok)
       end
     end
 
-    context 'ヘッダー情報が不正なとき' do
-      let(:headers) { { 'client' => 'wrong', 'access-token' => 'wrong', 'uid' => 'wrong' } }
+    context 'クッキーが不正なとき' do
+      before do
+        cookies[:access_token] = auth_token['access-token']
+        cookies[:uid] = auth_token['uid']
+        cookies[:client] = 'wrong'
+      end
 
       it 'ユーザーが見つからず、ステータスコード404が返ること' do
         expect(subject).to have_http_status(:not_found)
@@ -72,11 +81,40 @@ describe Api::V1::Admin::Auth::SessionsController, type: :request do
     end
 
     context 'ヘッダー情報が不足しているとき' do
-      let(:headers) { {} }
+      context 'access_tokenが不足しているとき' do
+        before do
+          cookies[:uid] = auth_token['uid']
+          cookies[:client] = 'wrong'
+        end
 
-      it 'トークン情報が不足しているエラーが返ること' do
-        expect(subject).to have_http_status(:unauthorized)
-        expect(JSON.parse(subject.body)['message']).to eq('認証情報が不足しています')
+        it 'トークン情報が不足しているエラーが返ること' do
+          expect(subject).to have_http_status(:unauthorized)
+          expect(JSON.parse(subject.body)['message']).to eq('認証情報が不足しています')
+        end
+      end
+
+      context 'uidが不足しているとき' do
+        before do
+          cookies[:uid] = auth_token['uid']
+          cookies[:client] = 'wrong'
+        end
+
+        it 'トークン情報が不足しているエラーが返ること' do
+          expect(subject).to have_http_status(:unauthorized)
+          expect(JSON.parse(subject.body)['message']).to eq('認証情報が不足しています')
+        end
+      end
+
+      context 'clientが不足しているとき' do
+        before do
+          cookies[:uid] = auth_token['uid']
+          cookies[:client] = 'wrong'
+        end
+
+        it 'トークン情報が不足しているエラーが返ること' do
+          expect(subject).to have_http_status(:unauthorized)
+          expect(JSON.parse(subject.body)['message']).to eq('認証情報が不足しています')
+        end
       end
     end
   end

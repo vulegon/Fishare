@@ -51,6 +51,16 @@ class User < ActiveRecord::Base
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: 'メールアドレスの形式が正しくありません' }, uniqueness: true
   validates :password, password_format: true, if: :password_required?
 
+  class << self
+     # 認証トークンを基にユーザーを検索するメソッド
+    def find_by_auth_token(access_token, client, uid)
+      user = find_by(uid: uid)
+      return user if user&.valid_token?(access_token, client)
+
+      nil
+    end
+  end
+
   def admin?
     user_roles.exists?(role: :admin)
   end

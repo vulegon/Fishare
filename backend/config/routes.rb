@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   namespace :api do
     namespace :v1 do
       resources :prefectures, only: [:index]
@@ -10,9 +11,10 @@ Rails.application.routes.draw do
       namespace :admin do
         get 'dashboards', to: 'dashboards#index'
 
-        mount_devise_token_auth_for 'User', at: 'auth', controllers: {
-          sessions: 'api/v1/admin/auth/sessions'
-        }
+        namespace :auth do
+          post 'sign_in', to: 'sessions#create'
+          delete 'sign_out', to: 'sessions#destroy'
+        end
       end
     end
   end

@@ -150,4 +150,27 @@ RSpec.describe User, type: :model do
       it { is_expected.to be false }
     end
   end
+
+  describe '.find_by_auth_token' do
+    subject { described_class.find_by_auth_token(access_token, client, uid) }
+
+    let!(:user) { create(:user) }
+    let!(:auth_token) { user.create_new_auth_token }
+
+    context '引数が正しい場合' do
+      let(:access_token) { auth_token['access-token'] }
+      let(:client) { auth_token['client'] }
+      let(:uid) { auth_token['uid'] }
+
+      it { is_expected.to eq user }
+    end
+
+    context '引数が不正な場合' do
+      let(:access_token) { 'wrong' }
+      let(:client) { 'wrong' }
+      let(:uid) { 'wrong' }
+
+      it { is_expected.to be_nil }
+    end
+  end
 end

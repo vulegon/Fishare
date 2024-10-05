@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { User } from 'interfaces/contexts/User';
 
 // Contextの型定義
@@ -20,27 +20,12 @@ interface UserProviderProps {
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    const user_id = localStorage.getItem('user_id');
-    const user_name = localStorage.getItem('user_name');
-    const user_email = localStorage.getItem('user_email');
-    if (user_id && user_name && user_email) {
-      setUser({ id: user_id, name: user_name, email: user_email });
-    }
-  }, []);
-
   const signIn = (userData: User) => {
     setUser(userData);
-    localStorage.setItem('user_id', userData.id);
-    localStorage.setItem('user_name', userData.name);
-    localStorage.setItem('user_email', userData.email);
   };
 
   const signOut = () => {
     setUser(null);
-    localStorage.removeItem('user_id');
-    localStorage.removeItem('user_name');
-    localStorage.removeItem('user_email');
   };
 
   return (

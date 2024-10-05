@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AdminRoutes } from './admin/AdminRoutes';
 import {
   Home,
   NotFound,
@@ -20,7 +21,14 @@ const AppRoutes: React.FC = () => {
         <Route path="/google_maps" element={<Home />} />
         <Route path="/supports/contact" element={<Contact />} />
         <Route path="/admin/sign_in" element={<LoginPage />} />
-        <Route path="/admin/dashboards" element={<DashBoardPage />} />
+        <Route
+          path="/admin/dashboards"
+          element={
+            <AdminRoutes adminOnly={true}>
+              <DashBoardPage />
+            </AdminRoutes>
+          }
+        />
 
         {/*どのルーティングにも当てはまらないとき*/}
         {/* NotFoundは一番最後に置くこと。 */}

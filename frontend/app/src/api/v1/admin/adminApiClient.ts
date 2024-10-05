@@ -21,17 +21,17 @@ class AdminApiClient {
         email,
         password,
       });
-      const user: User = response.data;
-      const token = response.headers['access-token'];
-      const client = response.headers['client'];
-      const uid = response.headers['uid'];
-
-      if (token && client && uid) {
-        localStorage.setItem('access-token', token);
-        localStorage.setItem('client', response.headers['client']);
-        localStorage.setItem('uid', response.headers['uid']);
-      } else {
-        throw new Error('認証トークンが見つかりません');
+      const authHeader = {
+        accessToken: response.headers['access-token'],
+        client: response.headers['client'],
+        uid: response.headers['uid'],
+      }
+      const user: User = {
+        id: response.data.user.id,
+        name: response.data.user.name,
+        email: response.data.user.email,
+        isAdmin: response.data.user.is_admin,
+        authHeader: authHeader,
       }
 
       return user;
@@ -41,26 +41,23 @@ class AdminApiClient {
     }
   }
 
-  public async signOut(): Promise<{ message: string }> {
+  public async signOut(user: User): Promise<{ message: string }> {
     try {
-      const token = localStorage.getItem('access-token');
-      const client = localStorage.getItem('client');
-      const uid = localStorage.getItem('uid');
-      if (!token || !client || !uid) {
+      const accessToken = user.authHeader.accessToken;
+      const client = user.authHeader.client;
+      const uid = user.authHeader.uid;
+
+      if (!accessToken || !client || !uid) {
         throw new Error('ログイン情報が不正です。キャッシュをクリアして再度ログインしてください');
       }
 
       await this.client.delete('auth/sign_out', {
         headers: {
-          'access-token': token,
+          'access-token': accessToken,
           'client': client,
           'uid': uid,
         },
       });
-
-      localStorage.removeItem('access-token');
-      localStorage.removeItem('client');
-      localStorage.removeItem('uid');
 
       return { message: 'ログアウトに成功しました' };
     } catch (error) {

@@ -66,7 +66,7 @@ interface SignIn {
   password: string;
 }
 
-export const LoginPage: React.FC = () => {
+export const AdminLoginPage: React.FC = () => {
   const { signIn } = useUser();
   const navigate = useNavigate();
   const {

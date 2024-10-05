@@ -1,16 +1,16 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AdminRoutes } from './admin/AdminRoutes';
 import {
+  Contact,
   Home,
   NotFound,
-  Contact,
   PrefectureSpots,
 } from 'pages';
 import {
-  LoginPage,
+  AdminLoginPage,
   DashBoardPage
 } from 'pages/admin';
+import React from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { AdminRoutes } from './admin/AdminRoutes';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -20,11 +20,11 @@ const AppRoutes: React.FC = () => {
         <Route path="/prefectures/:id/fishing_spots" element={<PrefectureSpots />} />
         <Route path="/google_maps" element={<Home />} />
         <Route path="/supports/contact" element={<Contact />} />
-        <Route path="/admin/sign_in" element={<LoginPage />} />
+        <Route path="/admin/sign_in" element={<AdminLoginPage />} />
         <Route
           path="/admin/dashboards"
           element={
-            <AdminRoutes adminOnly={true}>
+            <AdminRoutes>
               <DashBoardPage />
             </AdminRoutes>
           }

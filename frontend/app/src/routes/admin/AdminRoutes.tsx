@@ -6,10 +6,9 @@ import { unknown } from 'zod';
 
 interface AdminRouteProps {
   children: JSX.Element;
-  adminOnly?: boolean;
 }
 
-export const AdminRoutes: React.FC<AdminRouteProps> = ({children, adminOnly = false}) => {
+export const AdminRoutes: React.FC<AdminRouteProps> = ({children}) => {
   const { user } = useUser();
 
   useEffect(() => {
@@ -18,7 +17,7 @@ export const AdminRoutes: React.FC<AdminRouteProps> = ({children, adminOnly = fa
       return;
     }
 
-    if (adminOnly && !user?.isAdmin) {
+    if (!user?.isAdmin) {
       notifyError(unknown, 'アクセスが拒否されました');
     }
   }, []);
@@ -29,7 +28,7 @@ export const AdminRoutes: React.FC<AdminRouteProps> = ({children, adminOnly = fa
   }
 
   // 管理者でない場合、アクセスを拒否してホームページへリダイレクト
-  if (adminOnly && !user.isAdmin) {
+  if (!user.isAdmin) {
     return <Navigate to="/" />;
   }
 

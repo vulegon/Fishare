@@ -19,7 +19,7 @@ const AppRoutes: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/prefectures/:id/fishing_spots" element={<PrefectureSpots />} />
         <Route path="/google_maps" element={<Home />} />
-        <Route path="/supports/contact" element={<Contact />} />
+        <Route path="/supports/contacts/new" element={<Contact />} />
         <Route path="/admin/sign_in" element={<AdminLoginPage />} />
         <Route
           path="/admin/dashboards"

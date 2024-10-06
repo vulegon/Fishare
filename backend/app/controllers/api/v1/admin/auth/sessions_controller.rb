@@ -18,7 +18,7 @@ module Api
             end
 
             auth_token = user.create_new_auth_token
-            set_cookies(user, auth_token)
+            set_cookies(auth_token)
 
             json = {
               message: 'ログインに成功しました',
@@ -45,7 +45,7 @@ module Api
 
           private
 
-          def set_cookies(user, auth_token)
+          def set_cookies(auth_token)
             { access_token: auth_token['access-token'], uid: auth_token['uid'], client: auth_token['client'] }.each do |key, value|
               cookies.signed[key] = {
                 value: value,

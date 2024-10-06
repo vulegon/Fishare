@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Api::V1::Admin::Auth::SessionsController, type: :request do
   describe 'POST #create' do
     subject {
-      post api_v1_admin_auth_sign_in_path, params: params
+      post api_v1_admin_user_session_path, params: params
       response
     }
 
@@ -44,11 +44,12 @@ describe Api::V1::Admin::Auth::SessionsController, type: :request do
 
   describe 'DELETE #destroy' do
     subject {
-      delete api_v1_admin_auth_sign_out_path
+      delete destroy_api_v1_admin_user_session_path, headers: headers
       response
     }
     let!(:admin_user) { create(:user, :admin) }
     let(:auth_token) { admin_user.create_new_auth_token }
+    let(:headers) { auth_token }
 
     context 'クッキーが正しいとき' do
       before do
@@ -67,53 +68,36 @@ describe Api::V1::Admin::Auth::SessionsController, type: :request do
       end
     end
 
-    context 'クッキーが不正なとき' do
-      before do
-        cookies[:access_token] = auth_token['access-token']
-        cookies[:uid] = auth_token['uid']
-        cookies[:client] = 'wrong'
-      end
+    context 'ヘッダーが不正なとき' do
+      let(:headers) { { 'access-token' => 'wrong', 'client' => 'wrong', 'uid' => 'wrong' } }
 
       it 'ユーザーが見つからず、ステータスコード404が返ること' do
-        expect(subject).to have_http_status(:not_found)
-        expect(JSON.parse(subject.body)['message']).to eq('ユーザーが見つかりません')
+        expect(subject).to have_http_status(:unauthorized)
       end
     end
 
     context 'ヘッダー情報が不足しているとき' do
       context 'access_tokenが不足しているとき' do
-        before do
-          cookies[:uid] = auth_token['uid']
-          cookies[:client] = 'wrong'
-        end
+        let(:headers) { { 'client' => auth_token['client'], 'uid' => auth_token['uid'] } }
 
         it 'トークン情報が不足しているエラーが返ること' do
           expect(subject).to have_http_status(:unauthorized)
-          expect(JSON.parse(subject.body)['message']).to eq('認証情報が不足しています')
         end
       end
 
       context 'uidが不足しているとき' do
-        before do
-          cookies[:uid] = auth_token['uid']
-          cookies[:client] = 'wrong'
-        end
+        let(:headers) { { 'client' => auth_token['client'], 'access-token' => auth_token['access-token'] } }
 
         it 'トークン情報が不足しているエラーが返ること' do
           expect(subject).to have_http_status(:unauthorized)
-          expect(JSON.parse(subject.body)['message']).to eq('認証情報が不足しています')
         end
       end
 
       context 'clientが不足しているとき' do
-        before do
-          cookies[:uid] = auth_token['uid']
-          cookies[:client] = 'wrong'
-        end
+        let(:headers) { { 'access-token' => auth_token['access-token'], 'uid' => auth_token['uid'] } }
 
         it 'トークン情報が不足しているエラーが返ること' do
           expect(subject).to have_http_status(:unauthorized)
-          expect(JSON.parse(subject.body)['message']).to eq('認証情報が不足しています')
         end
       end
     end

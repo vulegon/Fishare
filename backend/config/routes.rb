@@ -11,10 +11,9 @@ Rails.application.routes.draw do
       namespace :admin do
         get 'dashboards', to: 'dashboards#index'
 
-        namespace :auth do
-          post 'sign_in', to: 'sessions#create'
-          delete 'sign_out', to: 'sessions#destroy'
-        end
+        mount_devise_token_auth_for 'User', at: 'auth', controllers: {
+          sessions: 'api/v1/admin/auth/sessions',
+        }
       end
     end
   end

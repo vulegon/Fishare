@@ -2,7 +2,7 @@ module Api
   module V1
     module Admin
       module Auth
-        class SessionsController < Api::V1::ApplicationController
+        class SessionsController < DeviseTokenAuth::SessionsController
           before_action :authenticate_user!, only: :destroy
 
           # 管理者ログイン処理
@@ -17,16 +17,8 @@ module Api
               return render json: { message: '管理者権限を持っていません' }, status: :forbidden
             end
 
-            sign_in(user)
             auth_token = user.create_new_auth_token
-            { access_token: auth_token['access-token'], uid: auth_token['uid'], client: auth_token['client'] }.each do |key, value|
-              cookies.signed[key] = {
-                value: value,
-                http_only: true,
-                secure: Rails.env.production?,
-                expires: 1.hour.from_now,
-              }
-            end
+            set_cookies(user, auth_token)
 
             json = {
               message: 'ログインに成功しました',
@@ -43,8 +35,8 @@ module Api
 
           # 管理者のログアウト処理
           def destroy
-            sign_out(current_user)
-            current_user.tokens.delete(cookies_client)
+            client = request.headers['client']
+            current_user.tokens.delete(client)
             current_user.save
 
             delete_cookies
@@ -52,6 +44,17 @@ module Api
           end
 
           private
+
+          def set_cookies(user, auth_token)
+            { access_token: auth_token['access-token'], uid: auth_token['uid'], client: auth_token['client'] }.each do |key, value|
+              cookies.signed[key] = {
+                value: value,
+                http_only: true,
+                secure: Rails.env.production?,
+                expires: 1.hour.from_now,
+              }
+            end
+          end
 
           def delete_cookies
             cookies.delete(:access_token, httponly: true, secure: Rails.env.production?)

@@ -15,7 +15,7 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { EmailSchema } from 'validators/email';
 import * as z from 'zod';
-import { FileUploaderField, FormButton, InputFieldGroup, SectionTitle } from './components/';
+import { FileUploaderField, FormButton, InputFieldGroup, SectionTitle } from './components';
 import { ContactData } from './interfaces/ContactData';
 
 const schema = z.object({

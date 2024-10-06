@@ -6,7 +6,8 @@ import {
 } from 'pages';
 import {
   AdminLoginPage,
-  DashBoardPage
+  DashBoardPage,
+  ContactReviewPage
 } from 'pages/admin';
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
@@ -26,6 +27,14 @@ const AppRoutes: React.FC = () => {
           element={
             <AdminRoutes>
               <DashBoardPage />
+            </AdminRoutes>
+          }
+        />
+        <Route
+          path="/admin/contacts"
+          element={
+            <AdminRoutes>
+              <ContactReviewPage />
             </AdminRoutes>
           }
         />

@@ -14,6 +14,47 @@ module Api
         json = { message: message, errors: error.message }
         render status: :internal_server_error, json: json
       end
+
+      def authenticate_user!
+        unless auth_access_token && auth_uid && auth_client
+          render json: { message: '認証情報が不正です' }, status: :unauthorized and return
+        end
+
+        unless current_user
+          render json: { message: 'ログインしてください' }, status: :unauthorized and return
+        end
+      end
+
+      def current_user
+        @current_user ||= ::User.find_by_auth_token(auth_access_token, auth_client, auth_uid)
+      end
+
+      private
+
+      # Cookieから認証情報を取得しますが、スマートフォンアプリ用のことも考えてヘッダーからも取得できるようにしています
+      def auth_access_token
+        @auth_access_token ||= cookies_access_token || request.headers['access-token']
+      end
+
+      def auth_uid
+        @auth_uid ||= cookies_uid || request.headers['uid']
+      end
+
+      def auth_client
+        @auth_client ||= cookies_client || request.headers['client']
+      end
+
+      def cookies_access_token
+        @cookies_access_token ||= cookies.signed[:access_token]
+      end
+
+      def cookies_uid
+        @cookies_uid ||= cookies.signed[:uid]
+      end
+
+      def cookies_client
+        @cookies_client ||= cookies.signed[:client]
+      end
     end
   end
 end

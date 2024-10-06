@@ -2,7 +2,7 @@ import { toast, Bounce } from 'react-toastify';
 import { isError } from './typeGuard';
 import Axios from 'axios';
 
-export function notifyError(error: unknown, message?: string): void {
+export function notifyError(error?: unknown, message?: string): void {
   let errorMessage = 'エラーが発生しました';
 
   if (Axios.isAxiosError(error)) {

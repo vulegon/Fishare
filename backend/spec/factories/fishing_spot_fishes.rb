@@ -20,6 +20,7 @@
 #
 FactoryBot.define do
   factory :fishing_spot_fish do
-    
+    association :fish
+    association :fishing_spot
   end
 end

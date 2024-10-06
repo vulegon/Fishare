@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "from@example.com"
+  FROM_EMAIL = 'fisharebackend@gmail.com'.freeze
   layout "mailer"
 end

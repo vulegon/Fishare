@@ -5,4 +5,6 @@ ActiveRecord::Base.transaction do
   puts 'Fishのデータを登録しました'
   ::TestData::Supports::ContactLoader.load
   puts 'Supports::Contactのデータを登録しました'
+  ::TestData::UserLoader.load
+  puts 'Userのデータを登録しました'
 end

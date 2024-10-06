@@ -6,6 +6,17 @@ Rails.application.routes.draw do
       namespace :supports do
         resource :contact, only: [:create]
       end
+
+      namespace :admin do
+        get 'dashboards', to: 'dashboards#index'
+
+        namespace :auth do
+          post 'sign_in', to: 'sessions#create'
+          delete 'sign_out', to: 'sessions#destroy'
+        end
+      end
+
+      get 'users/current_user', to: 'users#show_current_user'
     end
   end
 end

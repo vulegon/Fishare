@@ -1,6 +1,6 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { User } from 'interfaces/contexts/User';
-import Cookies from 'js-cookie'
+import apiClient from 'api/v1/apiClient';
 
 // Contextの型定義
 interface UserContextType {
@@ -30,7 +30,16 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   useEffect(() => {
-    
+    const fetchUser = async () => {
+      try {
+        const currentUser = await apiClient.getCurrentUser();
+        setUser(currentUser);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUser();
   }, []);
 
   return (

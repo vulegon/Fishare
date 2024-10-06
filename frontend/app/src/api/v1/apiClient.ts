@@ -2,6 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 import { S3Image } from 'interfaces/api/s3/S3Image';
 import { notifyError } from 'utils/notifyError';
 import { s3Client } from './s3Client';
+import { User } from 'interfaces/contexts/User';
 
 const API_VERSION_PATH = '/api/v1/';
 
@@ -59,6 +60,27 @@ class ApiClient {
 
       const responseData = response.data;
       return { message: responseData.message };
+    } catch (error) {
+      notifyError(error);
+      throw error;
+    }
+  }
+
+  public async getCurrentUser(): Promise<User | null> {
+    try {
+      const response = await this.client.get('users/current_user');
+      if (!response.data.user) {
+        return null;
+      }
+
+      const user: User = {
+        id: response.data.user.id,
+        name: response.data.user.name,
+        email: response.data.user.email,
+        isAdmin: response.data.user.is_admin,
+      }
+
+      return user;
     } catch (error) {
       notifyError(error);
       throw error;

@@ -15,6 +15,8 @@ Rails.application.routes.draw do
           delete 'sign_out', to: 'sessions#destroy'
         end
       end
+
+      get 'users/current_user', to: 'users#show_current_user'
     end
   end
 end

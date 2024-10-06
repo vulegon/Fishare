@@ -36,7 +36,7 @@ class AdminApiClient {
     }
   }
 
-  public async signOut(user: User): Promise<{ message: string }> {
+  public async signOut(): Promise<{ message: string }> {
     try {
       await this.client.delete('auth/sign_out');
 

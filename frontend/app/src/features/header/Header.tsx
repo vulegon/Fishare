@@ -34,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerOpen }) => {
 
   const handleSignOut = async () => {
     if (!user) return;
-    await adminApiClient.signOut(user);
+    await adminApiClient.signOut();
     signOut();
     notifySuccess('管理者からログアウトしました');
     navigate('/admin/sign_in');

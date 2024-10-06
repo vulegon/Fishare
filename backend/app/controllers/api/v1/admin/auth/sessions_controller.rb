@@ -2,7 +2,7 @@ module Api
   module V1
     module Admin
       module Auth
-        class SessionsController < DeviseTokenAuth::SessionsController
+        class SessionsController < Api::V1::ApplicationController
           before_action :authenticate_user!, only: :destroy
 
           # 管理者ログイン処理
@@ -20,6 +20,11 @@ module Api
             auth_token = user.create_new_auth_token
             set_cookies(auth_token)
 
+            # スマートフォンアプリ用のヘッダー情報を設定(予定)
+            response.headers['access-token'] = auth_token['access-token']
+            response.headers['client'] = auth_token['client']
+            response.headers['uid'] = auth_token['uid']
+
             json = {
               message: 'ログインに成功しました',
               user: {
@@ -35,8 +40,7 @@ module Api
 
           # 管理者のログアウト処理
           def destroy
-            client = request.headers['client']
-            current_user.tokens.delete(client)
+            current_user.tokens.delete(auth_client)
             current_user.save
 
             delete_cookies

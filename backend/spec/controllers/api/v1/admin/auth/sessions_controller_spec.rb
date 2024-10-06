@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Api::V1::Admin::Auth::SessionsController, type: :request do
   describe 'POST #create' do
     subject {
-      post api_v1_admin_user_session_path, params: params
+      post api_v1_admin_auth_sign_in_path, params: params
       response
     }
 
@@ -18,6 +18,9 @@ describe Api::V1::Admin::Auth::SessionsController, type: :request do
         expect(subject.headers['Set-Cookie']).to include('access_token')
         expect(subject.headers['Set-Cookie']).to include('uid')
         expect(subject.headers['Set-Cookie']).to include('client')
+        expect(subject.headers['access-token']).to be_present
+        expect(subject.headers['uid']).to be_present
+        expect(subject.headers['client']).to be_present
       end
     end
 
@@ -44,7 +47,7 @@ describe Api::V1::Admin::Auth::SessionsController, type: :request do
 
   describe 'DELETE #destroy' do
     subject {
-      delete destroy_api_v1_admin_user_session_path, headers: headers
+      delete api_v1_admin_auth_sign_out_path, headers: headers
       response
     }
     let!(:admin_user) { create(:user, :admin) }
@@ -56,7 +59,6 @@ describe Api::V1::Admin::Auth::SessionsController, type: :request do
         cookies[:access_token] = auth_token['access-token']
         cookies[:uid] = auth_token['uid']
         cookies[:client] = auth_token['client']
-        sign_in(admin_user)
       end
 
       it 'ログアウトが成功し、ステータスコード200が返ること' do
@@ -71,7 +73,7 @@ describe Api::V1::Admin::Auth::SessionsController, type: :request do
     context 'ヘッダーが不正なとき' do
       let(:headers) { { 'access-token' => 'wrong', 'client' => 'wrong', 'uid' => 'wrong' } }
 
-      it 'ユーザーが見つからず、ステータスコード404が返ること' do
+      it 'ユーザーが見つからず、ステータスコード401が返ること' do
         expect(subject).to have_http_status(:unauthorized)
       end
     end
@@ -80,7 +82,7 @@ describe Api::V1::Admin::Auth::SessionsController, type: :request do
       context 'access_tokenが不足しているとき' do
         let(:headers) { { 'client' => auth_token['client'], 'uid' => auth_token['uid'] } }
 
-        it 'トークン情報が不足しているエラーが返ること' do
+        it 'ステータスコード401が返ること' do
           expect(subject).to have_http_status(:unauthorized)
         end
       end
@@ -88,7 +90,7 @@ describe Api::V1::Admin::Auth::SessionsController, type: :request do
       context 'uidが不足しているとき' do
         let(:headers) { { 'client' => auth_token['client'], 'access-token' => auth_token['access-token'] } }
 
-        it 'トークン情報が不足しているエラーが返ること' do
+        it 'ステータスコード401が返ること' do
           expect(subject).to have_http_status(:unauthorized)
         end
       end
@@ -96,7 +98,7 @@ describe Api::V1::Admin::Auth::SessionsController, type: :request do
       context 'clientが不足しているとき' do
         let(:headers) { { 'access-token' => auth_token['access-token'], 'uid' => auth_token['uid'] } }
 
-        it 'トークン情報が不足しているエラーが返ること' do
+        it 'ステータスコード401が返ること' do
           expect(subject).to have_http_status(:unauthorized)
         end
       end

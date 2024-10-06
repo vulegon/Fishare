@@ -1,5 +1,6 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { User } from 'interfaces/contexts/User';
+import Cookies from 'js-cookie'
 
 // Contextの型定義
 interface UserContextType {
@@ -27,6 +28,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const signOut = () => {
     setUser(null);
   };
+
+  useEffect(() => {
+    
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, signIn, signOut }}>

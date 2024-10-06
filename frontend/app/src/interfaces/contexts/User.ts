@@ -4,11 +4,4 @@ export interface User {
   name: string;
   email: string;
   isAdmin: boolean;
-  authHeader: AuthHeader;
-}
-
-interface AuthHeader {
-  accessToken: string;
-  client: string;
-  uid: string;
 }

@@ -14,7 +14,6 @@ import { useNavigate } from 'react-router-dom';
 import { notifySuccess } from 'utils/notifySuccess';
 import { UserMenuItem } from './components/UserMenuItem';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import { Height } from '@mui/icons-material';
 
 interface HeaderProps {
   handleDrawerOpen: () => void;

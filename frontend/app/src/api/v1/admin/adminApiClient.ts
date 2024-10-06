@@ -9,6 +9,7 @@ class AdminApiClient {
   constructor(baseURL: string) {
     this.client = axios.create({
       baseURL: `${baseURL}${ADMIN_API_VERSION_PATH}`,
+      withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -21,17 +22,11 @@ class AdminApiClient {
         email,
         password,
       });
-      const authHeader = {
-        accessToken: response.headers['access-token'],
-        client: response.headers['client'],
-        uid: response.headers['uid'],
-      }
       const user: User = {
         id: response.data.user.id,
         name: response.data.user.name,
         email: response.data.user.email,
         isAdmin: response.data.user.is_admin,
-        authHeader: authHeader,
       }
 
       return user;
@@ -43,21 +38,7 @@ class AdminApiClient {
 
   public async signOut(user: User): Promise<{ message: string }> {
     try {
-      const accessToken = user.authHeader.accessToken;
-      const client = user.authHeader.client;
-      const uid = user.authHeader.uid;
-
-      if (!accessToken || !client || !uid) {
-        throw new Error('ログイン情報が不正です。キャッシュをクリアして再度ログインしてください');
-      }
-
-      await this.client.delete('auth/sign_out', {
-        headers: {
-          'access-token': accessToken,
-          'client': client,
-          'uid': uid,
-        },
-      });
+      await this.client.delete('auth/sign_out');
 
       return { message: 'ログアウトに成功しました' };
     } catch (error) {

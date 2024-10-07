@@ -20,7 +20,8 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
                   content_type: 'ファイルの拡張子',
                   file_size: 'ファイルサイズ'
                 }
-              ]
+              ],
+              contact_category: 'other'
             }
           }
 
@@ -33,7 +34,8 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
               name: '山田太郎',
               email: 'walkurepqrt@gmail.com',
               content: '1234567890',
-              images: []
+              images: [],
+              contact_category: 'other'
             }
           }
 
@@ -49,7 +51,8 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
             name: '',
             email: 'walkurepqrt@gmail.com',
             content: '1234567890',
-            images: []
+            images: [],
+            contact_category: 'other'
           }
         }
 
@@ -62,7 +65,8 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
             name: '山田太郎',
             email: 'walkurepqrt@gmail.com',
             content: '',
-            images: []
+            images: [],
+            contact_category: 'other'
           }
         }
 
@@ -75,7 +79,8 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
             name: '山田太郎',
             email: 'walkurepqrt',
             content: '1234567890',
-            images: []
+            images: [],
+            contact_category: 'other'
           }
         }
 
@@ -88,7 +93,8 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
             name: '山',
             email: 'walkurepqrt@gmail.com',
             content: '1234567890',
-            images: []
+            images: [],
+            contact_category: 'other'
           }
         }
 
@@ -101,7 +107,22 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
             name: '1234567890' * 5 + '1',
             email: 'walkurepqrt@gmail.com',
             content: '1234567890',
-            images: []
+            images: [],
+            contact_category: 'other'
+          }
+        }
+
+        it { expect(subject).to eq false }
+      end
+
+      context 'contact_categoryが存在しない種類のとき' do
+        let(:params) {
+          {
+            name: '1234567890',
+            email: 'walkurepqrt@gmail.com',
+            content: '1234567890',
+            images: [],
+            contact_category: 'invalid'
           }
         }
 
@@ -125,7 +146,8 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
             content_type: 'ファイルの拡張子',
             file_size: 'ファイルサイズ'
           }
-        ]
+        ],
+        contact_category: 'other'
       }
     }
 

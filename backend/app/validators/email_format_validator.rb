@@ -14,7 +14,7 @@ class EmailFormatValidator < ActiveModel::EachValidator
 
   def validate_each(record, attribute, value)
     unless self.class.valid_email_format?(value)
-      record.errors.add attribute, (options[:message] ||I18n.t('activerecord.errors.models.user.attributes.email.format_invalid'))
+      record.errors.add attribute, (options[:message] ||I18n.t('activerecord.errors.messages.email.invalid_format'))
     end
   end
 end

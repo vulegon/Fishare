@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
   describe '#valid?' do
-    subject { described_class.new(ActionController::Parameters.new(params)).valid? }
+    subject { create_parameter.valid? }
+    let(:create_parameter) { described_class.new(ActionController::Parameters.new(params)) }
 
     context 'パラメータが有効の場合' do
       context 'パラメータが指定されている場合' do
@@ -45,88 +46,143 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
     end
 
     context 'パラメータが無効の場合' do
-      context 'nameが設定されていないとき' do
-        let(:params) {
-          {
-            name: '',
-            email: 'walkurepqrt@gmail.com',
-            content: '1234567890',
-            images: [],
-            contact_category: 'other'
+      context 'nameが誤りのとき' do
+        context 'nameが設定されていないとき' do
+          let(:params) {
+            {
+              email: 'walkurepqrt@gmail.com',
+              content: '1234567890',
+              images: [],
+              contact_category: 'other'
+            }
           }
-        }
 
-        it { expect(subject).to eq false }
+          it {
+            expect(subject).to eq false
+            expect(create_parameter.errors.full_messages).to include('名前を入力してください')
+          }
+        end
+
+        context 'nameの文字数が2文字未満のとき' do
+          let(:params) {
+            {
+              name: '山',
+              email: 'walkurepqrt@gmail.com',
+              content: '1234567890',
+              images: [],
+              contact_category: 'other'
+            }
+          }
+
+          it {
+            expect(subject).to eq false
+            expect(create_parameter.errors.full_messages).to include('名前は2文字以上で入力してください')
+          }
+        end
+
+        context 'nameの文字数が50文字を超えるとき' do
+          let(:params) {
+            {
+              name: '1234567890' * 5 + '1',
+              email: 'walkurepqrt@gmail.com',
+              content: '1234567890',
+              images: [],
+              contact_category: 'other'
+            }
+          }
+
+          it {
+            expect(subject).to eq false
+            expect(create_parameter.errors.full_messages).to include('名前は50文字以内で入力してください')
+          }
+        end
       end
 
-      context 'contentが設定されていないとき' do
-        let(:params) {
-          {
-            name: '山田太郎',
-            email: 'walkurepqrt@gmail.com',
-            content: '',
-            images: [],
-            contact_category: 'other'
+      context 'contentが誤りのとき' do
+        context 'contentが設定されていないとき' do
+          let(:params) {
+            {
+              name: '山田太郎',
+              email: 'walkurepqrt@gmail.com',
+              images: [],
+              contact_category: 'other'
+            }
           }
-        }
 
-        it { expect(subject).to eq false }
+          it {
+            expect(subject).to eq false
+            expect(create_parameter.errors.full_messages).to include('お問い合わせ内容を入力してください')
+          }
+        end
+
+        context 'contentの文字数が10未満のとき' do
+          let(:params) {
+            {
+              name: '山田太郎',
+              email: 'walkurepqrt@gmail.com',
+              content: '123456789',
+              images: [],
+              contact_category: 'other'
+            }
+          }
+
+          it {
+            expect(subject).to eq false
+            expect(create_parameter.errors.full_messages).to include('お問い合わせ内容は10文字以上で入力してください')
+          }
+        end
+
+        context 'contentの文字数が1000を超えるとき' do
+          let(:params) {
+            {
+              name: '山田太郎',
+              email: 'walkurepqrt@gmail.com',
+              content: '1234567890' * 100 + '1',
+              images: [],
+              contact_category: 'other'
+            }
+          }
+
+          it {
+            expect(subject).to eq false
+            expect(create_parameter.errors.full_messages).to include('お問い合わせ内容は1000文字以内で入力してください')
+          }
+        end
       end
 
-      context 'メールアドレスのフォーマットが正しくないとき' do
-        let(:params) {
-          {
-            name: '山田太郎',
-            email: 'walkurepqrt',
-            content: '1234567890',
-            images: [],
-            contact_category: 'other'
+      context 'emailが誤りのとき' do
+        context 'メールアドレスのフォーマットが正しくないとき' do
+          let(:params) {
+            {
+              name: '山田太郎',
+              email: 'walkurepqrt',
+              content: '1234567890',
+              images: [],
+              contact_category: 'other'
+            }
           }
-        }
 
-        it { expect(subject).to eq false }
+          it {
+            expect(subject).to eq false
+            expect(create_parameter.errors.full_messages).to include('メールアドレスの形式が正しくありません')
+          }
+        end
       end
 
-      context 'nameの文字数が2文字未満のとき' do
-        let(:params) {
-          {
-            name: '山',
-            email: 'walkurepqrt@gmail.com',
-            content: '1234567890',
-            images: [],
-            contact_category: 'other'
+      context 'contact_categoryが誤りのとき' do
+        context 'contact_categoryが存在しない種類のとき' do
+          let(:params) {
+            {
+              name: '1234567890',
+              email: 'walkurepqrt@gmail.com',
+              content: '1234567890',
+              images: [],
+              contact_category: 'invalid'
+            }
           }
-        }
 
-        it { expect(subject).to eq false }
-      end
-
-      context 'nameの文字数が50文字を超えるとき' do
-        let(:params) {
-          {
-            name: '1234567890' * 5 + '1',
-            email: 'walkurepqrt@gmail.com',
-            content: '1234567890',
-            images: [],
-            contact_category: 'other'
-          }
-        }
-
-        it { expect(subject).to eq false }
-      end
-
-      context 'contact_categoryが存在しない種類のとき' do
-        let(:params) {
-          {
-            name: '1234567890',
-            email: 'walkurepqrt@gmail.com',
-            content: '1234567890',
-            images: [],
-            contact_category: 'invalid'
-          }
-        }
-
-        it { expect(subject).to eq false }
+          it { expect(subject).to eq false }
+        end
       end
     end
   end

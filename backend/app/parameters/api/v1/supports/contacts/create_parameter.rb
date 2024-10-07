@@ -13,7 +13,7 @@ module Api
           attribute :contact_category, :string
 
           validates :name,:email, :content, presence: true
-          validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+          validates :email, email_format: true
           validates :name, length: { minimum: 2 , maximum: 50 }
           validates :content, length: { minimum: 10 , maximum: 1000 }
 

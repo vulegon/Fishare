@@ -56,7 +56,9 @@ export const InputFieldGroup: React.FC<InputFieldGroupProps> = ({
                 {...field}
               />
             ) : (
-              <Typography>
+              <Typography
+                sx={{ whiteSpace: 'pre-line' }}
+              >
                 {field.value}
               </Typography>
             )

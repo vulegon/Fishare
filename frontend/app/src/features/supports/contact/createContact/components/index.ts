@@ -1,3 +1,4 @@
+export { SelectBoxGroup } from './SelectBoxGroup';
 export { SectionTitle } from './SectionTitle';
 export { InputFieldGroup } from './InputFieldGroup';
 export { FileUploaderField } from './FileUploaderField';

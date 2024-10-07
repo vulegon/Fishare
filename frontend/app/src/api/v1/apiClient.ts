@@ -38,6 +38,7 @@ class ApiClient {
     email: string
     contactContent: string;
     images: File[];
+    contactCategory: string;
   }): Promise<{ message: string }> {
     try {
       const s3Images: S3Image[] = [];
@@ -57,6 +58,7 @@ class ApiClient {
         email: data.email,
         content: data.contactContent,
         images: s3Images,
+        contact_category: data.contactCategory,
       });
 
       const responseData = response.data;

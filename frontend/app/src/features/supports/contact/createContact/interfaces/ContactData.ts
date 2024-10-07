@@ -3,4 +3,5 @@ export interface ContactData {
   email: string;
   contactContent: string;
   images: File[];
+  contactCategory: string;
 }

@@ -8,7 +8,7 @@ describe Api::V1::Supports::ContactsController, type: :request do
     }
 
     context 'パラメータが正しいとき' do
-      let(:params) { { name: 'テスト太郎', email: 'walkurepqrt@gmail.com', content: '1' * 10, images: [] } }
+      let(:params) { { name: 'テスト太郎', email: 'walkurepqrt@gmail.com', content: '1' * 10, images: [], contact_category: 'other' } }
 
       it 'ステータスコード200が返ってくること' do
         expect(subject).to have_http_status(:ok)

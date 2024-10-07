@@ -36,7 +36,7 @@ const contactCategories = [
   { value: 'manage_fishing_spot', label: '釣り場の作成・修正' },
   { value: 'feature_request', label: '機能のリクエスト' },
   { value: 'bug_report', label: '不具合の報告' },
-  { value: 'others', label: 'その他' },
+  { value: 'other', label: 'その他' },
 ];
 
 export const ContactForm: React.FC = () => {

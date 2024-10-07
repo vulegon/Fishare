@@ -25,9 +25,9 @@ module Api
             @support_contact_category = ::Supports::ContactCategory.find_by(name: contact_category)
           end
 
-          private
-
           attr_reader :support_contact_category
+
+          private
 
           def contact_category_exists
             return if support_contact_category.present?

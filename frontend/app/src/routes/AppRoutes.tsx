@@ -31,19 +31,15 @@ const AppRoutes: React.FC = () => {
             </AdminRoutes>
           }
         />
+
         <Route
-          path="/admin/contacts"
+          path="/admin/*"
           element={
             <AdminRoutes>
-              <ContactReviewPage />
-            </AdminRoutes>
-          }
-        />
-        <Route
-          path="/admin/fishing_spots/map"
-          element={
-            <AdminRoutes>
-              <FishingSpotMapPage />
+              <Routes>
+                <Route path="contacts" element={<ContactReviewPage />} />
+                <Route path="fishing_spots/map" element={<FishingSpotMapPage />} />
+              </Routes>
             </AdminRoutes>
           }
         />

@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { notifySuccess } from 'utils/notifySuccess';
 import { UserMenuItem } from './components/UserMenuItem';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import LoginIcon from '@mui/icons-material/Login';
 
 interface HeaderProps {
   handleDrawerOpen: () => void;
@@ -44,9 +45,29 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerOpen }) => {
     navigate('/admin/dashboards');
   }
 
+  const handleSignIn = () => {
+    navigate('/admin/sign_in');
+  }
+
   const userMenuItems = [
-    { label: 'ダッシュボード', onClick: handleDashboard, icon: <DashboardIcon sx={{marginRight: 2}}/> },
-    { label: 'ログアウト', onClick: handleSignOut, icon: <LogoutIcon sx={{marginRight: 2}}/> }
+    {
+      label: 'ログイン',
+      onClick: handleSignIn,
+      icon: <LoginIcon sx={{marginRight: 2}}/>,
+      isHidden: !!user
+    },
+    {
+      label: 'ダッシュボード',
+      onClick: handleDashboard,
+      icon: <DashboardIcon sx={{marginRight: 2}}/>,
+      isHidden: !user?.isAdmin
+    },
+    {
+      label: 'ログアウト',
+      onClick: handleSignOut,
+      icon: <LogoutIcon sx={{marginRight: 2}}/>,
+      isHidden: !user
+    },
   ];
 
   return (
@@ -73,7 +94,6 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerOpen }) => {
               { SERVICE_NAME }
             </Typography>
           </Link>
-          { user && (
             <Box
               sx={{
                 display: 'flex',
@@ -109,7 +129,7 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerOpen }) => {
                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 1 }}>
                 <Avatar sx={{ width: 56, height: 56 }} />
                 <Typography variant="subtitle1" sx={{ marginTop: 1, fontWeight: 'bold' }}>
-                  {user?.name}
+                  {user?.name ? user.name : 'ユーザーなし'}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
                   {user?.email}
@@ -124,11 +144,11 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerOpen }) => {
                   label={item.label}
                   MenuIcon={item.icon}
                   onClick={item.onClick}
+                  isHidden={item.isHidden}
                 />))
               }
             </Menu>
           </Box>
-          )}
         </CustomToolbar>
       </AppBar>
     </>

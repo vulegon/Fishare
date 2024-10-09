@@ -129,7 +129,7 @@ const Header: React.FC<HeaderProps> = ({ handleDrawerOpen }) => {
                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 1 }}>
                 <Avatar sx={{ width: 56, height: 56 }} />
                 <Typography variant="subtitle1" sx={{ marginTop: 1, fontWeight: 'bold' }}>
-                  {user?.name ? user.name : 'ユーザーなし'}
+                  {user?.name ? user.name : 'ゲスト'}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
                   {user?.email}

@@ -12,6 +12,7 @@ import {
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { AdminRoutes } from './admin/AdminRoutes';
+import { FishingSpotMapPage } from 'pages/admin/fishingSpots';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -35,6 +36,14 @@ const AppRoutes: React.FC = () => {
           element={
             <AdminRoutes>
               <ContactReviewPage />
+            </AdminRoutes>
+          }
+        />
+        <Route
+          path="/admin/fishing_spots/map"
+          element={
+            <AdminRoutes>
+              <FishingSpotMapPage />
             </AdminRoutes>
           }
         />

@@ -1,18 +1,19 @@
 import React from 'react';
 import { MainLayout } from 'features/layouts';
-import { Typography, Box } from '@mui/material';
 import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
+import { HEADER_HEIGHT } from 'constants/index';
+import { Padding } from '@mui/icons-material';
 
 export const FishingSpotMapPage: React.FC = () => {
   const apiKey = process.env.REACT_APP_GOOGLE_MAP_API_KEY || '';
 
   return (
     <>
-      <MainLayout>
+      <MainLayout mainContainerPadding={0}>
         <LoadScript googleMapsApiKey={apiKey}>
           <GoogleMap
             mapContainerStyle={{
-              height: '100vh',
+              height: `calc(100vh - ${HEADER_HEIGHT}px)`,
               width: '100%',
             }}
           >

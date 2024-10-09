@@ -5,17 +5,24 @@ interface MenuItemProps {
   label: string;
   MenuIcon?: React.ReactNode;
   onClick: () => void;
+  isHidden?: boolean;
 }
 
 export const UserMenuItem: React.FC<MenuItemProps> = ({
   label,
   MenuIcon,
-  onClick
+  onClick,
+  isHidden = false,
 }: MenuItemProps) => {
   return (
-    <MenuItem onClick={onClick}>
-      {MenuIcon && <>{MenuIcon}</>}
-      {label}
-    </MenuItem>
+    <>
+      { !isHidden  && (
+        <MenuItem onClick={onClick}>
+          {MenuIcon && <>{MenuIcon}</>}
+          {label}
+        </MenuItem>
+      )}
+    </>
+
   );
 };

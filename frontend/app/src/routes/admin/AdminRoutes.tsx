@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { useUser } from 'contexts/UserContext';
 import { notifyError } from 'utils/notifyError';
 import { unknown } from 'zod';
-import { BeatLoader } from 'react-spinners';
+import { CenteredLoader } from '../../components/common/CenteredLoader';
 
 interface AdminRouteProps {
   children: JSX.Element;
@@ -29,14 +29,7 @@ export const AdminRoutes: React.FC<AdminRouteProps> = ({children}) => {
 
   if(isLoading) {
     return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh'  // 全画面中央に配置
-      }}>
-        <BeatLoader size={20} color='#1976D2'/>
-      </div>
+      <CenteredLoader />
     );
   }
 

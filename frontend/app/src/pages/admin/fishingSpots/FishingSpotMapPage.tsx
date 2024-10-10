@@ -9,6 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 export const FishingSpotMapPage: React.FC = () => {
   const apiKey = process.env.REACT_APP_GOOGLE_MAP_API_KEY || '';
   const [marker, setMarker] = useState<google.maps.LatLngLiteral | null>(null);
+  const center = useRef({ lat: 35.681236, lng: 139.767125 }); // 東京駅
 
   const onMapClick = (e: google.maps.MapMouseEvent) => {
     if (!e.latLng) return;
@@ -24,10 +25,11 @@ export const FishingSpotMapPage: React.FC = () => {
               height: `calc(100vh - ${HEADER_HEIGHT}px)`,
               width: '100%',
             }}
-            // optionsにzoomとcenterを指定しないとGoogleMapの表示がされないため、注意
+            // optionsに入れない。クリックするとズームが変わる
+            zoom={15}
+            // optionsに入れないこと。また、クリックすると中心が変わらないようにuseRefで管理する
+            center={center.current}
             options={{
-              zoom: 15,
-              center: { lat: 35.681236, lng: 139.767125 }, // 東京駅
               fullscreenControl: false,
               mapTypeId: 'hybrid'
             }}
@@ -41,8 +43,8 @@ export const FishingSpotMapPage: React.FC = () => {
                 aria-label='add'
                 sx={{
                   '&.Mui-disabled': {
-                    backgroundColor: 'rgba(0, 123, 255, 0.5)', // ディセーブル時の背景色
-                    color: 'rgba(255, 255, 255, 0.7)',         // ディセーブル時のアイコン色
+                    backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                    color: 'rgba(255, 255, 255, 0.7)',
                   },
                 }}
               >

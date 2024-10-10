@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { MainLayout } from 'features/layouts';
 import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import { HEADER_HEIGHT } from 'constants/index';
@@ -6,6 +6,12 @@ import { CenteredLoader } from 'components/common';
 
 export const FishingSpotMapPage: React.FC = () => {
   const apiKey = process.env.REACT_APP_GOOGLE_MAP_API_KEY || '';
+  const [marker, setMarker] = useState<google.maps.LatLngLiteral | null>(null);
+
+  const onMapClick = (e: google.maps.MapMouseEvent) => {
+    if (!e.latLng) return;
+    setMarker({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+  };
 
   return (
     <>
@@ -23,7 +29,9 @@ export const FishingSpotMapPage: React.FC = () => {
               fullscreenControl: false,
               mapTypeId: 'hybrid'
             }}
+            onClick={onMapClick}
           >
+            {/* {marker && <Marker position={marker} />} */}
           </GoogleMap>
         </LoadScript>
       </MainLayout>

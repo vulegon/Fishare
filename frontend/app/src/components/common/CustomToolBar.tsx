@@ -1,7 +1,7 @@
 import React from 'react';
 import { Toolbar as MuiToolbar, ToolbarProps } from '@mui/material';
 
-const CustomToolbar: React.FC<ToolbarProps> = (props) => {
+export const CustomToolbar: React.FC<ToolbarProps> = (props) => {
   return (
     // 画面サイズを変更してもツールバーの高さが変わらないように
     <MuiToolbar
@@ -12,5 +12,3 @@ const CustomToolbar: React.FC<ToolbarProps> = (props) => {
     </MuiToolbar>
   );
 };
-
-export default CustomToolbar;

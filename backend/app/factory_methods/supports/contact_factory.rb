@@ -9,7 +9,8 @@ module Supports
         id: contact_id,
         name: params.name,
         email: params.email,
-        content: params.content
+        content: params.content,
+        support_contact_category_id: params.support_contact_category.id
       )
     end
   end

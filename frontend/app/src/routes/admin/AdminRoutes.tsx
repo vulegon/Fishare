@@ -3,15 +3,20 @@ import { Navigate } from 'react-router-dom';
 import { useUser } from 'contexts/UserContext';
 import { notifyError } from 'utils/notifyError';
 import { unknown } from 'zod';
+import { CenteredLoader } from '../../components/common/CenteredLoader';
 
 interface AdminRouteProps {
   children: JSX.Element;
 }
 
 export const AdminRoutes: React.FC<AdminRouteProps> = ({children}) => {
-  const { user } = useUser();
+  const { user, isLoading } = useUser();
 
   useEffect(() => {
+    if(isLoading) {
+      return;
+    }
+
     if (!user) {
       notifyError(unknown, '管理者としてログインしてください');
       return;
@@ -20,7 +25,13 @@ export const AdminRoutes: React.FC<AdminRouteProps> = ({children}) => {
     if (!user?.isAdmin) {
       notifyError(unknown, 'アクセスが拒否されました');
     }
-  }, []);
+  }, [isLoading, user]);
+
+  if(isLoading) {
+    return (
+      <CenteredLoader />
+    );
+  }
 
    // ログインしていない場合、ログインページにリダイレクト
   if (!user) {

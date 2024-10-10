@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_29_040145) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_07_120640) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -77,6 +77,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_29_040145) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "support_contact_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name", null: false, comment: "カテゴリ名"
+    t.string "description", comment: "カテゴリ説明"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "support_contact_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "support_contact_id", null: false, comment: "お問い合わせID"
     t.string "s3_key", null: false, comment: "S3キー"
@@ -95,6 +102,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_29_040145) do
     t.text "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "support_contact_category_id", null: false, comment: "カテゴリID"
   end
 
   create_table "user_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

@@ -15,7 +15,7 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { EmailSchema } from 'validators/email';
 import * as z from 'zod';
-import { FileUploaderField, FormButton, InputFieldGroup, SectionTitle } from './components/';
+import { FileUploaderField, FormButton, InputFieldGroup, SectionTitle, SelectBoxGroup } from './components';
 import { ContactData } from './interfaces/ContactData';
 
 const schema = z.object({
@@ -23,12 +23,20 @@ const schema = z.object({
   email: EmailSchema,
   contactContent: z.string().min(10, 'お問い合わせ内容は10文字以上である必要があります').max(1000, 'お問い合わせ内容は1000文字以内で入力してください'),
   images: z.array(z.instanceof(File)).max(9, '画像は最大9枚までです'),
+  contactCategory: z.string().min(1, 'お問い合わせ内容を選択してください'),
 });
 
 const STEP_LABELS = [
   '情報の入力',
   '入力内容の確認',
   '受付完了',
+];
+
+const contactCategories = [
+  { value: 'manage_fishing_spot', label: '釣り場の作成・修正' },
+  { value: 'feature_request', label: '機能のリクエスト' },
+  { value: 'bug_report', label: '不具合の報告' },
+  { value: 'other', label: 'その他' },
 ];
 
 export const ContactForm: React.FC = () => {
@@ -39,6 +47,7 @@ export const ContactForm: React.FC = () => {
       email: '',
       contactContent: '',
       images: [] as File[],
+      contactCategory: '',
     },
     resolver: zodResolver(schema),
     mode: 'onChange'
@@ -64,6 +73,7 @@ export const ContactForm: React.FC = () => {
           email: data.email,
           contactContent: data.contactContent,
           images: data.images,
+          contactCategory: data.contactCategory,
         }
       );
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -122,6 +132,13 @@ export const ContactForm: React.FC = () => {
               <FormProvider {...useFormMethods}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <Stack spacing={4}>
+                    <SelectBoxGroup
+                      label="お問い合わせ種類"
+                      isRequired
+                      name="contactCategory"
+                      activeStep={activeStep}
+                      selectBoxItems={contactCategories}
+                    />
                     <InputFieldGroup
                       label="お問い合わせ内容"
                       isRequired

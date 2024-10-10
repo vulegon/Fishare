@@ -17,6 +17,8 @@ ja:
         restrict_dependent_destroy:
           has_one: "%{record}が存在しているので削除できません"
           has_many: "%{record}が存在しているので削除できません"
+        email:
+          invalid_format: "の形式が正しくありません"
     models:
       user:
         attributes:
@@ -29,6 +31,7 @@ ja:
         email: メールアドレス
         content: お問い合わせ内容
         images: 画像
+        contact_category: お問い合わせカテゴリ
   date:
     abbr_day_names:
     - 日

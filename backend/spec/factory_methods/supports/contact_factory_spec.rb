@@ -8,7 +8,8 @@ RSpec.describe Supports::ContactFactory do
       {
         name: 'name',
         email: 'walkurepqrt@gmail.com',
-        content: 'content'
+        content: 'content',
+        contact_category: 'other'
       }
     }
 

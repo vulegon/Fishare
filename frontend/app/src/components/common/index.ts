@@ -1,1 +1,3 @@
-export { default as CustomToolbar } from './CustomToolBar';
+export { CustomToolbar } from './CustomToolBar';
+export { CenteredLoader } from './CenteredLoader';
+

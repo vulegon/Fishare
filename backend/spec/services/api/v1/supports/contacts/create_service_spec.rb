@@ -26,7 +26,8 @@ RSpec.describe ::Api::V1::Supports::Contacts::CreateService do
               content_type: 'content_type2',
               file_size: 200
             },
-          ]
+          ],
+          contact_category: 'other'
         }
       }
 
@@ -35,7 +36,8 @@ RSpec.describe ::Api::V1::Supports::Contacts::CreateService do
         expect(subject.reload).to have_attributes(
           name:  params[:name],
           email: params[:email],
-          content: params[:content]
+          content: params[:content],
+          support_contact_category_id: ::Supports::ContactCategory.find_by(name: params[:contact_category]).id
         )
         expect(subject).to be_persisted
         expect(subject.images).to match_array([
@@ -65,7 +67,8 @@ RSpec.describe ::Api::V1::Supports::Contacts::CreateService do
           name: 'name',
           email: 'hoge@example.com',
           content: 'content33333',
-          images: []
+          images: [],
+          contact_category: 'bug_report'
         }
       }
 
@@ -74,7 +77,8 @@ RSpec.describe ::Api::V1::Supports::Contacts::CreateService do
         expect(subject.reload).to have_attributes(
           name:  params[:name],
           email: params[:email],
-          content: params[:content]
+          content: params[:content],
+          support_contact_category_id: ::Supports::ContactCategory.find_by(name: params[:contact_category]).id
         )
         expect(subject).to be_persisted
         expect(subject.images).to be_empty

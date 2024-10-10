@@ -3,8 +3,13 @@ module TestData
     class ContactLoader
       class << self
         def load
+          ::Supports::ContactCategory.find_or_create_by!(name: "other", description: "その他")
+          ::Supports::ContactCategory.find_or_create_by!(name: "manage_fishing_spot", description: "釣り場の作成・修正")
+          ::Supports::ContactCategory.find_or_create_by!(name: "feature_request", description: "機能のリクエスト")
+          ::Supports::ContactCategory.find_or_create_by!(name: "bug_report", description: "不具合の報告")
+
           10.times do |i|
-            contact = ::Supports::Contact.create!(name: Faker::Name.name, email: Faker::Internet.email, content: Faker::Lorem.sentence)
+            contact = ::Supports::Contact.create!(name: Faker::Name.name, email: Faker::Internet.email, content: Faker::Lorem.sentence, support_contact_category_id: ::Supports::ContactCategory.all.sample.id)
             2.times do |j|
               random_number = rand(1..1000000000)
               ::Supports::ContactImage.create!(

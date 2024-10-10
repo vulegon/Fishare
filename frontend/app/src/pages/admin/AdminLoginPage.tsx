@@ -108,6 +108,13 @@ export const AdminLoginPage: React.FC = () => {
           >
             管理者ログイン
           </Typography>
+          <Typography
+            component="p"
+            variant="body1"
+            sx={{ width: '100%', fontSize: 'clamp(1rem, 1vw, 1rem)', color: 'red' }}
+          >
+            ここは管理者ログインページです。<br/>一般の方はログインできません。
+          </Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box
               sx={{

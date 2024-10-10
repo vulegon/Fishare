@@ -7,6 +7,7 @@ interface UserContextType {
   user: User | null;
   signIn: (userData: User) => void;
   signOut: () => void;
+  isLoading: boolean
 }
 
 // Contextの初期値をnullに設定
@@ -20,13 +21,16 @@ interface UserProviderProps {
 // ユーザー情報を提供するためのProviderを作成
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const signIn = (userData: User) => {
     setUser(userData);
+    setIsLoading(false);
   };
 
   const signOut = () => {
     setUser(null);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -37,13 +41,14 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       } catch (error) {
         console.log(error);
       }
+      setIsLoading(false);
     };
 
     fetchUser();
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, signIn, signOut }}>
+    <UserContext.Provider value={{ user, signIn, signOut, isLoading }}>
       {children}
     </UserContext.Provider>
   );

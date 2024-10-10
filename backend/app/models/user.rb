@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   has_many :user_roles, through: :user_roleships
 
   validates :name, presence: true
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: 'メールアドレスの形式が正しくありません' }, uniqueness: true
+  validates :email, email_format: true, uniqueness: true
   validates :password, password_format: true, if: :password_required?
 
   class << self

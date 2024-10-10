@@ -12,6 +12,7 @@ class ApiClient {
   constructor(baseURL: string) {
     this.client = axios.create({
       baseURL: `${baseURL}${API_VERSION_PATH}`,
+      withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -37,6 +38,7 @@ class ApiClient {
     email: string
     contactContent: string;
     images: File[];
+    contactCategory: string;
   }): Promise<{ message: string }> {
     try {
       const s3Images: S3Image[] = [];
@@ -56,6 +58,7 @@ class ApiClient {
         email: data.email,
         content: data.contactContent,
         images: s3Images,
+        contact_category: data.contactCategory,
       });
 
       const responseData = response.data;

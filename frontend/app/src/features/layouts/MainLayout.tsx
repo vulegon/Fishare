@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import { Header } from 'features/header';
 import { SideBar } from 'features/sideBar';
 import { Box, CssBaseline } from '@mui/material';
@@ -6,10 +6,14 @@ import { HEADER_HEIGHT } from 'constants/index';
 
 interface MainLayoutProps {
   children: ReactNode;
+  mainContainerPadding?: number;
 }
 
 // ヘッダーとサイドバーを表示するレイアウト
-export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+export const MainLayout: React.FC<MainLayoutProps> = ({
+  children,
+  mainContainerPadding = 3,
+}) => {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(()=>{
     const storedDrawerState = localStorage.getItem('drawerState');
     if (storedDrawerState) {
@@ -35,7 +39,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           component='main'
           sx={{
             flexGrow: 1,
-            p: 3,
+            p: mainContainerPadding,
             width: { sm: '100%' },
             marginTop: `${HEADER_HEIGHT}px`
           }}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { MainLayout } from 'features/layouts';
 import { Box, Grid } from '@mui/material';
 import Stack from '@mui/material/Stack';
@@ -28,21 +28,18 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export const DashBoardPage: React.FC = () => {
-
-  useEffect(() => {
-    const toke = localStorage.getItem('admin-access-token');
-  }, []);
-
   const dashBoardCards =[
     {
       label: '釣り場の作成・更新',
       backGroundColor: 'linear-gradient(135deg, #3dd5f3 0%, #28a4d9 100%)',
-      icon: <FontAwesomeIcon icon={faFish} style={{ fontSize: '40px', opacity: '0.8' }}/>
+      icon: <FontAwesomeIcon icon={faFish} style={{ fontSize: '40px', opacity: '0.8' }}/>,
+      path: '/admin/fishing_spots/map'
     },
     {
       label: 'お問い合わせの確認',
       backGroundColor: 'linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%)',
-      icon: <SupportAgentIcon sx={{ fontSize: 40, opacity: 0.8 }} />
+      icon: <SupportAgentIcon sx={{ fontSize: 40, opacity: 0.8 }} />,
+      path: '/admin/contacts'
     },
   ];
   return(
@@ -56,6 +53,7 @@ export const DashBoardPage: React.FC = () => {
               label={card.label}
               backGroundColor={card.backGroundColor}
               icon={card.icon}
+              path={card.path}
             />
           ))}
         </Grid>

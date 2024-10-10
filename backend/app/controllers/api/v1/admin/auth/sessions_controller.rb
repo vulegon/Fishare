@@ -49,6 +49,7 @@ module Api
 
           private
 
+          # 管理者のCookieの有効期限は1時間とする。
           def set_cookies(auth_token)
             { access_token: auth_token['access-token'], uid: auth_token['uid'], client: auth_token['client'] }.each do |key, value|
               cookies.signed[key] = {

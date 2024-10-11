@@ -37,7 +37,17 @@ export const Map = () => {
       onClick={onMapClick}
     >
       {/* クリックしたマーカー */}
-      {marker && <Marker position={marker} />}
+      {marker && (
+        <Marker
+          position={marker}
+          icon={{
+            // マーカーのアイコンを変更
+            // https://www.single-life.tokyo/google-maps%EF%BC%88%E3%82%B0%E3%83%BC%E3%82%B0%E3%83%AB%E3%83%9E%E3%83%83%E3%83%97%EF%BC%89%E3%81%A7%E4%BD%BF%E3%81%88%E3%82%8B%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3/#i-5
+            url: 'https://maps.google.com/mapfiles/kml/paddle/grn-circle.png', // カスタムアイコンURL
+            scaledSize: new window.google.maps.Size(50, 50)
+          }}
+        />
+      )}
       <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
         <Fab
           disabled={!marker}

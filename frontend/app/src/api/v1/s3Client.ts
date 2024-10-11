@@ -1,6 +1,6 @@
-import S3 from 'aws-sdk/clients/s3'
+import S3 from 'aws-sdk/clients/s3';
 import { S3Image } from 'interfaces/api/s3/S3Image';
-import { notifyError } from 'utils/notifyError';
+import { notifyError } from 'utils/toast/notifyError';
 import { v4 as uuidv4 } from 'uuid';
 
 // IAMユーザの認証情報の「アクセスキーID」から確認できます。

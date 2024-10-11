@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
-import { notifyError } from 'utils/notifyError';
 import { User } from 'interfaces/contexts/User';
+import { notifyError } from 'utils/toast/notifyError';
 const ADMIN_API_VERSION_PATH = '/api/v1/admin/';
 
 class AdminApiClient {

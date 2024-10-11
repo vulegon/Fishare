@@ -1,8 +1,8 @@
 import axios, { AxiosInstance } from 'axios';
 import { S3Image } from 'interfaces/api/s3/S3Image';
-import { notifyError } from 'utils/notifyError';
-import { s3Client } from './s3Client';
 import { User } from 'interfaces/contexts/User';
+import { notifyError } from 'utils/toast/notifyError';
+import { s3Client } from './s3Client';
 
 const API_VERSION_PATH = '/api/v1/';
 

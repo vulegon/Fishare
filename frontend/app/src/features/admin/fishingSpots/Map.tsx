@@ -13,6 +13,10 @@ export const Map = () => {
     setMarker({ lat: e.latLng.lat(), lng: e.latLng.lng() });
   };
 
+  const onAddButtonClick = () => {
+
+  };
+
   return (
     <GoogleMap
       mapContainerStyle={{

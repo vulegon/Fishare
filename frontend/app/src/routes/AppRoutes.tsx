@@ -12,7 +12,10 @@ import {
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { AdminRoutes } from './admin/AdminRoutes';
-import { FishingSpotMapPage } from 'pages/admin/fishingSpots';
+import {
+  FishingSpotMapPage,
+  FishingSpotCreatePage
+} from 'pages/admin/fishingSpots';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -33,6 +36,8 @@ const AppRoutes: React.FC = () => {
                 <Route path="/dashboards" element={<DashBoardPage />} />
                 <Route path="contacts" element={<ContactReviewPage />} />
                 <Route path="fishing_spots/map" element={<FishingSpotMapPage />} />
+                <Route path="fishing_spots/map/new" element={<FishingSpotCreatePage />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </AdminRoutes>
           }

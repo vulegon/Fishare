@@ -23,20 +23,14 @@ const AppRoutes: React.FC = () => {
         <Route path="/google_maps" element={<Home />} />
         <Route path="/supports/contacts/new" element={<Contact />} />
         <Route path="/admin/sign_in" element={<AdminLoginPage />} />
-        <Route
-          path="/admin/dashboards"
-          element={
-            <AdminRoutes>
-              <DashBoardPage />
-            </AdminRoutes>
-          }
-        />
 
+        {/*管理者ページ*/}
         <Route
           path="/admin/*"
           element={
             <AdminRoutes>
               <Routes>
+                <Route path="/dashboards" element={<DashBoardPage />} />
                 <Route path="contacts" element={<ContactReviewPage />} />
                 <Route path="fishing_spots/map" element={<FishingSpotMapPage />} />
               </Routes>

@@ -3,10 +3,12 @@ import { HEADER_HEIGHT } from 'constants/index';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { GoogleMap, Marker } from '@react-google-maps/api';
+import { useNavigate } from 'react-router-dom';
 
 export const Map = () => {
   const [marker, setMarker] = useState<google.maps.LatLngLiteral | null>(null);
   const center = useRef({ lat: 35.681236, lng: 139.767125 }); // 東京駅
+  const navigate = useNavigate();
 
   const onMapClick = (e: google.maps.MapMouseEvent) => {
     if (!e.latLng) return;
@@ -14,7 +16,8 @@ export const Map = () => {
   };
 
   const onAddButtonClick = () => {
-
+    if (!marker) return;
+    navigate(`/admin/fishing_spots/map/new?lat=${marker.lat}&lng=${marker.lng}`);
   };
 
   return (
@@ -45,6 +48,7 @@ export const Map = () => {
               color: 'rgba(255, 255, 255, 0.7)',
             },
           }}
+          onClick={onAddButtonClick}
         >
           <AddIcon />
         </Fab>

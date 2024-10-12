@@ -1,8 +1,8 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { HEADER_HEIGHT } from 'constants/index';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import { GoogleMap, Marker } from '@react-google-maps/api';
+import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 
 // 釣り場を選択する画面で使用するGoogleMapコンポーネント
@@ -11,15 +11,15 @@ export const FishingSpotSelectGoogleMap: React.FC = () => {
   const center = useRef({ lat: 35.681236, lng: 139.767125 }); // 東京駅
   const navigate = useNavigate();
 
-  const onMapClick = (e: google.maps.MapMouseEvent) => {
+  const onMapClick = useCallback((e: google.maps.MapMouseEvent) => {
     if (!e.latLng) return;
     setMarker({ lat: e.latLng.lat(), lng: e.latLng.lng() });
-  };
+  }, []);
 
-  const onAddButtonClick = () => {
+  const onAddButtonClick = useCallback(() => {
     if (!marker) return;
     navigate(`/admin/fishing_spots/map/new?lat=${marker.lat}&lng=${marker.lng}`);
-  };
+  }, [marker, navigate]);
 
   return (
     <GoogleMap
@@ -39,7 +39,7 @@ export const FishingSpotSelectGoogleMap: React.FC = () => {
     >
       {/* クリックしたマーカー */}
       {marker && (
-        <Marker
+        <MarkerF
           position={marker}
           icon={{
             // マーカーのアイコンを変更

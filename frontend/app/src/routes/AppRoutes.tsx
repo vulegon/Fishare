@@ -6,16 +6,16 @@ import {
 } from 'pages';
 import {
   AdminLoginPage,
-  DashBoardPage,
-  ContactReviewPage
+  ContactReviewPage,
+  DashBoardPage
 } from 'pages/admin';
+import {
+  FishingSpotMapSelectPage,
+  FishingSpotNewPage
+} from 'pages/admin/fishingSpots';
 import React from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { AdminRoutes } from './admin/AdminRoutes';
-import {
-  FishingSpotMapPage,
-  FishingSpotCreatePage
-} from 'pages/admin/fishingSpots';
 
 const AppRoutes: React.FC = () => {
   return (
@@ -35,8 +35,8 @@ const AppRoutes: React.FC = () => {
               <Routes>
                 <Route path="/dashboards" element={<DashBoardPage />} />
                 <Route path="contacts" element={<ContactReviewPage />} />
-                <Route path="fishing_spots/map" element={<FishingSpotMapPage />} />
-                <Route path="fishing_spots/map/new" element={<FishingSpotCreatePage />} />
+                <Route path="fishing_spots/map/select" element={<FishingSpotMapSelectPage />} />
+                <Route path="fishing_spots/map/new" element={<FishingSpotNewPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </AdminRoutes>

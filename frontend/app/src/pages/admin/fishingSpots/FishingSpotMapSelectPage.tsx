@@ -1,10 +1,10 @@
-import React from 'react';
-import { MainLayout } from 'features/layouts';
 import { LoadScript } from '@react-google-maps/api';
 import { CenteredLoader } from 'components/common';
-import { Map } from 'features/admin/fishingSpots/Map';
+import { Map } from 'features/admin/fishingSpots/map/Map';
+import { MainLayout } from 'features/layouts';
+import React from 'react';
 
-export const FishingSpotMapPage: React.FC = () => {
+export const FishingSpotMapSelectPage: React.FC = () => {
   const apiKey = process.env.REACT_APP_GOOGLE_MAP_API_KEY || '';
 
   return (

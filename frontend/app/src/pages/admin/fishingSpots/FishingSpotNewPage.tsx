@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography
 } from '@mui/material';
 import { MainLayout } from 'features/layouts';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { FishingSpotLoadMap } from 'features/admin/fishingSpots/map/components';
+import { FishingSpotNewLoadMap } from 'features/admin/fishingSpots/map/new/FishingSpotNewLoadMap';
 
 export const FishingSpotNewPage: React.FC = () => {
   const navigate = useNavigate();
@@ -31,12 +31,9 @@ export const FishingSpotNewPage: React.FC = () => {
         <Typography variant='caption' gutterBottom style={{ color: 'grey' }}>
           地図のマーカーを動かすこともできます
         </Typography>
-        <FishingSpotLoadMap
-          centerLat={lat}
-          centerLng={lng}
-          isOnSelectPage={false}
-          mapWidth='500px'
-          mapHeight='300px'
+        <FishingSpotNewLoadMap
+          lat={lat}
+          lng={lng}
         />
         <Box sx={{ height: 300 }}></Box>
       </Box>

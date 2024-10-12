@@ -5,23 +5,10 @@ import AddIcon from '@mui/icons-material/Add';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 
-interface FishingSpotGoogleMapProps {
-  centerLat?: number;
-  centerLng?: number;
-  isOnSelectPage?: boolean;
-  mapWidth?: string;
-  mapHeight?: string;
-}
-
-export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
-  centerLat = 35.681236,
-  centerLng = 139.767125,
-  isOnSelectPage = true,
-  mapWidth = '100%',
-  mapHeight = `calc(100vh - ${HEADER_HEIGHT}px)`,
-}) => {
+// 釣り場を選択する画面で使用するGoogleMapコンポーネント
+export const FishingSpotSelectGoogleMap: React.FC = () => {
   const [marker, setMarker] = useState<google.maps.LatLngLiteral | null>(null);
-  const center = useRef({ lat: centerLat, lng: centerLng }); // 東京駅
+  const center = useRef({ lat: 35.681236, lng: 139.767125 }); // 東京駅
   const navigate = useNavigate();
 
   const onMapClick = (e: google.maps.MapMouseEvent) => {
@@ -37,8 +24,8 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
   return (
     <GoogleMap
       mapContainerStyle={{
-        height: mapHeight,
-        width: mapWidth,
+        height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+        width: '100%',
       }}
       // optionsに入れない。クリックするとズームが変わる
       zoom={15}
@@ -62,26 +49,22 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
           }}
         />
       )}
-      {
-        isOnSelectPage && (
-          <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
-            <Fab
-              disabled={!marker}
-              color='primary'
-              aria-label='add'
-              sx={{
-                '&.Mui-disabled': {
-                  backgroundColor: 'rgba(0, 123, 255, 0.5)',
-                  color: 'rgba(255, 255, 255, 0.7)',
-                },
-              }}
-              onClick={onAddButtonClick}
-            >
-              <AddIcon />
-            </Fab>
-          </div>
-        )
-      }
+      <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
+        <Fab
+          disabled={!marker}
+          color='primary'
+          aria-label='add'
+          sx={{
+            '&.Mui-disabled': {
+              backgroundColor: 'rgba(0, 123, 255, 0.5)',
+              color: 'rgba(255, 255, 255, 0.7)',
+            },
+          }}
+          onClick={onAddButtonClick}
+        >
+          <AddIcon />
+        </Fab>
+      </div>
     </GoogleMap>
   );
 };

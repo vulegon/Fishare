@@ -4,9 +4,8 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
-import { CenteredLoader } from 'components/common';
 
-export const Map = () => {
+export const FishingSpotGoogleMap: React.FC = () => {
   const [marker, setMarker] = useState<google.maps.LatLngLiteral | null>(null);
   const center = useRef({ lat: 35.681236, lng: 139.767125 }); // 東京駅
   const navigate = useNavigate();

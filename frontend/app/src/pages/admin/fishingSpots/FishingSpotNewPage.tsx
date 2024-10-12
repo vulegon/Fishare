@@ -1,42 +1,49 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Typography
+  Typography,
+  TextField,
+  Stack
 } from '@mui/material';
 import { MainLayout } from 'features/layouts';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import Container from '@mui/material/Container';
+import { useSearchParams } from 'react-router-dom';
 import { FishingSpotNewLoadMap } from 'features/admin/fishingSpots/map/new/FishingSpotNewLoadMap';
 
 export const FishingSpotNewPage: React.FC = () => {
-  const navigate = useNavigate();
-  const [marker, setMarker] = useState<google.maps.LatLngLiteral | null>(null);
   const [searchParams] = useSearchParams();
   const lat = searchParams.get('lat') ? parseFloat(searchParams.get('lat')!) : 35.681236;
   const lng = searchParams.get('lng') ? parseFloat(searchParams.get('lng')!) : 139.767125;
 
   return (
     <MainLayout>
-      <Box
-        style={{
-          marginTop: '40px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
+      <Container fixed>
         <Typography variant='h4' gutterBottom>
           釣り場の登録
         </Typography>
         <Typography variant='caption' gutterBottom style={{ color: 'grey' }}>
           地図のマーカーを動かすこともできます
         </Typography>
-        <FishingSpotNewLoadMap
-          lat={lat}
-          lng={lng}
-        />
-        <Box sx={{ height: 300 }}></Box>
-      </Box>
+        <Stack spacing={2}>
+          <FishingSpotNewLoadMap
+            lat={lat}
+            lng={lng}
+          />
+          <Box>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+              釣り場の名前
+            </Typography>
+            <TextField
+              label='釣り場の名前'
+              variant='outlined'
+              margin='normal'
+              fullWidth
+            />
+          </Box>
+          <Box>
+        </Box>
+        </Stack>
+      </Container>
     </MainLayout>
   );
 };

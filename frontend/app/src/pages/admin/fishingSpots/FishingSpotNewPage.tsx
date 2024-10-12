@@ -3,24 +3,20 @@ import {
   Box,
   Typography
 } from '@mui/material';
-import { GoogleMap, Marker } from '@react-google-maps/api';
 import { MainLayout } from 'features/layouts';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { FishingSpotLoadMap } from 'features/admin/fishingSpots/map/components';
 
 export const FishingSpotNewPage: React.FC = () => {
   const navigate = useNavigate();
   const [marker, setMarker] = useState<google.maps.LatLngLiteral | null>(null);
   const [searchParams] = useSearchParams();
-  const center = useRef(
-    {
-      lat: searchParams.get('lat') ? parseFloat(searchParams.get('lat')!) : 35.681236,
-      lng: searchParams.get('lng') ? parseFloat(searchParams.get('lng')!) : 139.767125
-    }
-  );
+  const lat = searchParams.get('lat') ? parseFloat(searchParams.get('lat')!) : 35.681236;
+  const lng = searchParams.get('lng') ? parseFloat(searchParams.get('lng')!) : 139.767125;
 
   return (
     <MainLayout>
-      <div
+      <Box
         style={{
           marginTop: '40px',
           display: 'flex',
@@ -35,8 +31,15 @@ export const FishingSpotNewPage: React.FC = () => {
         <Typography variant='caption' gutterBottom style={{ color: 'grey' }}>
           地図のマーカーを動かすこともできます
         </Typography>
+        <FishingSpotLoadMap
+          centerLat={lat}
+          centerLng={lng}
+          isOnSelectPage={false}
+          mapWidth='500px'
+          mapHeight='300px'
+        />
         <Box sx={{ height: 300 }}></Box>
-      </div>
+      </Box>
     </MainLayout>
   );
 };

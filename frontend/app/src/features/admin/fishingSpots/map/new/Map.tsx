@@ -2,15 +2,18 @@ import React, { useRef, useState } from 'react';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { useSearchParams } from 'react-router-dom';
 
-export const FishingSpotNewPage: React.FC = () => {
+interface FishingSpotNewPageProps {
+  lat: number;
+  lng: number;
+}
+
+export const FishingSpotNewPage: React.FC<FishingSpotNewPageProps> = ({
+  lat,
+  lng
+}) => {
   const [marker, setMarker] = useState<google.maps.LatLngLiteral | null>(null);
   const [searchParams] = useSearchParams();
-  const center = useRef(
-    {
-      lat: searchParams.get('lat') ? parseFloat(searchParams.get('lat')!) : 35.681236,
-      lng: searchParams.get('lng') ? parseFloat(searchParams.get('lng')!) : 139.767125
-    }
-  );
+  const center = useRef({ lat, lng });
 
   const onMapClick = (e: google.maps.MapMouseEvent) => {
     if (!e.latLng) return;

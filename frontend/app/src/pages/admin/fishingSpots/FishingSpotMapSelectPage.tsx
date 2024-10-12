@@ -1,6 +1,6 @@
 import { LoadScript } from '@react-google-maps/api';
 import { CenteredLoader } from 'components/common';
-import { Map } from 'features/admin/fishingSpots/map/Map';
+import { Map } from 'features/admin/fishingSpots/map/select/Map';
 import { MainLayout } from 'features/layouts';
 import React from 'react';
 

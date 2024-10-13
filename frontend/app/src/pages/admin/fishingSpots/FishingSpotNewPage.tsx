@@ -35,20 +35,23 @@ export const FishingSpotNewPage: React.FC = () => {
   return (
     <MainLayout>
       <Container fixed sx={{ mb: 6 }}>
-        <Typography
-          variant="h4"
-          gutterBottom
-          sx={{ fontWeight: 'bold', mt: 4 }}
-        >
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+          mt: 4,
+          mb: 3,
+        }}
+      >
+        <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold' }}>
           釣り場登録
         </Typography>
-        <Typography
-          variant="subtitle2"
-          gutterBottom
-          sx={{ color: 'text.secondary', mb: 3 }}
-        >
+        <Typography variant="subtitle2" gutterBottom sx={{ color: 'text.secondary' }}>
           地図のマーカーを動かして釣り場の位置を調整してください。
         </Typography>
+      </Box>
 
         <Stack spacing={5}>
           {/* 地図コンポーネント */}

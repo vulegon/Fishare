@@ -22,8 +22,8 @@ export const FishingSpotNewGoogleMap: React.FC<FishingSpotNewGoogleMapProps> = (
   return (
     <GoogleMap
       mapContainerStyle={{
-        height: '300px',
-        width: '500px',
+        height: '400px',
+        width: '100%',
       }}
       // optionsに入れない。クリックするとズームが変わる
       zoom={15}

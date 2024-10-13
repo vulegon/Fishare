@@ -4,14 +4,14 @@ import { CenteredLoader } from 'components/common';
 import { FishingSpotNewGoogleMap } from './FishingSpotNewGoogleMap';
 
 interface FishingSpotNewLoadMapProps {
-  lat: number;
-  lng: number;
+  marker: google.maps.LatLngLiteral;
+  onMapClick?: (e: google.maps.MapMouseEvent) => void;
 }
 
 // 釣り場の新規作成画面で使用するGoogleMapを読み込むコンポーネント
 export const FishingSpotNewLoadMap: React.FC<FishingSpotNewLoadMapProps> = ({
-  lat,
-  lng
+  marker,
+  onMapClick
 }) => {
   const apiKey = process.env.REACT_APP_GOOGLE_MAP_API_KEY || '';
 
@@ -24,14 +24,14 @@ export const FishingSpotNewLoadMap: React.FC<FishingSpotNewLoadMapProps> = ({
           loadingElement={<CenteredLoader/>}
         >
           <FishingSpotNewGoogleMap
-            lat={lat}
-            lng={lng}
+            marker={marker}
+            onMapClick={onMapClick}
           />
         </LoadScript>
         ) : (
           <FishingSpotNewGoogleMap
-            lat={lat}
-            lng={lng}
+            marker={marker}
+            onMapClick={onMapClick}
           />
       )}
     </>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Typography,
@@ -10,11 +10,27 @@ import { MainLayout } from 'features/layouts';
 import Container from '@mui/material/Container';
 import { useSearchParams } from 'react-router-dom';
 import { FishingSpotNewLoadMap } from 'features/admin/fishingSpots/map/new/FishingSpotNewLoadMap';
+import { fetchAddress } from 'api/lib/libGoogle/geocodeClient';
 
 export const FishingSpotNewPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const lat = searchParams.get('lat') ? parseFloat(searchParams.get('lat')!) : 35.681236;
   const lng = searchParams.get('lng') ? parseFloat(searchParams.get('lng')!) : 139.767125;
+  const [marker, setMarker] = useState<google.maps.LatLngLiteral>({ lat: lat, lng: lng });
+  const [address, setAddress] = useState<string>('');
+
+  useEffect(() => {
+    const fetch = async () => {
+      const address = await fetchAddress(marker.lat, marker.lng);
+      setAddress(address);
+    };
+    fetch();
+  }, [marker]);
+
+  const onMapClick = useCallback((e: google.maps.MapMouseEvent) => {
+    if (!e.latLng) return;
+    setMarker({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+  }, []);
 
   return (
     <MainLayout>
@@ -46,7 +62,10 @@ export const FishingSpotNewPage: React.FC = () => {
               minWidth: '500px',
             }}
           >
-            <FishingSpotNewLoadMap lat={lat} lng={lng} />
+            <FishingSpotNewLoadMap
+              marker={marker}
+              onMapClick={onMapClick}
+            />
           </Box>
 
           {/* フォーム入力フィールド */}
@@ -64,7 +83,12 @@ export const FishingSpotNewPage: React.FC = () => {
               <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 1 }}>
                 住所
               </Typography>
-              <TextField label="住所を入力" variant="outlined" fullWidth />
+              <TextField
+                label="住所を入力"
+                variant="outlined"
+                fullWidth
+                value={address}
+              />
             </Box>
 
             {/** 釣れる魚入力 **/}

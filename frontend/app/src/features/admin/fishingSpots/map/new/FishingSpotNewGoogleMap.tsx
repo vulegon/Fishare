@@ -2,22 +2,16 @@ import { useState, useRef, useCallback } from 'react';
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
 
 interface FishingSpotNewGoogleMapProps {
-  lat: number;
-  lng: number;
+  marker: google.maps.LatLngLiteral;
+  onMapClick?: (e: google.maps.MapMouseEvent) => void;
 }
 
 // 釣り場の新規作成画面で使用するGoogleMapコンポーネント
 export const FishingSpotNewGoogleMap: React.FC<FishingSpotNewGoogleMapProps> = ({
-  lat,
-  lng
+  marker,
+  onMapClick = () => { }
 }) => {
-  const [marker, setMarker] = useState<google.maps.LatLngLiteral>({ lat: lat, lng: lng });
-  const center = useRef({ lat: lat, lng: lng });
-
-  const onMapClick = useCallback((e: google.maps.MapMouseEvent) => {
-    if (!e.latLng) return;
-    setMarker({ lat: e.latLng.lat(), lng: e.latLng.lng() });
-  }, []);
+  const center = useRef({ lat: marker.lat, lng: marker.lng });
 
   return (
     <GoogleMap
@@ -31,7 +25,15 @@ export const FishingSpotNewGoogleMap: React.FC<FishingSpotNewGoogleMapProps> = (
       center={center.current}
       options={{
         fullscreenControl: false,
-        mapTypeId: 'hybrid'
+        mapTypeId: 'hybrid',
+        mapTypeControl: false, // 地図タイプの切り替え非表示
+        streetViewControl: false, // ストリートビュー非表示
+        rotateControl: false, // 回転ボタン非表示
+        scaleControl: false, // スケールバー非表示
+        zoomControl: true, // ズームコントロールを表示 (右下)
+        gestureHandling: 'greedy', // ジェスチャーでズーム/移動可能に
+        keyboardShortcuts: false, // キーボードショートカット無効化
+        clickableIcons: false, // ポイントオブインタレストのアイコンを無効化
       }}
       onClick={onMapClick}
     >

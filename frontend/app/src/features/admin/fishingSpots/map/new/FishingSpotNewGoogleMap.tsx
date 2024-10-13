@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useRef } from 'react';
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
 
 interface FishingSpotNewGoogleMapProps {
@@ -11,7 +11,12 @@ export const FishingSpotNewGoogleMap: React.FC<FishingSpotNewGoogleMapProps> = (
   marker,
   onMapClick = () => { }
 }) => {
-  const center = useRef({ lat: marker.lat, lng: marker.lng });
+  const center = useRef(
+    {
+      lat: marker.lat,
+      lng: marker.lng
+    }
+  );
 
   return (
     <GoogleMap

@@ -3,18 +3,6 @@ module Api
     class ApplicationController < ApplicationController
       rescue_from StandardError, with: :render_500 # 一番最後に書くこと
 
-      def render_form_error(form, message: nil)
-        message = message || form.errors.full_messages.join(",") || 'パラメータが不正です'
-
-        render status: :bad_request, json: { message: message, errors: form.errors }
-      end
-
-      def render_500(error)
-        message = 'システムエラーが発生しました。サポートにお問い合わせください'
-        json = { message: message, errors: error.message }
-        render status: :internal_server_error, json: json
-      end
-
       def authenticate_user!
         unless auth_access_token && auth_uid && auth_client
           render json: { message: '認証情報が不正です' }, status: :unauthorized and return
@@ -27,6 +15,24 @@ module Api
 
       def current_user
         @current_user ||= ::User.find_by_auth_token(auth_access_token, auth_client, auth_uid)
+      end
+
+      def render_form_error(form, message: nil)
+        message = message || form.errors.full_messages.join(",") || 'パラメータが不正です'
+
+        render status: :bad_request, json: { message: message, errors: form.errors }
+      end
+
+      def render_403_error(message: nil)
+        message = message || '権限がありません'
+
+        render status: :forbidden, json: { message: message }
+      end
+
+      def render_500(error)
+        message = 'システムエラーが発生しました。サポートにお問い合わせください'
+        json = { message: message, errors: error.message }
+        render status: :internal_server_error, json: json
       end
 
       private

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_10_07_120640) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_14_005617) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -49,6 +49,18 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_07_120640) do
     t.datetime "updated_at", null: false
     t.index ["fish_id"], name: "index_fishing_spot_fishes_on_fish_id"
     t.index ["fishing_spot_id"], name: "index_fishing_spot_fishes_on_fishing_spot_id"
+  end
+
+  create_table "fishing_spot_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "fishing_spot_id", null: false, comment: "釣り場ID"
+    t.string "s3_key", null: false, comment: "S3キー"
+    t.string "s3_url", null: false, comment: "S3のURL"
+    t.string "file_name", null: false, comment: "ファイル名"
+    t.string "content_type", null: false, comment: "ファイルの拡張子"
+    t.integer "file_size", null: false, comment: "ファイルサイズ"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fishing_spot_id"], name: "index_fishing_spot_images_on_fishing_spot_id"
   end
 
   create_table "fishing_spot_locations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -154,6 +166,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_07_120640) do
 
   add_foreign_key "fishing_spot_fishes", "fish"
   add_foreign_key "fishing_spot_fishes", "fishing_spots"
+  add_foreign_key "fishing_spot_images", "fishing_spots"
   add_foreign_key "fishing_spot_locations", "fishing_spots"
   add_foreign_key "fishing_spot_locations", "prefectures"
   add_foreign_key "support_contact_images", "support_contacts"

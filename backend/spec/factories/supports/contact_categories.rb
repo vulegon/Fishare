@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: contact_categories
+# Table name: support_contact_categories
 #
 #  id                        :uuid             not null, primary key
 #  description(カテゴリ説明) :string

@@ -25,12 +25,12 @@ module Api
           permitted_params = params.permit(
             :name,
             :description,
-            location: [:prefecture, :address, :latitude, :longitude],
+            location: [:prefecture_name, :address, :latitude, :longitude],
             images: [:file_name, :s3_key, :content_type, :file_size, :s3_url],
             fishes: [:id, :name]
           )
           super(permitted_params.to_h.deep_symbolize_keys)
-          @prefecture = ::Prefecture.find_by(name: location[:prefecture])
+          @prefecture = ::Prefecture.find_by(name: location[:prefecture_name])
           @fishing_spot_fishes = ::Fish.where(id: fishes.map { |fish| fish[:id] })
         end
 

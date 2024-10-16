@@ -14,7 +14,7 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
             name: '釣り場1',
             description: '1234567890',
             location: {
-              prefecture: prefecture.name,
+              prefecture_name: prefecture.name,
               address: '東京都渋谷区',
               latitude: 35.658034,
               longitude: 139.701636
@@ -44,7 +44,7 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
             name: '釣り場1',
             description: '1234567890',
             location: {
-              prefecture: prefecture.name,
+              prefecture_name: prefecture.name,
               address: '東京都渋谷区',
               latitude: 35.658034,
               longitude: 139.701636
@@ -69,7 +69,7 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
               name: '',
               description: '1234567890',
               location: {
-                prefecture: prefecture.name,
+                prefecture_name: prefecture.name,
                 address: '東京都渋谷区',
                 latitude: 35.658034,
                 longitude: 139.701636
@@ -90,7 +90,7 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
             {
               description: '1234567890',
               location: {
-                prefecture: prefecture.name,
+                prefecture_name: prefecture.name,
                 address: '東京都渋谷区',
                 latitude: 35.658034,
                 longitude: 139.701636
@@ -112,7 +112,7 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
               name: '1234567890' * 10 + '1',
               description: '1234567890',
               location: {
-                prefecture: prefecture.name,
+                prefecture_name: prefecture.name,
                 address: '東京都渋谷区',
                 latitude: 35.658034,
                 longitude: 139.701636
@@ -136,7 +136,7 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
               name: '釣り場1',
               description: '',
               location: {
-                prefecture: prefecture.name,
+                prefecture_name: prefecture.name,
                 address: '東京都渋谷区',
                 latitude: 35.658034,
                 longitude: 139.701636
@@ -158,7 +158,7 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
               name: '釣り場1',
               description: '123456789',
               location: {
-                prefecture: prefecture.name,
+                prefecture_name: prefecture.name,
                 address: '東京都渋谷区',
                 latitude: 35.658034,
                 longitude: 139.701636
@@ -180,7 +180,7 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
               name: '釣り場1',
               description: '1234567890' * 100 + '1',
               location: {
-                prefecture: prefecture.name,
+                prefecture_name: prefecture.name,
                 address: '東京都渋谷区',
                 latitude: 35.658034,
                 longitude: 139.701636
@@ -226,7 +226,7 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
                 name: '釣り場1',
                 description: '123456789',
                 location: {
-                  prefecture: '存在しない都道府県',
+                  prefecture_name: '存在しない都道府県',
                   address: '東京都渋谷区',
                   latitude: 35.658034,
                   longitude: 139.701636
@@ -250,7 +250,7 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
                 name: '釣り場1',
                 description: '123456789',
                 location: {
-                  prefecture: prefecture.name,
+                  prefecture_name: prefecture.name,
                   address: '',
                   latitude: 35.658034,
                   longitude: 139.701636
@@ -272,7 +272,7 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
                 name: '釣り場1',
                 description: '123456789',
                 location: {
-                  prefecture: prefecture.name,
+                  prefecture_name: prefecture.name,
                   latitude: 35.658034,
                   longitude: 139.701636
                 },
@@ -294,7 +294,7 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
                 name: '釣り場1',
                 description: '123456789',
                 location: {
-                  prefecture: prefecture.name,
+                  prefecture_name: prefecture.name,
                   address: '東京都渋谷区',
                   longitude: 139.701636
                 },
@@ -315,7 +315,7 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
                 name: '釣り場1',
                 description: '123456789',
                 location: {
-                  prefecture: prefecture.name,
+                  prefecture_name: prefecture.name,
                   address: '東京都渋谷区',
                   latitude: 35.658034
                 },
@@ -338,7 +338,7 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
                 name: '釣り場1',
                 description: '123456789',
                 location: {
-                  prefecture: prefecture.name,
+                  prefecture_name: prefecture.name,
                   address: '東京都渋谷区',
                   latitude: 35.658034,
                   longitude: 139.701636
@@ -357,7 +357,7 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
                 name: '釣り場1',
                 description: '123456789',
                 location: {
-                  prefecture: prefecture.name,
+                  prefecture_name: prefecture.name,
                   address: '東京都渋谷区',
                   latitude: 35.658034,
                   longitude: 139.701636

@@ -23,19 +23,9 @@ import { faFish } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 
-const spotLabels = [
-  { label: '釣り場の名前', icon: <MyLocationIcon/>  },
-  { label: '説明', icon: <InfoIcon/>  },
-  { label: '住所', icon: <RoomIcon/>  },
-  { label: '釣れる魚', icon: <FontAwesomeIcon icon={faFish}/>  },
-  { label: '釣り場の場所', icon: <MapIcon/>  },
-]
-
 export const FishingSpotNewPage: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const lat = searchParams.get('lat') ? parseFloat(searchParams.get('lat')!) : 35.681236;
-  const lng = searchParams.get('lng') ? parseFloat(searchParams.get('lng')!) : 139.767125;
-  const [marker, setMarker] = useState<google.maps.LatLngLiteral>({ lat: lat, lng: lng });
+  const [marker, setMarker] = useState<google.maps.LatLngLiteral>({ lat: 35.681236, lng: 139.767125});
   const [address, setAddress] = useState<string>('');
   const [prefecture, setPrefecture] = useState<Prefecture>();
 
@@ -54,6 +44,12 @@ export const FishingSpotNewPage: React.FC = () => {
 
   useEffect(() => {
   }, [prefecture]);
+
+  useEffect(() => {
+    const lat = searchParams.get('lat') ? parseFloat(searchParams.get('lat')!) : 35.681236;
+    const lng = searchParams.get('lng') ? parseFloat(searchParams.get('lng')!) : 139.767125;
+    setMarker({ lat, lng });
+  }, []);
 
   const onMapClick = useCallback((e: google.maps.MapMouseEvent) => {
     if (!e.latLng) return;

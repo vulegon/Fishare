@@ -9,7 +9,7 @@ interface FishingSpotNewGoogleMapProps {
 // 釣り場の新規作成画面で使用するGoogleMapコンポーネント
 export const FishingSpotNewGoogleMap: React.FC<FishingSpotNewGoogleMapProps> = ({
   marker,
-  onMapClick = () => { }
+  onMapClick
 }) => {
   const center = useRef(
     {

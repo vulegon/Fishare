@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -35,9 +35,11 @@ export const FishingSpotNewPage: React.FC = () => {
   const [address, setAddress] = useState<string>('');
   const [prefecture, setPrefecture] = useState<Prefecture>();
   const [images, setImages] = useState<File[]>([]);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
-    const fetch = async () => {
+    const fetchData = async () => {
+      setIsLoaded(false);
       const addressResponse = await fetchAddress(marker.lat, marker.lng);
       const prefectureData = await apiClient.getPrefectures();
       const findPrefecture = prefectureData.prefectures.find((pref: Prefecture)=> pref.name === addressResponse.prefecture);
@@ -46,37 +48,39 @@ export const FishingSpotNewPage: React.FC = () => {
       setPrefecture(findPrefecture);
     };
 
-    fetch();
-  }, [marker, prefecture]);
-
-  useEffect(() => {
-  }, [prefecture]);
+    const loadData = async () => {
+      await fetchData(); // fetchDataの完了を待つ
+      setIsLoaded(true); // 完了後にLoadingをtrueにする
+    };
+  
+    loadData();
+  }, [marker]);
 
   const onMapClick = (e: google.maps.MapMouseEvent) => {
     if (!e.latLng) return;
     setMarker({ lat: e.latLng.lat(), lng: e.latLng.lng() });
   }
 
-    // 画像の追加処理
-    const handleOnAddFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!e.target.files) return;
-      const files: File[] = [];
-      const remainingSlots = 9 - images.length;
+  // 画像の追加処理
+  const handleOnAddFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const files: File[] = [];
+    const remainingSlots = 9 - images.length;
 
-      for (let i = 0; i < Math.min(e.target.files.length, remainingSlots); i++) {
-        files.push(e.target.files[i]);
-      }
+    for (let i = 0; i < Math.min(e.target.files.length, remainingSlots); i++) {
+      files.push(e.target.files[i]);
+    }
 
-      setImages([...images, ...files]);
-      e.target.value = '';
-    };
+    setImages([...images, ...files]);
+    e.target.value = '';
+  };
 
-    // 画像の削除処理
-    const handleOnDeleteFile = (index: number) => {
-      const updatedImages = [...images];
-      updatedImages.splice(index, 1);
-      setImages(updatedImages);
-    };
+  // 画像の削除処理
+  const handleOnDeleteFile = (index: number) => {
+    const updatedImages = [...images];
+    updatedImages.splice(index, 1);
+    setImages(updatedImages);
+  };
 
   return (
     <MainLayout>
@@ -112,10 +116,12 @@ export const FishingSpotNewPage: React.FC = () => {
                   minWidth: '500px',
                 }}
               >
-                <FishingSpotNewLoadMap
+                {marker && isLoaded && (
+                  <FishingSpotNewLoadMap
                   marker={marker}
                   onMapClick={onMapClick}
                 />
+                )}
               </Box>
             </Box>
 

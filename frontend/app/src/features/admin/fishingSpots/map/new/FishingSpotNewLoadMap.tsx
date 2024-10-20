@@ -29,10 +29,10 @@ export const FishingSpotNewLoadMap: React.FC<FishingSpotNewLoadMapProps> = ({
           />
         </LoadScript>
         ) : (
-          <FishingSpotNewGoogleMap
-            marker={marker}
-            onMapClick={onMapClick}
-          />
+        <FishingSpotNewGoogleMap
+          marker={marker}
+          onMapClick={onMapClick}
+        />
       )}
     </>
   );

@@ -158,7 +158,7 @@ export const FishingSpotNewPage: React.FC = () => {
                   </Button>
                 </label>
 
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 8, sm: 12, md: 12 }} sx={{margin: 0}}>
+                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 8, sm: 12, md: 12 }} sx={{margin: 3}}>
                   {images.map((image, index) => (
                     <Grid
                       item

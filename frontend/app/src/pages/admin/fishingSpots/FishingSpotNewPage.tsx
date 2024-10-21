@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Theme, useTheme } from "@mui/material/styles";
 import {
   Box,
   Typography,
@@ -26,6 +27,44 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CancelIcon from "@mui/icons-material/Cancel";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Chip from "@mui/material/Chip";
+import OutlinedInput from "@mui/material/OutlinedInput";
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const names = [
+  "Oliver Hansen",
+  "Van Henry",
+  "April Tucker",
+  "Ralph Hubbard",
+  "Omar Alexander",
+  "Carlos Abbott",
+  "Miriam Wagner",
+  "Bradley Wilkerson",
+  "Virginia Andrews",
+  "Kelly Snyder",
+];
+
+function getStyles(name: string, personName: readonly string[], theme: Theme) {
+  return {
+    fontWeight: personName.includes(name)
+      ? theme.typography.fontWeightMedium
+      : theme.typography.fontWeightRegular,
+  };
+}
 
 export const FishingSpotNewPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -36,6 +75,8 @@ export const FishingSpotNewPage: React.FC = () => {
   const [prefecture, setPrefecture] = useState<Prefecture>();
   const [images, setImages] = useState<File[]>([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [personName, setPersonName] = React.useState<string[]>([]);
+  const theme = useTheme();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -131,7 +172,6 @@ export const FishingSpotNewPage: React.FC = () => {
                 <TextField label='名称を入力' variant='outlined' fullWidth />
               </Box>
 
-              {/** 住所入力 **/}
               <Box>
                 <Label label={"住所"} icon={<RoomIcon />} />
                 <TextField
@@ -220,13 +260,36 @@ export const FishingSpotNewPage: React.FC = () => {
                     />
                   }
                 />
-                <TextField
-                  label='釣れる魚を入力'
-                  variant='outlined'
-                  fullWidth
-                  multiline
-                  rows={3}
-                />
+                <FormControl sx={{ m: 1, width: "100%" }}>
+                  <InputLabel id='demo-multiple-chip-label'>Chip</InputLabel>
+                  <Select
+                    labelId='demo-multiple-chip-label'
+                    id='demo-multiple-chip'
+                    multiple
+                    value={personName}
+                    input={
+                      <OutlinedInput id='select-multiple-chip' label='Chip' />
+                    }
+                    renderValue={(selected) => (
+                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                        {selected.map((value) => (
+                          <Chip key={value} label={value} />
+                        ))}
+                      </Box>
+                    )}
+                    MenuProps={MenuProps}
+                  >
+                    {names.map((name) => (
+                      <MenuItem
+                        key={name}
+                        value={name}
+                        style={getStyles(name, personName, theme)}
+                      >
+                        {name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Box>
 
               <Box>
@@ -236,7 +299,7 @@ export const FishingSpotNewPage: React.FC = () => {
                   variant='outlined'
                   fullWidth
                   multiline
-                  rows={3}
+                  rows={5}
                 />
               </Box>
             </Stack>

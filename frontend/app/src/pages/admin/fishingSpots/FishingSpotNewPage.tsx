@@ -261,14 +261,14 @@ export const FishingSpotNewPage: React.FC = () => {
                   }
                 />
                 <FormControl sx={{ m: 1, width: "100%" }}>
-                  <InputLabel id='demo-multiple-chip-label'>Chip</InputLabel>
+                  <InputLabel id='demo-multiple-chip-label'>ヒラメ, カサゴ, シーバス </InputLabel>
                   <Select
                     labelId='demo-multiple-chip-label'
                     id='demo-multiple-chip'
                     multiple
                     value={personName}
                     input={
-                      <OutlinedInput id='select-multiple-chip' label='Chip' />
+                      <OutlinedInput id='select-multiple-chip' label='ヒラメ, カサゴ, シーバス' />
                     }
                     renderValue={(selected) => (
                       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>

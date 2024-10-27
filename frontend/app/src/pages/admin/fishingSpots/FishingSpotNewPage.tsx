@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Theme, useTheme } from "@mui/material/styles";
 import {
   Box,
   Typography,
@@ -43,7 +42,6 @@ export const FishingSpotNewPage: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [fish, setFish] = React.useState<Fish[]>([]);
   const [selectedFish, setSelectedFish] = React.useState<Fish[]>([]);
-  const theme = useTheme();
 
   useEffect(() => {
     const fetchData = async () => {

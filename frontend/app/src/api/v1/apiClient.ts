@@ -3,6 +3,10 @@ import { S3Image } from 'interfaces/api/s3/S3Image';
 import { User } from 'interfaces/contexts/User';
 import { notifyError } from 'utils/toast/notifyError';
 import { s3Client } from './s3Client';
+import {
+  Fish,
+  Prefecture,
+} from 'interfaces/api';
 
 const API_VERSION_PATH = '/api/v1/';
 
@@ -21,7 +25,7 @@ class ApiClient {
 
   public async getPrefectures(): Promise<{
     message: string;
-    prefectures: { id: string; name: string }[];
+    prefectures: Prefecture[];
   }> {
     try {
       const response = await this.client.get('prefectures');
@@ -84,6 +88,17 @@ class ApiClient {
       }
 
       return user;
+    } catch (error) {
+      notifyError(error);
+      throw error;
+    }
+  }
+
+  public async getFish(): Promise<{ fishes: Fish[] }>{
+    try {
+      const response = await this.client.get('fishes');
+      const data = response.data;
+      return { fishes: data.fishes };
     } catch (error) {
       notifyError(error);
       throw error;

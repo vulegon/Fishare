@@ -17,6 +17,8 @@ Rails.application.routes.draw do
       end
 
       get 'users/current_user', to: 'users#show_current_user'
+
+      resources :fishes, only: %i[index]
     end
   end
 end

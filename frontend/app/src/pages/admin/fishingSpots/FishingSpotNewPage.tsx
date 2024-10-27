@@ -27,44 +27,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CancelIcon from "@mui/icons-material/Cancel";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Autocomplete from "@mui/material/Autocomplete";
 import Chip from "@mui/material/Chip";
-import OutlinedInput from "@mui/material/OutlinedInput";
+import { Fish } from "interfaces/api";
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
-];
-
-function getStyles(name: string, personName: readonly string[], theme: Theme) {
-  return {
-    fontWeight: personName.includes(name)
-      ? theme.typography.fontWeightMedium
-      : theme.typography.fontWeightRegular,
-  };
-}
 
 export const FishingSpotNewPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -75,7 +41,8 @@ export const FishingSpotNewPage: React.FC = () => {
   const [prefecture, setPrefecture] = useState<Prefecture>();
   const [images, setImages] = useState<File[]>([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [personName, setPersonName] = React.useState<string[]>([]);
+  const [fish, setFish] = React.useState<Fish[]>([]);
+  const [selectedFish, setSelectedFish] = React.useState<Fish[]>([]);
   const theme = useTheme();
 
   useEffect(() => {
@@ -98,6 +65,15 @@ export const FishingSpotNewPage: React.FC = () => {
 
     loadData();
   }, [marker]);
+
+  useEffect(() => {
+    const fetchFish = async () => {
+      const response = await apiClient.getFish();
+      setFish(response.fishes);
+    };
+
+    fetchFish();
+  }, []);
 
   const onMapClick = (e: google.maps.MapMouseEvent) => {
     if (!e.latLng) return;
@@ -124,6 +100,11 @@ export const FishingSpotNewPage: React.FC = () => {
     updatedImages.splice(index, 1);
     setImages(updatedImages);
   };
+
+  const handleFishChange = (event: React.SyntheticEvent<Element, Event>, value: string[]) => {
+    const selected = fish.filter((f) => value.includes(f.name));
+    setSelectedFish(selected);
+  }
 
   return (
     <MainLayout>
@@ -260,36 +241,27 @@ export const FishingSpotNewPage: React.FC = () => {
                     />
                   }
                 />
-                <FormControl sx={{ m: 1, width: "100%" }}>
-                  <InputLabel id='demo-multiple-chip-label'>ヒラメ, カサゴ, シーバス </InputLabel>
-                  <Select
-                    labelId='demo-multiple-chip-label'
-                    id='demo-multiple-chip'
-                    multiple
-                    value={personName}
-                    input={
-                      <OutlinedInput id='select-multiple-chip' label='ヒラメ, カサゴ, シーバス' />
-                    }
-                    renderValue={(selected) => (
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                        {selected.map((value) => (
-                          <Chip key={value} label={value} />
-                        ))}
-                      </Box>
-                    )}
-                    MenuProps={MenuProps}
-                  >
-                    {names.map((name) => (
-                      <MenuItem
-                        key={name}
-                        value={name}
-                        style={getStyles(name, personName, theme)}
-                      >
-                        {name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <Autocomplete
+                  multiple
+                  id='tags-outlined'
+                  options={fish.map((f) => f.name)}
+                  freeSolo
+                  value={selectedFish.map((f) => f.name)}
+                  onChange={handleFishChange}
+                  renderTags={(value: readonly string[], getTagProps) =>
+                    value.map((option: string, index: number) => (
+                      <Chip
+                        color='primary'
+                        variant='outlined'
+                        label={option}
+                        {...getTagProps({ index })}
+                      />
+                    ))
+                  }
+                  renderInput={(params) => (
+                    <TextField {...params} label='釣れる魚' />
+                  )}
+                />
               </Box>
 
               <Box>

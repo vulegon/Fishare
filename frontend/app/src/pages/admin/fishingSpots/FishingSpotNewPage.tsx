@@ -29,16 +29,52 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import Autocomplete from "@mui/material/Autocomplete";
 import Chip from "@mui/material/Chip";
 import { Fish } from "interfaces/api";
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FormProvider, useForm } from 'react-hook-form';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 
+const schema = z.object({
+  name: z.string().min(2, '名前は2文字以上である必要があります').max(50, '名前は100文字以内で入力してください'),
+  images: z.array(z.instanceof(File)).max(9, '画像は最大9枚までです'),
+  prefecture: z.string().min(1, '都道府県を選択してください'),
+  address: z.string().min(1, '住所を入力してください'),
+  fish: z.array(z.string()).min(1, '釣れる魚を選択してください'),
+  description: z.string().min(1, '説明を入力してください'),
+});
 
 export const FishingSpotNewPage: React.FC = () => {
+  const useFormMethods = useForm({
+    defaultValues: {
+      name: '',
+      images: [] as File[],
+      prefecture: { id: '', name: '' },
+      address: '',
+      fish: [] as Fish[],
+      description: '',
+    },
+    resolver: zodResolver(schema),
+    mode: 'onChange'
+  });
+
+  const {
+    handleSubmit,
+    setValue,
+    watch,
+    formState: {
+      errors,
+      isValid,
+      isSubmitting,
+    },
+  } = useFormMethods;
+  const images = watch('images');
+
   const [searchParams] = useSearchParams();
   const lat = parseFloat(searchParams.get("lat") || "35.681236");
   const lng = parseFloat(searchParams.get("lng") || "139.767125");
   const [marker, setMarker] = useState<google.maps.LatLngLiteral>({ lat, lng });
   const [address, setAddress] = useState<string>("");
   const [prefecture, setPrefecture] = useState<Prefecture>();
-  const [images, setImages] = useState<File[]>([]);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [fish, setFish] = React.useState<Fish[]>([]);
   const [selectedFish, setSelectedFish] = React.useState<Fish[]>([]);
@@ -88,7 +124,7 @@ export const FishingSpotNewPage: React.FC = () => {
       files.push(e.target.files[i]);
     }
 
-    setImages([...images, ...files]);
+    setValue('images', [...images, ...files]);
     e.target.value = "";
   };
 
@@ -96,7 +132,7 @@ export const FishingSpotNewPage: React.FC = () => {
   const handleOnDeleteFile = (index: number) => {
     const updatedImages = [...images];
     updatedImages.splice(index, 1);
-    setImages(updatedImages);
+    setValue('images', updatedImages);
   };
 
   const handleFishChange = (event: React.SyntheticEvent<Element, Event>, value: string[]) => {
@@ -162,7 +198,7 @@ export const FishingSpotNewPage: React.FC = () => {
               </Box>
 
               <Box>
-                <Label label={"添付ファイル"} icon={<AttachFileIcon />} />
+                <Label label={"写真を追加"} icon={<AddAPhotoIcon />} />
                 <label htmlFor='file-upload'>
                   <input
                     id='file-upload'

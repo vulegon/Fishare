@@ -12,6 +12,8 @@ rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
 
+require 'test_prof/recipes/rspec/let_it_be'
+
 RSpec.configure do |config|
   config.fixture_path = Rails.root.join('spec/fixtures')
   config.use_transactional_fixtures = true

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe FishingSpotLocationFactory do
-  let!(:prefecture) { create(:prefecture) }
+  let_it_be(:prefecture) { create(:prefecture) }
   let(:fishing_spot) { build(:fishing_spot) }
 
   describe '#build' do

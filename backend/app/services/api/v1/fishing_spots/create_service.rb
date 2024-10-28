@@ -10,7 +10,7 @@ module Api
             fishing_spot = ::FishingSpotFactory.new.build(params)
             fishing_spot_images = ::FishingSpotImageFactory.new.build_all(params.images, fishing_spot.id)
             fishing_spot_fishes = ::FishingSpotFishFactory.new.build_all(params.fishes.pluck(:id), fishing_spot.id)
-            fishing_spot_location = ::FishingSpotLocationFactory.new.build(params.location, fishing_spot.id)
+            fishing_spot_location = ::FishingSpotLocationFactory.new.build(params, fishing_spot.id)
 
             ActiveRecord::Base.transaction do
               FishingSpotRepository.save!(fishing_spot)

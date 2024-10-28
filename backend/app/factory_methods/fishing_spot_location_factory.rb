@@ -1,10 +1,13 @@
 class FishingSpotLocationFactory
-  def build(fish_id, fishing_spot_id)
-    fishing_spot_fish_id = SecureRandom.uuid
-    ::FishingSpotImage.new(
-      id: fishing_spot_fish_id,
+  def build(params, fishing_spot_id)
+    fishing_spot_location_id = SecureRandom.uuid
+    ::FishingSpotLocation.new(
+      id: fishing_spot_location_id,
       fishing_spot_id: fishing_spot_id,
-      fish_id: fish_id,
+      prefecture_id: params.prefecture.id,
+      latitude: params.location[:latitude],
+      longitude: params.location[:longitude],
+      address: params.location[:address]
     )
   end
 end

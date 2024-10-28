@@ -24,7 +24,6 @@ import MapIcon from "@mui/icons-material/Map";
 import { faFish } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Autocomplete from "@mui/material/Autocomplete";
 import Chip from "@mui/material/Chip";
@@ -88,8 +87,8 @@ export const FishingSpotNewPage: React.FC = () => {
         (pref: Prefecture) => pref.name === addressResponse.prefecture
       );
 
-      setAddress(addressResponse.address);
-      setPrefecture(findPrefecture);
+      setValue('address', addressResponse.address);
+      findPrefecture && setValue('prefecture', findPrefecture);
     };
 
     const loadData = async () => {

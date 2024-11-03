@@ -33,7 +33,7 @@ ja:
         images: 画像
         contact_category: お問い合わせカテゴリ
       api/v1/fishing_spots/create_parameter:
-        name: 釣り場名
+        name: 釣り場名称
         description: 釣り場説明
         location: 釣り場住所
         fishes: 魚種

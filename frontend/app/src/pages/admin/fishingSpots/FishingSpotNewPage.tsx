@@ -149,8 +149,8 @@ export const FishingSpotNewPage: React.FC = () => {
               flexDirection: "row",
               alignItems: "center",
               textAlign: "center",
-              mt: 4,
-              mb: 3,
+              mt: 1,
+              mb: 1,
             }}
           >
             <Typography variant='h4' gutterBottom sx={{ fontWeight: "bold" }}>

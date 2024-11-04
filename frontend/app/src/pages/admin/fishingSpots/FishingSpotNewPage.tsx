@@ -5,8 +5,6 @@ import {
   TextField,
   Stack,
   Button,
-  Grid,
-  IconButton,
 } from "@mui/material";
 import { MainLayout } from "features/layouts";
 import Container from "@mui/material/Container";
@@ -24,15 +22,14 @@ import MapIcon from "@mui/icons-material/Map";
 import { faFish } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
-import CancelIcon from "@mui/icons-material/Cancel";
 import Autocomplete from "@mui/material/Autocomplete";
 import Chip from "@mui/material/Chip";
 import { Fish } from "interfaces/api";
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { InputTextField } from "components/common/InputTextField";
+import { FileUploader } from "components/common/FileUploader";
 
 const schema = z.object({
   name: z.string().min(2, '名前は2文字以上である必要があります').max(50, '名前は100文字以内で入力してください'),
@@ -207,71 +204,12 @@ export const FishingSpotNewPage: React.FC = () => {
                 </Box>
 
                 <Box>
-                  <Label label={"写真を追加"} icon={<AddAPhotoIcon />} />
-                  <label htmlFor='file-upload'>
-                    <input
-                      id='file-upload'
-                      type='file'
-                      style={{ display: "none" }}
-                      accept='image/*,.png,.jpg,.jpeg,.gif'
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        handleOnAddFile(e);
-                      }}
-                      multiple
-                    />
-                    <Button variant='contained' component='span'>
-                      ファイルを選択
-                    </Button>
-                  </label>
-
-                  <Grid
-                    container
-                    spacing={{ xs: 2, md: 3 }}
-                    columns={{ xs: 8, sm: 12, md: 12 }}
-                    sx={{ margin: 3 }}
-                  >
-                    {images.map((image, index) => (
-                      <Grid
-                        item
-                        xs={4}
-                        sm={4}
-                        md={4}
-                        key={index}
-                        sx={{
-                          display: "flex",
-                          justifyContent: "start",
-                          alignItems: "center",
-                          position: "relative",
-                          margin: 0,
-                        }}
-                      >
-                        <IconButton
-                          area-label='画像削除'
-                          style={{
-                            position: "absolute",
-                            top: 10,
-                            right: 0,
-                            color: "#aaa",
-                          }}
-                          onClick={() => {
-                            handleOnDeleteFile(index);
-                          }}
-                        >
-                          <CancelIcon />
-                        </IconButton>
-                        <img
-                          src={URL.createObjectURL(image)}
-                          alt='アップロード済み画像'
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "contain",
-                            aspectRatio: "1/1",
-                          }}
-                        />
-                      </Grid>
-                    ))}
-                  </Grid>
+                  <FileUploader
+                    name='images'
+                    label='写真を追加'
+                    handleOnAddFile={handleOnAddFile}
+                    handleOnDeleteFile={handleOnDeleteFile}
+                  />
                 </Box>
 
                 <Box>

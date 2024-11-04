@@ -19,7 +19,7 @@ RSpec.describe FishingSpotLocationFactory do
             }
           ],
           location: {
-            prefecture_name: prefecture.name,
+            prefecture: { id: prefecture.id, name: prefecture.name },
             latitude: 35.658034,
             longitude: 139.701636,
             address: '東京都渋谷区'

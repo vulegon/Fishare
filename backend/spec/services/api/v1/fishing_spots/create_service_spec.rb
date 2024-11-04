@@ -15,7 +15,7 @@ RSpec.describe ::Api::V1::FishingSpots::CreateService do
             name: '釣り場1',
             description: '1234567890',
             location: {
-              prefecture_name: prefecture.name,
+              prefecture: { id: prefecture.id, name: prefecture.name },
               address: '東京都渋谷区',
               latitude: 35.658034,
               longitude: 139.701636

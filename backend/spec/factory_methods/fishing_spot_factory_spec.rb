@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe FishingSpotFactory do
+  let_it_be(:prefecture) { create(:prefecture) }
+
   describe '#build' do
     subject { described_class.new.build(create_params) }
       let!(:fish) { create(:fish) }
@@ -9,6 +11,9 @@ RSpec.describe FishingSpotFactory do
         {
           name: 'name',
           de1scription: 'description',
+          location: {
+            prefecture: { id: prefecture.id, name: prefecture.name },
+          },
           fishes: [
             {
               id: fish.id,
@@ -18,7 +23,7 @@ RSpec.describe FishingSpotFactory do
         }
       }
 
-      it '永続化されていないcontactが返ってくること' do
+      it '永続化されていないfishing_spotが返ってくること' do
         expect(subject).to be_a(FishingSpot)
         expect(subject.id).to be_present
         expect(subject).to have_attributes(

@@ -47,8 +47,9 @@ class User < ActiveRecord::Base
   has_many :user_roleships, dependent: :destroy, inverse_of: :user
   has_many :user_roles, through: :user_roleships
 
+  before_validation :downcase_email
   validates :name, presence: true
-  validates :email, email_format: true, uniqueness: true
+  validates :email, email_format: true, uniqueness: { case_sensitive: false }
   validates :password, password_format: true, if: :password_required?
 
   class << self
@@ -70,5 +71,9 @@ class User < ActiveRecord::Base
   # パスワードのバリデーションを必要な場合にのみ適用する
   def password_required?
     new_record? || password.present?
+  end
+
+  def downcase_email
+    self.email = email.downcase if email.present?
   end
 end

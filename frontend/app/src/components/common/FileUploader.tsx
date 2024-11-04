@@ -5,6 +5,7 @@ import {
   Grid,
   IconButton,
   Typography,
+  Stack
 } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
@@ -34,22 +35,23 @@ export const FileUploader: React.FC<FileUploaderProps> = (
   } = useFormContext();
 
   return (
-    <Box>
-      <Label label={label} icon={icon} />
-      <label htmlFor='file-upload'>
-        <input
-          id='file-upload'
-          type='file'
-          style={{ display: "none" }}
-          accept='image/*,.png,.jpg,.jpeg,.gif'
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleOnAddFile(e) }}
-          multiple
-        />
-        <Button variant='contained' component='span'>
-          ファイルを選択
-        </Button>
-      </label>
-
+    <Stack spacing={1}>
+      <Box>
+        <Label label={label} icon={icon} />
+        <label htmlFor='file-upload'>
+          <input
+            id='file-upload'
+            type='file'
+            style={{ display: "none" }}
+            accept='image/*,.png,.jpg,.jpeg,.gif'
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleOnAddFile(e) }}
+            multiple
+          />
+          <Button variant='contained' component='span'>
+            ファイルを選択
+          </Button>
+        </label>
+      </Box>
       <Controller
         name={name}
         control={control}
@@ -109,6 +111,6 @@ export const FileUploader: React.FC<FileUploaderProps> = (
           </>
         )}
       />
-    </Box>
+    </Stack>
   );
 };

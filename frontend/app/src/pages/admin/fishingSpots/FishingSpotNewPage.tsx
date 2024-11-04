@@ -46,11 +46,15 @@ export const FishingSpotNewPage: React.FC = () => {
   const useFormMethods = useForm({
     defaultValues: {
       name: '',
-      images: [] as File[],
-      prefecture: { id: '', name: '' },
-      address: '',
-      fish: [] as Fish[],
       description: '',
+      location: {
+        prefecture: { id: '', name: '' } as Prefecture,
+        address: '',
+        latitude: 0,
+        longitude: 0,
+      },
+      images: [] as File[],
+      fish: [] as Fish[],
     },
     resolver: zodResolver(schema),
     mode: 'onChange'
@@ -72,7 +76,6 @@ export const FishingSpotNewPage: React.FC = () => {
   const lat = parseFloat(searchParams.get("lat") || "35.681236");
   const lng = parseFloat(searchParams.get("lng") || "139.767125");
   const [marker, setMarker] = useState<google.maps.LatLngLiteral>({ lat, lng });
-  const [address, setAddress] = useState<string>("");
   const [prefecture, setPrefecture] = useState<Prefecture>();
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [fish, setFish] = React.useState<Fish[]>([]);
@@ -87,8 +90,16 @@ export const FishingSpotNewPage: React.FC = () => {
         (pref: Prefecture) => pref.name === addressResponse.prefecture
       );
 
-      setValue('address', addressResponse.address);
-      findPrefecture && setValue('prefecture', findPrefecture);
+      if (!findPrefecture) return;
+      setValue(
+        'location',
+        {
+          prefecture: findPrefecture,
+          address: addressResponse.address,
+          latitude: marker.lat,
+          longitude: marker.lng,
+        }
+      );
     };
 
     const loadData = async () => {
@@ -183,7 +194,7 @@ export const FishingSpotNewPage: React.FC = () => {
             <Stack spacing={3}>
               <Box>
                 <Label label={"釣り場の名前"} icon={<MyLocationIcon />} />
-                <TextField label='名称を入力' variant='outlined' fullWidth />
+                <TextField label='名称を入力' variant='outlined' fullWidth value={watch('name')}/>
               </Box>
 
               <Box>
@@ -192,7 +203,7 @@ export const FishingSpotNewPage: React.FC = () => {
                   label='住所を入力'
                   variant='outlined'
                   fullWidth
-                  value={address}
+                  value={watch('location.address')}
                 />
               </Box>
 

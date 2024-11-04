@@ -25,12 +25,12 @@ module Api
           permitted_params = params.permit(
             :name,
             :description,
-            location: [:prefecture_name, :address, :latitude, :longitude],
+            location: [ { prefecture: [:id, :name] }, :address, :latitude, :longitude],
             images: [:file_name, :s3_key, :content_type, :file_size, :s3_url],
             fishes: [:id, :name]
           )
           super(permitted_params.to_h.deep_symbolize_keys)
-          @prefecture = ::Prefecture.find_by(name: location[:prefecture_name])
+          @prefecture = ::Prefecture.find_by(id: location[:prefecture][:id])
           @fishing_spot_fishes = ::Fish.where(id: fishes.map { |fish| fish[:id] })
         end
 
@@ -47,7 +47,7 @@ module Api
         def location_exists
           return if location[:address].present?
 
-          errors.add(:location, 'の住所が見つかりません')
+          errors.add(:location, 'の住所が未入力です')
         end
 
         def latitude_exists
@@ -63,8 +63,7 @@ module Api
         end
 
         def fishes_exists
-          return if fishes.size == fishing_spot_fishes.size
-          return if fishes.present?
+          return if fishes.size == fishing_spot_fishes.size && fishing_spot_fishes.size > 0
 
           errors.add(:fishes, 'が指定されていないか、存在しない魚が含まれています')
         end

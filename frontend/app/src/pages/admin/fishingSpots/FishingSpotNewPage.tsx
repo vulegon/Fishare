@@ -32,6 +32,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import { InputTextField } from "components/common/InputTextField";
 
 const schema = z.object({
   name: z.string().min(2, '名前は2文字以上である必要があります').max(50, '名前は100文字以内で入力してください'),
@@ -89,6 +90,8 @@ export const FishingSpotNewPage: React.FC = () => {
       const findPrefecture = prefectureData.prefectures.find(
         (pref: Prefecture) => pref.name === addressResponse.prefecture
       );
+
+      console.log(addressResponse);
 
       if (!findPrefecture) return;
       setValue(
@@ -169,163 +172,160 @@ export const FishingSpotNewPage: React.FC = () => {
             </Typography>
           </Box>
 
-          <Stack spacing={5}>
-            <Box>
-              <Label label={"釣り場の場所"} icon={<MapIcon />} />
-              <Box
-                sx={{
-                  borderRadius: 2,
-                  overflow: "hidden",
-                  boxShadow: 3,
-                  width: "100%",
-                  height: "400px",
-                  minWidth: "500px",
-                }}
-              >
-                {marker && isLoaded && (
-                  <FishingSpotNewLoadMap
-                    marker={marker}
-                    onMapClick={onMapClick}
-                  />
-                )}
-              </Box>
-            </Box>
-
-            <Stack spacing={3}>
+          <FormProvider {...useFormMethods}>
+            <Stack spacing={2}>
               <Box>
-                <Label label={"釣り場の名前"} icon={<MyLocationIcon />} />
-                <TextField label='名称を入力' variant='outlined' fullWidth value={watch('name')}/>
-              </Box>
-
-              <Box>
-                <Label label={"住所"} icon={<RoomIcon />} />
-                <TextField
-                  label='住所を入力'
-                  variant='outlined'
-                  fullWidth
-                  value={watch('location.address')}
-                />
-              </Box>
-
-              <Box>
-                <Label label={"写真を追加"} icon={<AddAPhotoIcon />} />
-                <label htmlFor='file-upload'>
-                  <input
-                    id='file-upload'
-                    type='file'
-                    style={{ display: "none" }}
-                    accept='image/*,.png,.jpg,.jpeg,.gif'
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      handleOnAddFile(e);
-                    }}
-                    multiple
-                  />
-                  <Button variant='contained' component='span'>
-                    ファイルを選択
-                  </Button>
-                </label>
-
-                <Grid
-                  container
-                  spacing={{ xs: 2, md: 3 }}
-                  columns={{ xs: 8, sm: 12, md: 12 }}
-                  sx={{ margin: 3 }}
+                <Label label={"釣り場の場所"} icon={<MapIcon />} />
+                <Box
+                  sx={{
+                    borderRadius: 2,
+                    overflow: "hidden",
+                    boxShadow: 3,
+                    width: "100%",
+                    height: "400px",
+                    minWidth: "500px",
+                  }}
                 >
-                  {images.map((image, index) => (
-                    <Grid
-                      item
-                      xs={4}
-                      sm={4}
-                      md={4}
-                      key={index}
-                      sx={{
-                        display: "flex",
-                        justifyContent: "start",
-                        alignItems: "center",
-                        position: "relative",
-                        margin: 0,
+                  {marker && isLoaded && (
+                    <FishingSpotNewLoadMap
+                      marker={marker}
+                      onMapClick={onMapClick}
+                    />
+                  )}
+                </Box>
+              </Box>
+
+              <Stack spacing={3}>
+                <Box>
+                  <Label label={"釣り場の名前"} icon={<MyLocationIcon />} />
+                  <InputTextField name={"name"} />
+                </Box>
+
+                <Box>
+                  <Label label={"住所"} icon={<RoomIcon />} />
+                  <InputTextField name="location.address" />
+                </Box>
+
+                <Box>
+                  <Label label={"写真を追加"} icon={<AddAPhotoIcon />} />
+                  <label htmlFor='file-upload'>
+                    <input
+                      id='file-upload'
+                      type='file'
+                      style={{ display: "none" }}
+                      accept='image/*,.png,.jpg,.jpeg,.gif'
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        handleOnAddFile(e);
                       }}
-                    >
-                      <IconButton
-                        area-label='画像削除'
-                        style={{
-                          position: "absolute",
-                          top: 10,
-                          right: 0,
-                          color: "#aaa",
-                        }}
-                        onClick={() => {
-                          handleOnDeleteFile(index);
+                      multiple
+                    />
+                    <Button variant='contained' component='span'>
+                      ファイルを選択
+                    </Button>
+                  </label>
+
+                  <Grid
+                    container
+                    spacing={{ xs: 2, md: 3 }}
+                    columns={{ xs: 8, sm: 12, md: 12 }}
+                    sx={{ margin: 3 }}
+                  >
+                    {images.map((image, index) => (
+                      <Grid
+                        item
+                        xs={4}
+                        sm={4}
+                        md={4}
+                        key={index}
+                        sx={{
+                          display: "flex",
+                          justifyContent: "start",
+                          alignItems: "center",
+                          position: "relative",
+                          margin: 0,
                         }}
                       >
-                        <CancelIcon />
-                      </IconButton>
-                      <img
-                        src={URL.createObjectURL(image)}
-                        alt='アップロード済み画像'
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "contain",
-                          aspectRatio: "1/1",
-                        }}
-                      />
-                    </Grid>
-                  ))}
-                </Grid>
-              </Box>
+                        <IconButton
+                          area-label='画像削除'
+                          style={{
+                            position: "absolute",
+                            top: 10,
+                            right: 0,
+                            color: "#aaa",
+                          }}
+                          onClick={() => {
+                            handleOnDeleteFile(index);
+                          }}
+                        >
+                          <CancelIcon />
+                        </IconButton>
+                        <img
+                          src={URL.createObjectURL(image)}
+                          alt='アップロード済み画像'
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "contain",
+                            aspectRatio: "1/1",
+                          }}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
 
-              <Box>
-                <Label
-                  label={"釣れる魚"}
-                  icon={
-                    <FontAwesomeIcon
-                      icon={faFish}
-                      style={{ fontSize: "23px" }}
-                    />
-                  }
-                />
-                <Autocomplete
-                  multiple
-                  id='tags-outlined'
-                  options={fish.map((f) => f.name)}
-                  freeSolo
-                  value={selectedFish.map((f) => f.name)}
-                  onChange={handleFishChange}
-                  renderTags={(value: readonly string[], getTagProps) =>
-                    value.map((option: string, index: number) => (
-                      <Chip
-                        color='primary'
-                        variant='outlined'
-                        label={option}
-                        {...getTagProps({ index })}
+                <Box>
+                  <Label
+                    label={"釣れる魚"}
+                    icon={
+                      <FontAwesomeIcon
+                        icon={faFish}
+                        style={{ fontSize: "23px" }}
                       />
-                    ))
-                  }
-                  renderInput={(params) => (
-                    <TextField {...params} label='釣れる魚' />
-                  )}
-                />
-              </Box>
+                    }
+                  />
+                  <Autocomplete
+                    multiple
+                    id='tags-outlined'
+                    options={fish.map((f) => f.name)}
+                    freeSolo
+                    value={selectedFish.map((f) => f.name)}
+                    onChange={handleFishChange}
+                    renderTags={(value: readonly string[], getTagProps) =>
+                      value.map((option: string, index: number) => (
+                        <Chip
+                          color='primary'
+                          variant='outlined'
+                          label={option}
+                          {...getTagProps({ index })}
+                        />
+                      ))
+                    }
+                    renderInput={(params) => (
+                      <TextField {...params} label='釣れる魚' />
+                    )}
+                  />
+                </Box>
 
-              <Box>
-                <Label label={"説明"} icon={<InfoIcon />} />
-                <TextField
-                  label='備考を入力'
-                  variant='outlined'
-                  fullWidth
-                  multiline
-                  rows={5}
-                />
+                <Box>
+                  <Label label={"説明"} icon={<InfoIcon />} />
+                  <TextField
+                    label='備考を入力'
+                    variant='outlined'
+                    fullWidth
+                    multiline
+                    rows={5}
+                  />
+                </Box>
+              </Stack>
+
+              <Box sx={{ textAlign: "center", mt: 4 }}>
+                <Button variant='contained' color='primary' size='large'>
+                  釣り場を登録する
+                </Button>
               </Box>
             </Stack>
-
-            <Box sx={{ textAlign: "center", mt: 4 }}>
-              <Button variant='contained' color='primary' size='large'>
-                釣り場を登録する
-              </Button>
-            </Box>
-          </Stack>
+          </FormProvider>
         </Box>
       </Container>
     </MainLayout>

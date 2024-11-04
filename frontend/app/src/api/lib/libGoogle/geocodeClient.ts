@@ -5,7 +5,7 @@ const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 export const fetchAddress = async(
   lat: number,
   lng: number
-): Promise<{ prefecture: string, address: string }> => {
+) : Promise<{ prefecture: string, address: string }> => {
     try {
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_MAPS_API_KEY}`,
@@ -24,9 +24,9 @@ export const fetchAddress = async(
 
       const prefecture = response.data.results[0].address_components.find((component: any) =>
         component.types.includes('administrative_area_level_1')
-      );
+      ).long_name;
 
-      return {prefecture: prefecture, address: fullAddress};
+      return { prefecture: prefecture, address: fullAddress };
     } catch (error) {
       notifyError(error);
       throw error;

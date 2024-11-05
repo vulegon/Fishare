@@ -30,6 +30,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { InputTextField } from "components/common/InputTextField";
 import { FileUploader } from "components/common/FileUploader";
+import { FishingSpotFishSelecter } from "features/admin/fishingSpots/map/new/FishingSpotFishSelecter";
 
 const schema = z.object({
   name: z.string().min(2, '名前は2文字以上である必要があります').max(50, '名前は100文字以内で入力してください'),
@@ -225,26 +226,9 @@ export const FishingSpotNewPage: React.FC = () => {
                         />
                       }
                     />
-                    <Autocomplete
-                      multiple
-                      id='tags-outlined'
-                      options={fish.map((f) => f.name)}
-                      freeSolo
-                      value={selectedFish.map((f) => f.name)}
-                      onChange={handleFishChange}
-                      renderTags={(value: readonly string[], getTagProps) =>
-                        value.map((option: string, index: number) => (
-                          <Chip
-                            color='primary'
-                            variant='outlined'
-                            label={option}
-                            {...getTagProps({ index })}
-                          />
-                        ))
-                      }
-                      renderInput={(params) => (
-                        <TextField {...params} label='釣れる魚' />
-                      )}
+                    <FishingSpotFishSelecter
+                      name='fish'
+                      fish={fish}
                     />
                   </Box>
 

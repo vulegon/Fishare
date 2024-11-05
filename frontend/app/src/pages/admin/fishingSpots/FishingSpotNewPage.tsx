@@ -37,10 +37,17 @@ const schema = z.object({
   prefecture: z.string().min(1, '都道府県を選択してください'),
   address: z.string().min(1, '住所を入力してください'),
   fish: z.array(z.string()).min(1, '釣れる魚を選択してください'),
-  description: z.string().min(1, '説明を入力してください'),
+  description: z.string().min(10, '説明を入力してください'),
 });
 
 export const FishingSpotNewPage: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const lat = parseFloat(searchParams.get("lat") || "35.681236");
+  const lng = parseFloat(searchParams.get("lng") || "139.767125");
+  const [marker, setMarker] = useState<google.maps.LatLngLiteral>({ lat, lng });
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [fish, setFish] = React.useState<Fish[]>([]);
+
   const useFormMethods = useForm({
     defaultValues: {
       name: '',
@@ -69,15 +76,7 @@ export const FishingSpotNewPage: React.FC = () => {
     },
   } = useFormMethods;
   const images = watch('images');
-
-  const [searchParams] = useSearchParams();
-  const lat = parseFloat(searchParams.get("lat") || "35.681236");
-  const lng = parseFloat(searchParams.get("lng") || "139.767125");
-  const [marker, setMarker] = useState<google.maps.LatLngLiteral>({ lat, lng });
-  const [prefecture, setPrefecture] = useState<Prefecture>();
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [fish, setFish] = React.useState<Fish[]>([]);
-  const [selectedFish, setSelectedFish] = React.useState<Fish[]>([]);
+  const selectedFish = watch('fish');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -147,7 +146,7 @@ export const FishingSpotNewPage: React.FC = () => {
 
   const handleFishChange = (event: React.SyntheticEvent<Element, Event>, value: string[]) => {
     const selected = fish.filter((f) => value.includes(f.name));
-    setSelectedFish(selected);
+    setValue('fish', selected);
   }
 
   return (

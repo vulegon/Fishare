@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
-  TextField,
   Stack,
   Button,
 } from "@mui/material";
@@ -22,8 +21,6 @@ import MapIcon from "@mui/icons-material/Map";
 import { faFish } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
-import Autocomplete from "@mui/material/Autocomplete";
-import Chip from "@mui/material/Chip";
 import { Fish } from "interfaces/api";
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -70,15 +67,8 @@ export const FishingSpotNewPage: React.FC = () => {
     handleSubmit,
     setValue,
     watch,
-    control,
-    formState: {
-      errors,
-      isValid,
-      isSubmitting,
-    },
   } = useFormMethods;
   const images = watch('images');
-  const selectedFish = watch('fish');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -145,11 +135,6 @@ export const FishingSpotNewPage: React.FC = () => {
     updatedImages.splice(index, 1);
     setValue('images', updatedImages);
   };
-
-  const handleFishChange = (event: React.SyntheticEvent<Element, Event>, value: string[]) => {
-    const selected = fish.filter((f) => value.includes(f.name));
-    setValue('fish', selected);
-  }
 
   const onSubmit = async (data: any) => {};
 

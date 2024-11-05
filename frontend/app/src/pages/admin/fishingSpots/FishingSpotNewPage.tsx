@@ -37,7 +37,7 @@ const schema = z.object({
   prefecture: z.string().min(1, '都道府県を選択してください'),
   address: z.string().min(1, '住所を入力してください'),
   fish: z.array(z.string()).min(1, '釣れる魚を選択してください'),
-  description: z.string().min(10, '説明を入力してください'),
+  description: z.string().min(10, '説明は10文字以上入力してください'),
 });
 
 export const FishingSpotNewPage: React.FC = () => {
@@ -69,6 +69,7 @@ export const FishingSpotNewPage: React.FC = () => {
     handleSubmit,
     setValue,
     watch,
+    control,
     formState: {
       errors,
       isValid,
@@ -149,6 +150,8 @@ export const FishingSpotNewPage: React.FC = () => {
     setValue('fish', selected);
   }
 
+  const onSubmit = async (data: any) => {};
+
   return (
     <MainLayout>
       <Container fixed>
@@ -169,99 +172,99 @@ export const FishingSpotNewPage: React.FC = () => {
           </Box>
 
           <FormProvider {...useFormMethods}>
-            <Stack spacing={2}>
-              <Box>
-                <Label label={"釣り場の場所"} icon={<MapIcon />} />
-                <Box
-                  sx={{
-                    borderRadius: 2,
-                    overflow: "hidden",
-                    boxShadow: 3,
-                    width: "100%",
-                    height: "400px",
-                    minWidth: "500px",
-                  }}
-                >
-                  {marker && isLoaded && (
-                    <FishingSpotNewLoadMap
-                      marker={marker}
-                      onMapClick={onMapClick}
-                    />
-                  )}
-                </Box>
-              </Box>
-
-              <Stack spacing={3}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Stack spacing={2}>
                 <Box>
-                  <Label label={"釣り場の名前"} icon={<MyLocationIcon />} />
-                  <InputTextField name={"name"} />
-                </Box>
-
-                <Box>
-                  <Label label={"住所"} icon={<RoomIcon />} />
-                  <InputTextField name="location.address" />
-                </Box>
-
-                <Box>
-                  <FileUploader
-                    name='images'
-                    label='写真を追加'
-                    handleOnAddFile={handleOnAddFile}
-                    handleOnDeleteFile={handleOnDeleteFile}
-                  />
-                </Box>
-
-                <Box>
-                  <Label
-                    label={"釣れる魚"}
-                    icon={
-                      <FontAwesomeIcon
-                        icon={faFish}
-                        style={{ fontSize: "23px" }}
+                  <Label label={"釣り場の場所"} icon={<MapIcon />} />
+                  <Box
+                    sx={{
+                      borderRadius: 2,
+                      overflow: "hidden",
+                      boxShadow: 3,
+                      width: "100%",
+                      height: "400px",
+                      minWidth: "500px",
+                    }}
+                  >
+                    {marker && isLoaded && (
+                      <FishingSpotNewLoadMap
+                        marker={marker}
+                        onMapClick={onMapClick}
                       />
-                    }
-                  />
-                  <Autocomplete
-                    multiple
-                    id='tags-outlined'
-                    options={fish.map((f) => f.name)}
-                    freeSolo
-                    value={selectedFish.map((f) => f.name)}
-                    onChange={handleFishChange}
-                    renderTags={(value: readonly string[], getTagProps) =>
-                      value.map((option: string, index: number) => (
-                        <Chip
-                          color='primary'
-                          variant='outlined'
-                          label={option}
-                          {...getTagProps({ index })}
-                        />
-                      ))
-                    }
-                    renderInput={(params) => (
-                      <TextField {...params} label='釣れる魚' />
                     )}
-                  />
+                  </Box>
                 </Box>
 
-                <Box>
-                  <Label label={"説明"} icon={<InfoIcon />} />
-                  <TextField
-                    label='備考を入力'
-                    variant='outlined'
-                    fullWidth
-                    multiline
-                    rows={5}
-                  />
+                <Stack spacing={3}>
+                  <Box>
+                    <Label label={"釣り場の名前"} icon={<MyLocationIcon />} />
+                    <InputTextField name={"name"}/>
+                  </Box>
+
+                  <Box>
+                    <Label label={"住所"} icon={<RoomIcon />} />
+                    <InputTextField name="location.address" />
+                  </Box>
+
+                  <Box>
+                    <FileUploader
+                      name='images'
+                      label='写真を追加'
+                      handleOnAddFile={handleOnAddFile}
+                      handleOnDeleteFile={handleOnDeleteFile}
+                    />
+                  </Box>
+
+                  <Box>
+                    <Label
+                      label={"釣れる魚"}
+                      icon={
+                        <FontAwesomeIcon
+                          icon={faFish}
+                          style={{ fontSize: "23px" }}
+                        />
+                      }
+                    />
+                    <Autocomplete
+                      multiple
+                      id='tags-outlined'
+                      options={fish.map((f) => f.name)}
+                      freeSolo
+                      value={selectedFish.map((f) => f.name)}
+                      onChange={handleFishChange}
+                      renderTags={(value: readonly string[], getTagProps) =>
+                        value.map((option: string, index: number) => (
+                          <Chip
+                            color='primary'
+                            variant='outlined'
+                            label={option}
+                            {...getTagProps({ index })}
+                          />
+                        ))
+                      }
+                      renderInput={(params) => (
+                        <TextField {...params} label='釣れる魚' />
+                      )}
+                    />
+                  </Box>
+
+                  <Box>
+                    <Label label={"説明"} icon={<InfoIcon />} />
+                    <InputTextField
+                      name="description"
+                      multiline
+                      rows={5}
+                    />
+                  </Box>
+                </Stack>
+
+                <Box sx={{ textAlign: "center", mt: 4 }}>
+                  <Button variant='contained' color='primary' size='large'>
+                    釣り場を登録する
+                  </Button>
                 </Box>
               </Stack>
-
-              <Box sx={{ textAlign: "center", mt: 4 }}>
-                <Button variant='contained' color='primary' size='large'>
-                  釣り場を登録する
-                </Button>
-              </Box>
-            </Stack>
+            </form>
           </FormProvider>
         </Box>
       </Container>

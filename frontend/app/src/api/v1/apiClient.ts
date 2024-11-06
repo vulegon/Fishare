@@ -1,12 +1,12 @@
 import axios, { AxiosInstance } from 'axios';
-import { S3Image } from 'interfaces/api/s3/S3Image';
-import { User } from 'interfaces/contexts/User';
-import { notifyError } from 'utils/toast/notifyError';
-import { s3Client } from './s3Client';
 import {
   Fish,
   Prefecture,
 } from 'interfaces/api';
+import { S3Image } from 'interfaces/api/s3/S3Image';
+import { User } from 'interfaces/contexts/User';
+import { notifyError } from 'utils/toast/notifyError';
+import { s3Client } from './s3Client';
 
 const API_VERSION_PATH = '/api/v1/';
 
@@ -45,17 +45,7 @@ class ApiClient {
     contactCategory: string;
   }): Promise<{ message: string }> {
     try {
-      const s3Images: S3Image[] = [];
-
-      for (const image of data.images) {
-        const uploadedImage = await s3Client.uploadContactFile(image);
-
-        if (uploadedImage instanceof Error) {
-          return { message: 'S3のアップロードに失敗しました。お問い合わせは送信されませんでした。' };
-        }
-
-        s3Images.push(uploadedImage);
-      }
+      const s3Images = await s3Client.uploadAllFileS3(data.images);
 
       const response = await this.client.post('supports/contact', {
         name: data.name,

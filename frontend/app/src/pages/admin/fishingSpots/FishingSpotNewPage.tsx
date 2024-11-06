@@ -15,6 +15,7 @@ import {
 import { fetchAddress } from "api/lib/libGoogle/geocodeClient";
 import { Prefecture } from "interfaces/api";
 import apiClient from "api/v1/apiClient";
+import AdminApiClient from "api/v1/admin/adminApiClient";
 import RoomIcon from "@mui/icons-material/Room";
 import InfoIcon from "@mui/icons-material/Info";
 import MapIcon from "@mui/icons-material/Map";
@@ -28,6 +29,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { InputTextField } from "components/common/InputTextField";
 import { FileUploader } from "components/common/FileUploader";
 import { FishingSpotFishSelecter } from "features/admin/fishingSpots/map/new/FishingSpotFishSelecter";
+import { CreateFishingSpot } from "interfaces/api/admin/fishingSpots/CreateFishingSpot";
+import adminApiClient from "api/v1/admin/adminApiClient";
+import { notifySuccess } from "utils/toast/notifySuccess";
 
 const schema = z.object({
   name: z.string().min(2, '名前は2文字以上である必要があります').max(50, '名前は100文字以内で入力してください'),
@@ -78,8 +82,6 @@ export const FishingSpotNewPage: React.FC = () => {
       const findPrefecture = prefectureData.prefectures.find(
         (pref: Prefecture) => pref.name === addressResponse.prefecture
       );
-
-      console.log(addressResponse);
 
       if (!findPrefecture) return;
       setValue(
@@ -136,7 +138,15 @@ export const FishingSpotNewPage: React.FC = () => {
     setValue('images', updatedImages);
   };
 
-  const onSubmit = async (data: any) => {};
+  const onSubmit = async (data: CreateFishingSpot) => {
+    try {
+      console.log(data);
+      const res = await adminApiClient.createFishingSpot(data);
+      notifySuccess(res.message);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <MainLayout>
@@ -228,7 +238,7 @@ export const FishingSpotNewPage: React.FC = () => {
                 </Stack>
 
                 <Box sx={{ textAlign: "center", mt: 4 }}>
-                  <Button variant='contained' color='primary' size='large'>
+                  <Button type='submit' variant='contained' color='primary' size='large'>
                     釣り場を登録する
                   </Button>
                 </Box>

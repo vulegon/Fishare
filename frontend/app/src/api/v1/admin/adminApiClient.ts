@@ -1,6 +1,8 @@
 import axios, { AxiosInstance } from 'axios';
 import { User } from 'interfaces/contexts/User';
 import { notifyError } from 'utils/toast/notifyError';
+import { CreateFishingSpot } from 'interfaces/api/admin/fishingSpots/CreateFishingSpot';
+import { s3Client } from 'api/v1/s3Client';
 const ADMIN_API_VERSION_PATH = '/api/v1/admin/';
 
 class AdminApiClient {
@@ -16,6 +18,7 @@ class AdminApiClient {
     });
   }
 
+  // ログイン
   public async signIn(email: string, password: string): Promise<User> {
     try {
       const response = await this.client.post('auth/sign_in', {
@@ -36,11 +39,37 @@ class AdminApiClient {
     }
   }
 
+  // ログアウト
   public async signOut(): Promise<{ message: string }> {
     try {
       await this.client.delete('auth/sign_out');
 
       return { message: 'ログアウトに成功しました' };
+    } catch (error) {
+      notifyError(error);
+      throw error;
+    }
+  }
+
+  // 釣り場の作成
+  public async createFishingSpot(data: CreateFishingSpot): Promise<{ message: string }> {
+    try {
+      const s3Images = await s3Client.uploadAllFileS3(data.images);
+      const postData = {
+        name: data.name,
+        description: data.description,
+        location: {
+          prefecture: data.location.prefecture.id,
+          address: data.location.address,
+          latitude: data.location.latitude,
+          longitude: data.location.longitude,
+        },
+        images: s3Images,
+        fish: data.fish,
+      }
+      const response = await this.client.post('fishing_spots', postData);
+
+      return { message: response.data.message };
     } catch (error) {
       notifyError(error);
       throw error;

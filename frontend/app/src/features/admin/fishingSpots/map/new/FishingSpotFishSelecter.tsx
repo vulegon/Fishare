@@ -26,7 +26,7 @@ export const FishingSpotFishSelecter: React.FC<FishingSpotFishSelecterProps> = (
         <Autocomplete
           {...field}
           multiple
-          id='tags-outlined'
+          id='fihsing-spot-tags'
           options={fish.map((f) => f.name)}
           freeSolo
           value={field.value || []}
@@ -34,10 +34,11 @@ export const FishingSpotFishSelecter: React.FC<FishingSpotFishSelecterProps> = (
           renderTags={(value: readonly string[], getTagProps) =>
             value.map((option: string, index: number) => (
               <Chip
+                {...getTagProps({ index })}
+                key={option}
                 color='primary'
                 variant='outlined'
                 label={option}
-                {...getTagProps({ index })}
               />
             ))
           }

@@ -35,8 +35,15 @@ import { notifySuccess } from "utils/toast/notifySuccess";
 const schema = z.object({
   name: z.string().min(2, '名前は2文字以上である必要があります').max(50, '名前は100文字以内で入力してください'),
   images: z.array(z.instanceof(File)).max(9, '画像は最大9枚までです'),
-  prefecture: z.string().min(1, '都道府県を選択してください'),
-  address: z.string().min(1, '住所を入力してください'),
+  location: z.object({
+    prefecture: z.object({
+      id: z.string().nonempty('都道府県を選択してください'),
+      name: z.string().nonempty('都道府県名を入力してください'),
+    }),
+    address: z.string().min(1, '住所を入力してください'),
+    latitude: z.number(),
+    longitude: z.number(),
+  }),
   fish: z.array(z.string()).min(1, '釣れる魚を選択してください'),
   description: z.string().min(10, '説明は10文字以上入力してください'),
 });
@@ -75,6 +82,15 @@ export const FishingSpotNewPage: React.FC = () => {
     },
   } = useFormMethods;
   const images = watch('images');
+
+  const onSubmit = async (data: CreateFishingSpot) => {
+    try {
+      const res = await adminApiClient.createFishingSpot(data);
+      notifySuccess(res.message);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -138,15 +154,6 @@ export const FishingSpotNewPage: React.FC = () => {
     const updatedImages = [...images];
     updatedImages.splice(index, 1);
     setValue('images', updatedImages);
-  };
-
-  const onSubmit = async (data: CreateFishingSpot) => {
-    try {
-      const res = await adminApiClient.createFishingSpot(data);
-      notifySuccess(res.message);
-    } catch (err) {
-      console.error(err);
-    }
   };
 
   return (
@@ -244,6 +251,8 @@ export const FishingSpotNewPage: React.FC = () => {
                     variant='contained'
                     color='primary'
                     size='large'
+                    onClick={handleSubmit(onSubmit)}
+                    disabled={!isValid}
                   >
                     釣り場を登録する
                   </Button>

@@ -15,7 +15,6 @@ import {
 import { fetchAddress } from "api/lib/libGoogle/geocodeClient";
 import { Prefecture } from "interfaces/api";
 import apiClient from "api/v1/apiClient";
-import AdminApiClient from "api/v1/admin/adminApiClient";
 import RoomIcon from "@mui/icons-material/Room";
 import InfoIcon from "@mui/icons-material/Info";
 import MapIcon from "@mui/icons-material/Map";
@@ -71,6 +70,9 @@ export const FishingSpotNewPage: React.FC = () => {
     handleSubmit,
     setValue,
     watch,
+    formState: {
+      isValid,
+    },
   } = useFormMethods;
   const images = watch('images');
 
@@ -140,7 +142,6 @@ export const FishingSpotNewPage: React.FC = () => {
 
   const onSubmit = async (data: CreateFishingSpot) => {
     try {
-      console.log(data);
       const res = await adminApiClient.createFishingSpot(data);
       notifySuccess(res.message);
     } catch (err) {
@@ -238,7 +239,12 @@ export const FishingSpotNewPage: React.FC = () => {
                 </Stack>
 
                 <Box sx={{ textAlign: "center", mt: 4 }}>
-                  <Button type='submit' variant='contained' color='primary' size='large'>
+                  <Button
+                    type='submit'
+                    variant='contained'
+                    color='primary'
+                    size='large'
+                  >
                     釣り場を登録する
                   </Button>
                 </Box>

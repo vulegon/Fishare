@@ -3,10 +3,10 @@ import {
   Fish,
   Prefecture,
 } from 'interfaces/api';
-import { S3Image } from 'interfaces/api/s3/S3Image';
 import { User } from 'interfaces/contexts/User';
 import { notifyError } from 'utils/toast/notifyError';
 import { s3Client } from './s3Client';
+import { CreateFishingSpot } from 'interfaces/api/admin/fishingSpots/CreateFishingSpot';
 
 const API_VERSION_PATH = '/api/v1/';
 
@@ -89,6 +89,36 @@ class ApiClient {
       const response = await this.client.get('fishes');
       const data = response.data;
       return { fishes: data.fishes };
+    } catch (error) {
+      notifyError(error);
+      throw error;
+    }
+  }
+
+  // 釣り場の作成
+  public async createFishingSpot(data: CreateFishingSpot): Promise<{ message: string }> {
+    try {
+      const s3Images = await s3Client.uploadAllFileS3(data.images);
+    console.log(data);
+
+      const postData = {
+        name: data.name,
+        description: data.description,
+        location: {
+          prefecture: {
+            id: data.location.prefecture.id,
+            name: data.location.prefecture.name,
+          },
+          address: data.location.address,
+          latitude: data.location.latitude,
+          longitude: data.location.longitude,
+        },
+        images: s3Images,
+        fishes: data.fish
+      };
+      const response = await this.client.post('fishing_spots', postData);
+
+      return { message: response.data.message };
     } catch (error) {
       notifyError(error);
       throw error;

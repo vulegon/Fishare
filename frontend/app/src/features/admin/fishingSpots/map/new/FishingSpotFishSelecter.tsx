@@ -27,18 +27,19 @@ export const FishingSpotFishSelecter: React.FC<FishingSpotFishSelecterProps> = (
           {...field}
           multiple
           id='fihsing-spot-tags'
-          options={fish.map((f) => f.name)}
-          freeSolo
-          value={field.value || []}
+          options={fish.map((f) => ({ id: f.id, name: f.name }))}
+          getOptionLabel={(option) => option.name}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+          value={field.value ?? []}
           onChange={(event, newValue) => field.onChange(newValue)}
-          renderTags={(value: readonly string[], getTagProps) =>
-            value.map((option: string, index: number) => (
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => (
               <Chip
                 {...getTagProps({ index })}
-                key={option}
-                color='primary'
-                variant='outlined'
-                label={option}
+                key={option.id}
+                color="primary"
+                variant="outlined"
+                label={option.name}
               />
             ))
           }

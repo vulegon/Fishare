@@ -29,7 +29,6 @@ import { InputTextField } from "components/common/InputTextField";
 import { FileUploader } from "components/common/FileUploader";
 import { FishingSpotFishSelecter } from "features/admin/fishingSpots/map/new/FishingSpotFishSelecter";
 import { CreateFishingSpot } from "interfaces/api/admin/fishingSpots/CreateFishingSpot";
-import adminApiClient from "api/v1/admin/adminApiClient";
 import { notifySuccess } from "utils/toast/notifySuccess";
 
 const schema = z.object({
@@ -44,7 +43,10 @@ const schema = z.object({
     latitude: z.number(),
     longitude: z.number(),
   }),
-  fish: z.array(z.string()).min(1, '釣れる魚を選択してください'),
+  fish: z.array(z.object({
+    id: z.string(),
+    name: z.string(),
+  })).min(1, '釣れる魚を選択してください'),
   description: z.string().min(10, '説明は10文字以上入力してください'),
 });
 
@@ -85,7 +87,7 @@ export const FishingSpotNewPage: React.FC = () => {
 
   const onSubmit = async (data: CreateFishingSpot) => {
     try {
-      const res = await adminApiClient.createFishingSpot(data);
+      const res = await apiClient.createFishingSpot(data);
       notifySuccess(res.message);
     } catch (err) {
       console.error(err);

@@ -50,31 +50,6 @@ class AdminApiClient {
       throw error;
     }
   }
-
-  // 釣り場の作成
-  public async createFishingSpot(data: CreateFishingSpot): Promise<{ message: string }> {
-    try {
-      const s3Images = await s3Client.uploadAllFileS3(data.images);
-      const postData = {
-        name: data.name,
-        description: data.description,
-        location: {
-          prefecture: data.location.prefecture.id,
-          address: data.location.address,
-          latitude: data.location.latitude,
-          longitude: data.location.longitude,
-        },
-        images: s3Images,
-        fish: data.fish,
-      }
-      const response = await this.client.post('fishing_spots', postData);
-
-      return { message: response.data.message };
-    } catch (error) {
-      notifyError(error);
-      throw error;
-    }
-  }
 }
 
 const baseURL = process.env.REACT_APP_API_BASE_URL || '';

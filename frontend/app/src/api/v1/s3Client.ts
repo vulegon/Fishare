@@ -18,10 +18,10 @@ const s3 = new S3({
 })
 
 class S3Client {
-  public async uploadFileS3(file: File): Promise<S3Image> {
+  public async uploadFileS3(file: File, directory: string): Promise<S3Image> {
     try {
       const uuid = uuidv4();
-      const s3Key = `supports/contact/${uuid}/${file.name}`;
+      const s3Key = `${directory}/${uuid}/${file.name}`;
       const params: S3.Types.PutObjectRequest = {
         Bucket: bucketName,
         Key: s3Key, // ファイルのS3内でのパス
@@ -48,12 +48,12 @@ class S3Client {
     }
   }
 
-  public async uploadAllFileS3(files: File[]): Promise<S3Image[]> {
+  public async uploadAllFileS3(files: File[], directory: string): Promise<S3Image[]> {
     try {
       const s3Images: S3Image[] = [];
 
       for (const file of files) {
-        const uploadedImage = await this.uploadFileS3(file);
+        const uploadedImage = await this.uploadFileS3(file, directory);
         s3Images.push(uploadedImage);
       }
 

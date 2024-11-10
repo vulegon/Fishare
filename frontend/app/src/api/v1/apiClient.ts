@@ -45,7 +45,7 @@ class ApiClient {
     contactCategory: string;
   }): Promise<{ message: string }> {
     try {
-      const s3Images = await s3Client.uploadAllFileS3(data.images);
+      const s3Images = await s3Client.uploadAllFileS3(data.images, 'supports/contact');
 
       const response = await this.client.post('supports/contact', {
         name: data.name,
@@ -98,7 +98,7 @@ class ApiClient {
   // 釣り場の作成
   public async createFishingSpot(data: CreateFishingSpot): Promise<{ message: string }> {
     try {
-      const s3Images = await s3Client.uploadAllFileS3(data.images);
+      const s3Images = await s3Client.uploadAllFileS3(data.images, 'fishing_spots');
     console.log(data);
 
       const postData = {

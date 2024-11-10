@@ -4,6 +4,7 @@ import {
   FishingSpotMapSelectPage,
   FishingSpotNewPage,
 } from "pages/admin/fishingSpots";
+import { GoogleMapPage } from "pages/fishingSpots";
 import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { AdminRoutes } from "./admin/AdminRoutes";
@@ -17,7 +18,7 @@ const AppRoutes: React.FC = () => {
           path='/prefectures/:id/fishing_spots'
           element={<PrefectureSpots />}
         />
-        <Route path='/fishing_spots' element={<Home />} />
+        <Route path='/fishing_spots' element={<GoogleMapPage />} />
         <Route path='/supports/contacts/new' element={<Contact />} />
         <Route path='/admin/sign_in' element={<AdminLoginPage />} />
 

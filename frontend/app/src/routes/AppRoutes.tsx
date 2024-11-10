@@ -1,44 +1,43 @@
+import { Contact, Home, NotFound, PrefectureSpots } from "pages";
+import { AdminLoginPage, ContactReviewPage, DashBoardPage } from "pages/admin";
 import {
-  Contact,
-  Home,
-  NotFound,
-  PrefectureSpots,
-} from 'pages';
-import {
-  AdminLoginPage,
-  DashBoardPage,
-  ContactReviewPage
-} from 'pages/admin';
-import React from 'react';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import { AdminRoutes } from './admin/AdminRoutes';
-import { FishingSpotMapPage } from 'pages/admin/fishingSpots';
+  FishingSpotMapSelectPage,
+  FishingSpotNewPage,
+} from "pages/admin/fishingSpots";
+import React from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { AdminRoutes } from "./admin/AdminRoutes";
 
 const AppRoutes: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/prefectures/:id/fishing_spots" element={<PrefectureSpots />} />
-        <Route path="/google_maps" element={<Home />} />
-        <Route path="/supports/contacts/new" element={<Contact />} />
-        <Route path="/admin/sign_in" element={<AdminLoginPage />} />
+        <Route path='/' element={<Home />} />
         <Route
-          path="/admin/dashboards"
-          element={
-            <AdminRoutes>
-              <DashBoardPage />
-            </AdminRoutes>
-          }
+          path='/prefectures/:id/fishing_spots'
+          element={<PrefectureSpots />}
         />
+        <Route path='/fishing_spots' element={<Home />} />
+        <Route path='/supports/contacts/new' element={<Contact />} />
+        <Route path='/admin/sign_in' element={<AdminLoginPage />} />
 
+        {/*管理者ページ*/}
         <Route
-          path="/admin/*"
+          path='/admin/*'
           element={
             <AdminRoutes>
               <Routes>
-                <Route path="contacts" element={<ContactReviewPage />} />
-                <Route path="fishing_spots/map" element={<FishingSpotMapPage />} />
+                <Route path='/dashboards' element={<DashBoardPage />} />
+                <Route path='contacts' element={<ContactReviewPage />} />
+                <Route
+                  path='fishing_spots/map/select'
+                  element={<FishingSpotMapSelectPage />}
+                />
+                <Route
+                  path='fishing_spots/map/new'
+                  element={<FishingSpotNewPage />}
+                />
+                <Route path='*' element={<NotFound />} />
               </Routes>
             </AdminRoutes>
           }
@@ -46,7 +45,7 @@ const AppRoutes: React.FC = () => {
 
         {/*どのルーティングにも当てはまらないとき*/}
         {/* NotFoundは一番最後に置くこと。 */}
-        <Route path="*" element={<NotFound />} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
     </Router>
   );

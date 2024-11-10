@@ -1,7 +1,7 @@
+import { useUser } from 'contexts/UserContext';
 import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useUser } from 'contexts/UserContext';
-import { notifyError } from 'utils/notifyError';
+import { notifyError } from 'utils/toast/notifyError';
 import { unknown } from 'zod';
 import { CenteredLoader } from '../../components/common/CenteredLoader';
 

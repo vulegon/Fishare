@@ -25,6 +25,11 @@ describe Api::V1::ApplicationController, type: :request do
 
       render status: :ok, json: {}
     end
+
+    def render_403_test
+      render_403_error() and return
+      render status: :ok, json: {}
+    end
   end
 
   describe '#render_500' do
@@ -66,6 +71,25 @@ describe Api::V1::ApplicationController, type: :request do
 
     it 'ステータスコード400が返ってくること' do
       expect(subject).to have_http_status(:bad_request)
+    end
+  end
+
+  describe '#render_403_error' do
+    subject {
+      get '/render_403_test'
+      response
+    }
+
+    before(:each) do
+      Rails.application.routes.draw do
+        get '/render_403_test', to: 'tests#render_403_test'
+      end
+    end
+
+    after(:each) { Rails.application.reload_routes! }
+
+    it 'ステータスコード403が返ってくること' do
+      expect(subject).to have_http_status(:forbidden)
     end
   end
 end

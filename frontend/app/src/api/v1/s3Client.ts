@@ -1,6 +1,6 @@
-import S3 from 'aws-sdk/clients/s3'
+import S3 from 'aws-sdk/clients/s3';
 import { S3Image } from 'interfaces/api/s3/S3Image';
-import { notifyError } from 'utils/notifyError';
+import { notifyError } from 'utils/toast/notifyError';
 import { v4 as uuidv4 } from 'uuid';
 
 // IAMユーザの認証情報の「アクセスキーID」から確認できます。
@@ -18,10 +18,10 @@ const s3 = new S3({
 })
 
 class S3Client {
-  public async uploadContactFile(file: File): Promise<S3Image> {
+  public async uploadFileS3(file: File, directory: string): Promise<S3Image> {
     try {
       const uuid = uuidv4();
-      const s3Key = `supports/contact/${uuid}/${file.name}`;
+      const s3Key = `${directory}/${uuid}/${file.name}`;
       const params: S3.Types.PutObjectRequest = {
         Bucket: bucketName,
         Key: s3Key, // ファイルのS3内でのパス
@@ -44,6 +44,21 @@ class S3Client {
         error,
         'ファイルのアップロード中にエラーが発生しました。ファイルの容量が大きすぎる、ファイルを移動されている、通信環境が悪いなどが考えられます。時間を置くかファイルを再度選択してお試しください。'
       );
+      throw error;
+    }
+  }
+
+  public async uploadAllFileS3(files: File[], directory: string): Promise<S3Image[]> {
+    try {
+      const s3Images: S3Image[] = [];
+
+      for (const file of files) {
+        const uploadedImage = await this.uploadFileS3(file, directory);
+        s3Images.push(uploadedImage);
+      }
+
+      return s3Images;
+    } catch (error) {
       throw error;
     }
   }

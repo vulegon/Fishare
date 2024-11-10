@@ -1,20 +1,18 @@
-import React, { useState } from 'react';
-import { AppBar, Typography, IconButton, Menu, Divider } from '@mui/material';
-import { SERVICE_NAME } from 'constants/index';
-import { CustomToolbar } from 'components/common';
-import { Link } from 'react-router-dom';
-import MenuIcon from '@mui/icons-material/Menu';
-import { HEADER_HEIGHT } from 'constants/index';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import LogoutIcon from '@mui/icons-material/Logout';
-import adminApiClient from 'api/v1/admin/adminApiClient';
-import { useUser } from 'contexts/UserContext';
-import { useNavigate } from 'react-router-dom';
-import { notifySuccess } from 'utils/notifySuccess';
-import { UserMenuItem } from './components/UserMenuItem';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Divider, IconButton, Menu, Typography } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import adminApiClient from 'api/v1/admin/adminApiClient';
+import { CustomToolbar } from 'components/common';
+import { HEADER_HEIGHT, SERVICE_NAME } from 'constants/index';
+import { useUser } from 'contexts/UserContext';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { notifySuccess } from 'utils/toast/notifySuccess';
+import { UserMenuItem } from './components/UserMenuItem';
 
 interface HeaderProps {
   handleDrawerOpen: () => void;

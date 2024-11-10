@@ -1,1 +1,3 @@
-export { FishingSpotMapPage } from './FishingSpotMapPage';
+export { FishingSpotMapSelectPage } from './FishingSpotMapSelectPage';
+export { FishingSpotNewPage } from './FishingSpotNewPage';
+

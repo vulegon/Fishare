@@ -1,4 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SendIcon from '@mui/icons-material/Send';
 import { Alert } from '@mui/material';
@@ -15,6 +14,7 @@ import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { EmailSchema } from 'validators/email';
 import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { FileUploaderField, FormButton, InputFieldGroup, SectionTitle, SelectBoxGroup } from './components';
 import { ContactData } from './interfaces/ContactData';
 

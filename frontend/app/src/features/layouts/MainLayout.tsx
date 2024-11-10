@@ -5,7 +5,7 @@ import { Box, CssBaseline } from '@mui/material';
 import { HEADER_HEIGHT } from 'constants/index';
 
 interface MainLayoutProps {
-  children: ReactNode;
+  children?: ReactNode;
   mainContainerPadding?: number;
 }
 

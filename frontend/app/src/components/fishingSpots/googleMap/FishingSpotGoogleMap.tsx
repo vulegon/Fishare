@@ -5,8 +5,14 @@ import AddIcon from '@mui/icons-material/Add';
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 
+interface FishingSpotGoogleMapProps {
+  isNew?: boolean;
+}
+
 // 釣り場を選択する画面で使用するGoogleMapコンポーネント
-export const FishingSpotSelectGoogleMap: React.FC = () => {
+export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
+  isNew = false,
+}) => {
   const [marker, setMarker] = useState<google.maps.LatLngLiteral | null>(null);
   const center = useRef({ lat: 35.681236, lng: 139.767125 }); // 東京駅
   const navigate = useNavigate();
@@ -49,22 +55,26 @@ export const FishingSpotSelectGoogleMap: React.FC = () => {
           }}
         />
       )}
-      <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
-        <Fab
-          disabled={!marker}
-          color='primary'
-          aria-label='add'
-          sx={{
-            '&.Mui-disabled': {
-              backgroundColor: 'rgba(0, 123, 255, 0.5)',
-              color: 'rgba(255, 255, 255, 0.7)',
-            },
-          }}
-          onClick={onAddButtonClick}
-        >
-          <AddIcon />
-        </Fab>
-      </div>
+
+      {/* 釣り場追加ボタン */}
+      { isNew && (
+        <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
+          <Fab
+            disabled={!marker}
+            color='primary'
+            aria-label='add'
+            sx={{
+              '&.Mui-disabled': {
+                backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                color: 'rgba(255, 255, 255, 0.7)',
+              },
+            }}
+            onClick={onAddButtonClick}
+          >
+            <AddIcon />
+          </Fab>
+        </div>
+      )}
     </GoogleMap>
   );
 };

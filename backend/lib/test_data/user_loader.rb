@@ -2,6 +2,9 @@ module TestData
   class UserLoader
     class << self
       def load
+        users = User.joins(:user_roles).where(user_roles: { role: :admin })
+        return if users.present?
+
         ActiveRecord::Base.transaction do
           admin_role = ::UserRole.find_or_create_by!(role: :admin)
 

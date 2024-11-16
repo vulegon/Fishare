@@ -6,7 +6,9 @@ export const GoogleMapPage: React.FC = () => {
   return (
     <>
       <MainLayout mainContainerPadding={0}>
-        <FishingSpotLoadGoogleMap />
+        <FishingSpotLoadGoogleMap
+          isNew={false}
+        />
       </MainLayout>
     </>
   );

@@ -1,9 +1,11 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { HEADER_HEIGHT } from 'constants/index';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
+import apiClient from 'api/v1/apiClient'
+import { FishingSpotLocation } from 'interfaces/api';
 
 interface FishingSpotGoogleMapProps {
   isNew?: boolean;
@@ -13,19 +15,29 @@ interface FishingSpotGoogleMapProps {
 export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
   isNew = false,
 }) => {
-  const [marker, setMarker] = useState<google.maps.LatLngLiteral | null>(null);
+  const [newFishingSpotMarker, setNewFishingSpotMarker] = useState<google.maps.LatLngLiteral | null>(null);
+  const [existingFishingSpotMarker, setExistingFishingSpotMarker] = useState<FishingSpotLocation[]>([]);
   const center = useRef({ lat: 35.681236, lng: 139.767125 }); // 東京駅
   const navigate = useNavigate();
 
+  const fetchFishingSpotLocations = useCallback(async () => {
+    const response = await apiClient.getFishingSpotLocations();
+    setExistingFishingSpotMarker(response.fishingSpotLocations);
+  }, []);
+
+  useEffect(() => {
+    fetchFishingSpotLocations();
+  }, []);
+
   const onMapClick = useCallback((e: google.maps.MapMouseEvent) => {
     if (!e.latLng) return;
-    setMarker({ lat: e.latLng.lat(), lng: e.latLng.lng() });
+    setNewFishingSpotMarker({ lat: e.latLng.lat(), lng: e.latLng.lng() });
   }, []);
 
   const onAddButtonClick = useCallback(() => {
-    if (!marker) return;
-    navigate(`/admin/fishing_spots/map/new?lat=${marker.lat}&lng=${marker.lng}`);
-  }, [marker, navigate]);
+    if (!newFishingSpotMarker) return;
+    navigate(`/admin/fishing_spots/map/new?lat=${newFishingSpotMarker.lat}&lng=${newFishingSpotMarker.lng}`);
+  }, [newFishingSpotMarker, navigate]);
 
   return (
     <GoogleMap
@@ -44,9 +56,9 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
       onClick={onMapClick}
     >
       {/* クリックしたマーカー */}
-      {marker && (
+      {newFishingSpotMarker && (
         <MarkerF
-          position={marker}
+          position={newFishingSpotMarker}
           icon={{
             // マーカーのアイコンを変更
             // https://www.single-life.tokyo/google-maps%EF%BC%88%E3%82%B0%E3%83%BC%E3%82%B0%E3%83%AB%E3%83%9E%E3%83%83%E3%83%97%EF%BC%89%E3%81%A7%E4%BD%BF%E3%81%88%E3%82%8B%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3/#i-5
@@ -56,11 +68,19 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
         />
       )}
 
+      {/* APIから取得した釣り場 */}
+      {existingFishingSpotMarker.map((fishingSpot) => (
+        <MarkerF
+          key={fishingSpot.id}
+          position={{ lat: fishingSpot.latitude, lng: fishingSpot.longitude }}
+        />
+      ))}
+
       {/* 釣り場追加ボタン */}
       { isNew && (
         <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
           <Fab
-            disabled={!marker}
+            disabled={!newFishingSpotMarker}
             color='primary'
             aria-label='add'
             sx={{

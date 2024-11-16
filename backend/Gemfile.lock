@@ -59,6 +59,8 @@ GEM
     activerecord (7.0.8.4)
       activemodel (= 7.0.8.4)
       activesupport (= 7.0.8.4)
+    activerecord-import (1.8.1)
+      activerecord (>= 4.2)
     activestorage (7.0.8.4)
       actionpack (= 7.0.8.4)
       activejob (= 7.0.8.4)
@@ -265,9 +267,9 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
+  activerecord-import
   annotate
   audited
-  bcrypt (~> 3.1.17)
   bootsnap
   debug
   devise

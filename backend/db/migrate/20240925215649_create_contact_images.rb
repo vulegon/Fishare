@@ -1,6 +1,6 @@
 class CreateContactImages < ActiveRecord::Migration[7.0]
   def change
-    create_table :support_contact_images, id: :uuid do |t|
+    create_table :support_contact_images, id: :uuid, comment: 'お問い合わせの画像'  do |t|
       t.references :support_contact, null: false, foreign_key: true, type: :uuid, comment: 'お問い合わせID', on_delete: :cascade
       t.string :s3_key, null: false, comment: 'S3キー'
       t.string :file_name, null: false, comment: 'ファイル名'

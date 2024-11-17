@@ -44,10 +44,10 @@ module TestData
             new_fishing_spot_images = FishingSpotImage.new(
               fishing_spot_id: new_fishing_spot.id,
               s3_key: "fishing_spots/#{image_random_uuid}/#{file_name}",
-              s3_url: "https://s3-ap-northeast-1.amazonaws.com/fishing-spots-test/fishing_spots/#{image_random_uuid}/#{file_name}",
               file_name: file_name,
               content_type: 'image/jpeg',
               file_size: random_number,
+              display_order: 1,
             )
 
             create_fishing_spots << new_fishing_spot

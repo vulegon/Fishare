@@ -15,7 +15,6 @@ module TestData
               ::Supports::ContactImage.create!(
                 support_contact_id: contact.id,
                 s3_key: "supports/contact/#{SecureRandom.uuid}/image#{random_number}.jpg",
-                s3_url: "https://s3-ap-northeast-1.amazonaws.com/supports/contact/#{SecureRandom.uuid}/image#{random_number}.jpg",
                 file_name: "image#{random_number}.jpg",
                 content_type: "image/jpeg",
                 file_size: 1024

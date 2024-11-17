@@ -22,6 +22,8 @@
 #  fk_rails_...  (fishing_spot_id => fishing_spots.id)
 #  fk_rails_...  (prefecture_id => prefectures.id)
 #
+
+# 釣り場の位置情報を管理するモデル
 class FishingSpotLocation < ApplicationRecord
   belongs_to :fishing_spot
   belongs_to :prefecture

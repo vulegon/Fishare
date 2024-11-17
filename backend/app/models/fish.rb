@@ -11,6 +11,8 @@
 #
 #  index_fish_on_name_unique  (name) UNIQUE
 #
+
+# 魚のマスタを管理するモデル
 class Fish < ApplicationRecord
   has_many :fishing_spot_fishes
   has_many :fishing_spots, through: :fishing_spot_fishes

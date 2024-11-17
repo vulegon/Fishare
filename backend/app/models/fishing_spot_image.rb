@@ -21,6 +21,8 @@
 #
 #  fk_rails_...  (fishing_spot_id => fishing_spots.id)
 #
+
+# 釣り場の画像を管理するモデル
 class FishingSpotImage < ApplicationRecord
   belongs_to :fishing_spot
 end

@@ -12,6 +12,8 @@
 #
 #  index_prefectures_on_name_unique  (name) UNIQUE
 #
+
+# 都道府県を管理するモデル
 class Prefecture < ApplicationRecord
   has_many :fishing_spot_locations
 end

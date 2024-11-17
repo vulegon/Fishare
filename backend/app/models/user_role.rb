@@ -11,6 +11,8 @@
 #
 #  index_user_roles_on_role_unique  (role) UNIQUE
 #
+
+# ユーザーの権限を管理するモデル
 class UserRole < ApplicationRecord
   audited
 

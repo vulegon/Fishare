@@ -8,7 +8,10 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #
-# 都道府県マスターテーブル
+# Indexes
+#
+#  index_prefectures_on_name_unique  (name) UNIQUE
+#
 class Prefecture < ApplicationRecord
   has_many :fishing_spot_locations
 end

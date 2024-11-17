@@ -2,11 +2,11 @@
 #
 # Table name: fishing_spots
 #
-#  id          :uuid             not null, primary key
-#  description :text
-#  name        :string           not null
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id                :uuid             not null, primary key
+#  description(説明) :text             not null
+#  name(釣り場名)    :string           not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 FactoryBot.define do
   factory :fishing_spot do

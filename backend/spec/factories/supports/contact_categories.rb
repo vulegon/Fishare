@@ -8,6 +8,10 @@
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #
+# Indexes
+#
+#  index_support_contact_categories_on_name_unique  (name) UNIQUE
+#
 FactoryBot.define do
   factory :support_contact_category, class: 'Supports::ContactCategory' do
     name { "その他" }

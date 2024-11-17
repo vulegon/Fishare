@@ -8,6 +8,10 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #
+# Indexes
+#
+#  index_prefectures_on_name_unique  (name) UNIQUE
+#
 FactoryBot.define do
   factory :prefecture do
     name { "東京都" }

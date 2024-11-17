@@ -13,15 +13,15 @@
 #
 # Indexes
 #
-#  index_fishing_spot_locations_on_fishing_spot_id  (fishing_spot_id)
-#  index_fishing_spot_locations_on_prefecture_id    (prefecture_id)
+#  index_fishing_spot_locations_on_fishing_spot_id                (fishing_spot_id)
+#  index_fishing_spot_locations_on_latitude_and_longitude_unique  (latitude,longitude) UNIQUE
+#  index_fishing_spot_locations_on_prefecture_id                  (prefecture_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (fishing_spot_id => fishing_spots.id)
 #  fk_rails_...  (prefecture_id => prefectures.id)
 #
-# 釣り場の位置情報テーブル。長い河川だと複数の位置を取り得る可能性があるため、1対多の関係
 class FishingSpotLocation < ApplicationRecord
   belongs_to :fishing_spot
   belongs_to :prefecture

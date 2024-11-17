@@ -7,6 +7,10 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #
+# Indexes
+#
+#  index_fish_on_name_unique  (name) UNIQUE
+#
 require 'rails_helper'
 
 RSpec.describe Fish, type: :model do

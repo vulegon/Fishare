@@ -40,27 +40,30 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_14_005617) do
     t.string "name", null: false, comment: "魚の名前"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_fish_on_name_unique", unique: true
   end
 
   create_table "fishing_spot_fishes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "fishing_spot_id", null: false, comment: "釣り場ID"
-    t.uuid "fish_id", null: false, comment: "魚ID"
+    t.uuid "fish_id", null: false, comment: "魚マスタID"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["fish_id"], name: "index_fishing_spot_fishes_on_fish_id"
+    t.index ["fishing_spot_id", "fish_id"], name: "index_fishing_spot_fishes_on_fishing_spot_id_and_fish_id_unique", unique: true
     t.index ["fishing_spot_id"], name: "index_fishing_spot_fishes_on_fishing_spot_id"
   end
 
   create_table "fishing_spot_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "fishing_spot_id", null: false, comment: "釣り場ID"
     t.string "s3_key", null: false, comment: "S3キー"
-    t.string "s3_url", null: false, comment: "S3のURL"
     t.string "file_name", null: false, comment: "ファイル名"
     t.string "content_type", null: false, comment: "ファイルの拡張子"
     t.integer "file_size", null: false, comment: "ファイルサイズ"
+    t.integer "display_order", null: false, comment: "表示順"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["fishing_spot_id"], name: "index_fishing_spot_images_on_fishing_spot_id"
+    t.index ["s3_key"], name: "index_fishing_spot_images_on_s3_key_unique", unique: true
   end
 
   create_table "fishing_spot_locations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -72,12 +75,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_14_005617) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["fishing_spot_id"], name: "index_fishing_spot_locations_on_fishing_spot_id"
+    t.index ["latitude", "longitude"], name: "index_fishing_spot_locations_on_latitude_and_longitude_unique", unique: true
     t.index ["prefecture_id"], name: "index_fishing_spot_locations_on_prefecture_id"
   end
 
   create_table "fishing_spots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.text "description"
+    t.string "name", null: false, comment: "釣り場名"
+    t.text "description", null: false, comment: "説明"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -87,6 +91,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_14_005617) do
     t.integer "display_order", null: false, comment: "並び順"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_prefectures_on_name_unique", unique: true
   end
 
   create_table "support_contact_categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -94,33 +99,36 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_14_005617) do
     t.string "description", comment: "カテゴリ説明"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_support_contact_categories_on_name_unique", unique: true
   end
 
   create_table "support_contact_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "support_contact_id", null: false, comment: "お問い合わせID"
     t.string "s3_key", null: false, comment: "S3キー"
-    t.string "s3_url", null: false, comment: "S3のURL"
     t.string "file_name", null: false, comment: "ファイル名"
     t.string "content_type", null: false, comment: "ファイルの拡張子"
     t.integer "file_size", null: false, comment: "ファイルサイズ"
+    t.integer "display_order", null: false, comment: "表示順"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["s3_key"], name: "index_support_contact_images_on_s3_key_unique", unique: true
     t.index ["support_contact_id"], name: "index_support_contact_images_on_support_contact_id"
   end
 
   create_table "support_contacts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "name", null: false
-    t.string "email", null: false
-    t.text "content", null: false
+    t.string "name", null: false, comment: "お問い合わせ者の名前"
+    t.string "email", null: false, comment: "お問い合わせ者のメールアドレス"
+    t.text "content", null: false, comment: "お問い合わせ内容"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "support_contact_category_id", null: false, comment: "カテゴリID"
+    t.uuid "support_contact_category_id", null: false, comment: "お問い合わせカテゴリID"
   end
 
   create_table "user_roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.integer "role", null: false, comment: "権限"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["role"], name: "index_user_roles_on_role_unique", unique: true
   end
 
   create_table "user_roleships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -128,6 +136,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_14_005617) do
     t.uuid "user_role_id", null: false, comment: "ユーザー権限ID"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "user_role_id"], name: "index_user_roleships_on_user_id_and_user_role_id_unique", unique: true
     t.index ["user_id"], name: "index_user_roleships_on_user_id"
     t.index ["user_role_id"], name: "index_user_roleships_on_user_role_id"
   end

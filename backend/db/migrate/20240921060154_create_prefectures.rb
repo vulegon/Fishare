@@ -6,5 +6,7 @@ class CreatePrefectures < ActiveRecord::Migration[7.0]
 
       t.timestamps
     end
+
+    add_index :prefectures, :name, unique: true, name: 'index_prefectures_on_name_unique'
   end
 end

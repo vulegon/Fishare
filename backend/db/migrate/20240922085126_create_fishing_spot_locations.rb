@@ -8,5 +8,7 @@ class CreateFishingSpotLocations < ActiveRecord::Migration[7.0]
       t.string :address, null: false, comment: '住所'
       t.timestamps
     end
+
+    add_index :fishing_spot_locations, %i[latitude longitude], unique: true, name: 'index_fishing_spot_locations_on_latitude_and_longitude_unique'
   end
 end

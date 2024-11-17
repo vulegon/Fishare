@@ -1,9 +1,9 @@
 class CreateContacts < ActiveRecord::Migration[7.0]
   def change
     create_table :support_contacts, id: :uuid do |t|
-      t.string :name, null: false
-      t.string :email, null: false
-      t.text :content, null: false
+      t.string :name, null: false, comment: 'お問い合わせ者の名前'
+      t.string :email, null: false, comment: 'お問い合わせ者のメールアドレス'
+      t.text :content, null: false, comment: 'お問い合わせ内容'
       t.timestamps
     end
   end

@@ -110,12 +110,10 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
       )}
 
       {/* 釣り場の情報 */}
-      {selectedFishingSpotId && (
-        <FishingSpotShowView
-          fishingSpotId={selectedFishingSpotId}
-          onClose={() => setSelectedFishingSpotId(null)}
-        />
-      )}
+      <FishingSpotShowView
+        fishingSpotId={selectedFishingSpotId}
+        onClose={() => setSelectedFishingSpotId(null)}
+      />
     </GoogleMap>
   );
 };

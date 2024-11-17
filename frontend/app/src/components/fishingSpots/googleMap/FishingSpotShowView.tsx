@@ -2,7 +2,7 @@ import React from "react";
 import { Drawer } from "@mui/material";
 
 interface FishingSpotShowViewProps {
-  fishingSpotId: string;
+  fishingSpotId: string | null;
   onClose: () => void;
 }
 

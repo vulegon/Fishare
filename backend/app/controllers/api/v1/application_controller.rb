@@ -29,6 +29,12 @@ module Api
         render status: :forbidden, json: { message: message }
       end
 
+      def render_404_error(message: nil)
+        message = message || 'リソースが見つかりません'
+
+        render status: :not_found, json: { message: message }
+      end
+
       def render_500(error)
         message = 'システムエラーが発生しました。サポートにお問い合わせください'
         json = { message: message, errors: error.message }

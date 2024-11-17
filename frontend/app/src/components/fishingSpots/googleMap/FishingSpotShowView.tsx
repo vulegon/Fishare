@@ -1,18 +1,31 @@
-import React from "react";
-import { Drawer } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Drawer, Divider } from "@mui/material";
+import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
+import { FishingSpotLocation } from "interfaces/api";
 
 interface FishingSpotShowViewProps {
-  fishingSpotId: string | null;
+  selectedLocation: FishingSpotLocation | null;
   onClose: () => void;
 }
 
 const DRAWER_WIDTH = "500px";
 
 export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
-  fishingSpotId,
+  selectedLocation,
   onClose,
 }) => {
+  const [streetViewImageUrl, setStreetViewImageUrl] = useState<string | null>(null);
+  const [streetViewImageLoaded, setStreetViewImageLoaded] = useState<boolean>(false);
+  const fetchStreetViewImage = async () => {
+    if (!selectedLocation) return;
+    const response = await streetViewClient.fetchStreetViewImage(selectedLocation.latitude, selectedLocation.longitude);
+    setStreetViewImageUrl(response);
+    setStreetViewImageLoaded(true);
+  };
 
+  useEffect(() => {
+    fetchStreetViewImage();
+  }, [selectedLocation]);
   return (
     <Drawer
       sx={{
@@ -25,13 +38,18 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
       }}
       anchor={'right'}
       variant="temporary"
-      open={!!fishingSpotId}
-      onClose={onClose}
+      open={!!selectedLocation}
+      onClose={()=>{
+        if (streetViewImageUrl) {
+          URL.revokeObjectURL(streetViewImageUrl);
+        }
+        onClose();
+      }}
     >
-      <div>
-        <h2>釣り場詳細</h2>
-        <p>釣り場ID: {fishingSpotId}</p>
-      </div>
+      { streetViewImageUrl && streetViewImageLoaded && (
+        <img src={streetViewImageUrl} alt="street view" />
+      )}
+      <Divider />
     </Drawer>
   );
 };

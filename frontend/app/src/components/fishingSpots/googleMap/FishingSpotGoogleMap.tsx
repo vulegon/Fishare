@@ -20,7 +20,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
   const [existLocation, setExistLocation] = useState<FishingSpotLocation[]>([]);
   const center = useRef({ lat: 35.681236, lng: 139.767125 }); // 東京駅
   const navigate = useNavigate();
-  const [selectedFishingSpotId, setSelectedFishingSpotId] = useState<string | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<FishingSpotLocation | null>(null);
 
   const fetchFishingSpotLocations = useCallback(async () => {
     const response = await apiClient.getFishingSpotLocations();
@@ -42,7 +42,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
   }, [newLocation, navigate]);
 
   const onExistLocationClick = useCallback((fishingSpot: FishingSpotLocation) => {
-    setSelectedFishingSpotId(fishingSpot.fishing_spot_id);
+    setSelectedLocation(fishingSpot);
   }, []);
 
   return (
@@ -111,8 +111,10 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
 
       {/* 釣り場の情報 */}
       <FishingSpotShowView
-        fishingSpotId={selectedFishingSpotId}
-        onClose={() => setSelectedFishingSpotId(null)}
+        selectedLocation={selectedLocation}
+        onClose={() => {
+          setSelectedLocation(null)
+        }}
       />
     </GoogleMap>
   );

@@ -15,5 +15,8 @@
 
 # 都道府県を管理するモデル
 class Prefecture < ApplicationRecord
+  audited
   has_many :fishing_spot_locations
+
+  validates :display_order, :name, presence: true
 end

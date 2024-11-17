@@ -22,4 +22,6 @@ class UserRole < ApplicationRecord
 
   has_many :user_roleships, dependent: :destroy, inverse_of: :user_role
   has_many :users, through: :user_roleships
+
+  validates :role, presence: true, uniqueness: true
 end

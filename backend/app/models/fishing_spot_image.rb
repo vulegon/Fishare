@@ -24,5 +24,8 @@
 
 # 釣り場の画像を管理するモデル
 class FishingSpotImage < ApplicationRecord
+  audited
   belongs_to :fishing_spot
+
+  validates :content_type, :display_order, :file_name, :file_size, :s3_key, presence: true
 end

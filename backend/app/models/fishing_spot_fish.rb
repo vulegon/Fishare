@@ -22,6 +22,10 @@
 
 # 釣り場と魚の関連を管理する交差モデル
 class FishingSpotFish < ApplicationRecord
+  audited
   belongs_to :fishing_spot
   belongs_to :fish
+
+  validates :fishing_spot_id, presence: true, uniqueness: { scope: :fish_id }
+  validates :fish_id, presence: true
 end

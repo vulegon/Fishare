@@ -25,6 +25,10 @@
 
 # 釣り場の位置情報を管理するモデル
 class FishingSpotLocation < ApplicationRecord
+  audited
   belongs_to :fishing_spot
   belongs_to :prefecture
+
+  validates :address, :latitude, :longitude, presence: true
+  validates :latitude, uniqueness: { scope: :longitude }
 end

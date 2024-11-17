@@ -53,7 +53,11 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
         fullscreenControl: false,
         mapTypeId: 'hybrid'
       }}
-      onClick={onMapClick}
+      onClick={()=>{
+        if (isNew) {
+          onMapClick;
+        }
+      }}
     >
       {/* クリックしたマーカー */}
       {newFishingSpotMarker && (

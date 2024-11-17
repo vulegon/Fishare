@@ -1,6 +1,7 @@
 module Api
   module V1
     class PrefecturesController < ::Api::V1::ApplicationController
+      # 都道府県の一覧を取得する
       def index
         prefectures = Prefecture.all.order(display_order: :asc)
         serialized_prefectures = ActiveModelSerializers::SerializableResource.new(prefectures, each_serializer: ::Api::V1::PrefectureSerializer).as_json

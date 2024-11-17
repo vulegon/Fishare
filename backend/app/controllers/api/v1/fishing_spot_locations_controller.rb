@@ -1,6 +1,7 @@
 module Api
   module V1
     class FishingSpotLocationsController < ApplicationController
+      # 釣り場の位置情報を取得する
       def index
         fishing_spot_locations = FishingSpotLocation.all
         serialized_fishing_spot_locations = ActiveModelSerializers::SerializableResource.new(

@@ -3,6 +3,7 @@ import {
   Fish,
   Prefecture,
   FishingSpotLocation,
+  FishingSpot,
 } from 'interfaces/api';
 import { User } from 'interfaces/contexts/User';
 import { notifyError } from 'utils/toast/notifyError';
@@ -146,6 +147,17 @@ class ApiClient {
         }
       })
       return { fishingSpotLocations: locations };
+    } catch (error) {
+      notifyError(error);
+      throw error;
+    }
+  }
+
+  public async showFishingSpot(id: string): Promise<FishingSpot | string> {
+    try {
+      const response = await this.client.get(`fishing_spots/${id}`);
+      const data = response.data;
+      return 'hoge'
     } catch (error) {
       notifyError(error);
       throw error;

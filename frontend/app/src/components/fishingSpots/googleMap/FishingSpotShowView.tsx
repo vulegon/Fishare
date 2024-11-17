@@ -3,6 +3,7 @@ import { Drawer, Divider } from "@mui/material";
 import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
 import { FishingSpotLocation } from "interfaces/api";
 import { CenteredLoader } from "components/common";
+import apiClient from "api/v1/apiClient";
 
 interface FishingSpotShowViewProps {
   selectedLocation: FishingSpotLocation | null;

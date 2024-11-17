@@ -3,6 +3,9 @@ module TestData
     class FishingSpotLoader
       class << self
         def load
+          fishing_spots = FishingSpot.all
+          return if fishing_spots.present?
+
           create_fishing_spots = []
           create_fishing_spot_locations = []
           create_fishing_spot_fishes = []

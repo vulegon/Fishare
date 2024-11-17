@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Drawer, Divider } from "@mui/material";
 import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
 import { FishingSpotLocation } from "interfaces/api";
+import { CenteredLoader } from "components/common";
 
 interface FishingSpotShowViewProps {
   selectedLocation: FishingSpotLocation | null;
@@ -46,9 +47,13 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
         onClose();
       }}
     >
-      { streetViewImageUrl && streetViewImageLoaded && (
-        <img src={streetViewImageUrl} alt="street view" />
-      )}
+      { (streetViewImageUrl && streetViewImageLoaded) ?
+        (
+          <img src={streetViewImageUrl} alt="street view" />
+        ) : (
+          <CenteredLoader />
+        )
+      }
       <Divider />
     </Drawer>
   );

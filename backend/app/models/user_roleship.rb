@@ -20,7 +20,7 @@
 #  fk_rails_...  (user_role_id => user_roles.id)
 #
 
-# ゆzーザーと権限の関連を管理する交差モデル
+# ユーザーと権限の関連を管理する交差モデル
 class UserRoleship < ApplicationRecord
   audited
   belongs_to :user

@@ -39,6 +39,7 @@ class ApiClient {
     }
   }
 
+  // お問い合わせを作成
   public async createContact(data: {
     name: string,
     email: string
@@ -65,6 +66,7 @@ class ApiClient {
     }
   }
 
+  // 現在のユーザー情報を取得
   public async getCurrentUser(): Promise<User | null> {
     try {
       const response = await this.client.get('users/current_user');
@@ -86,6 +88,7 @@ class ApiClient {
     }
   }
 
+  // 魚のマスターデータを取得
   public async getFish(): Promise<{ fishes: Fish[] }>{
     try {
       const response = await this.client.get('fishes');

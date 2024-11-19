@@ -7,6 +7,12 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
+# Indexes
+#
+#  index_user_roles_on_role_unique  (role) UNIQUE
+#
+
+# ユーザーの権限を管理するモデル
 class UserRole < ApplicationRecord
   audited
 
@@ -16,4 +22,6 @@ class UserRole < ApplicationRecord
 
   has_many :user_roleships, dependent: :destroy, inverse_of: :user_role
   has_many :users, through: :user_roleships
+
+  validates :role, presence: true, uniqueness: true
 end

@@ -1,0 +1,1 @@
+export { FishingSpotLoadGoogleMap } from './FishingSpotLoadGoogleMap';

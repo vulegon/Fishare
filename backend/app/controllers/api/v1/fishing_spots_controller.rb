@@ -1,6 +1,7 @@
 module Api
   module V1
     class FishingSpotsController < ApplicationController
+      # 釣り場を作成する
       def create
         create_params = ::Api::V1::FishingSpots::CreateParameter.new(params)
 

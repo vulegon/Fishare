@@ -22,13 +22,4 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::IntegrationHelpers, type: :request
   ActiveJob::Base.queue_adapter = :test
-
-  # テストスイートが始まる前に一度だけ実行
-  config.before(:suite) do
-    # マスターデータの作成
-    FactoryBot.create(:support_contact_category, name: "other", description: "その他")
-    FactoryBot.create(:support_contact_category, name: "manage_fishing_spot", description: "釣り場の作成・修正")
-    FactoryBot.create(:support_contact_category, name: "feature_request", description: "機能のリクエスト")
-    FactoryBot.create(:support_contact_category, name: "bug_report", description: "不具合の報告")
-  end
 end

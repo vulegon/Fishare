@@ -8,6 +8,10 @@
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #
+# Indexes
+#
+#  index_support_contact_categories_on_name_unique  (name) UNIQUE
+#
 require 'rails_helper'
 
 RSpec.describe ::Supports::ContactCategory, type: :model do

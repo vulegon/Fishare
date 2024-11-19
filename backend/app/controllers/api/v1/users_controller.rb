@@ -3,14 +3,9 @@ module Api
     class UsersController < Api::V1::ApplicationController
       # ログインしているかどうかの確認
       def show_current_user
-        message = 'ユーザー情報を取得しました'
-
-        unless current_user
-          render json: { message: message, user: nil }, status: :ok and return
-        end
+        return render status: :ok, json: { user: nil } unless current_user
 
         json = {
-          message: message,
           user: {
             id: current_user.id,
             email: current_user.email,

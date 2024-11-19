@@ -68,10 +68,13 @@ module TestData
 
     class << self
       def load
-        FISHES.each do |fish_name|
-          Fish.find_or_create_by!(
+        FISHES.each.with_index(0) do |fish_name, index|
+          fish = Fish.find_or_initialize_by(
             name: fish_name
           )
+          fish.display_order = index
+
+          fish.save! if fish.changed?
         end
       end
     end

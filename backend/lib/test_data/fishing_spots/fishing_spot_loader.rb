@@ -23,6 +23,9 @@ module TestData
               name: dataset[:name],
               description: dataset[:description],
             )
+
+            create_fishing_spots << new_fishing_spot
+
             new_fishing_spot_location = FishingSpotLocation.new(
               id: SecureRandom.uuid,
               fishing_spot_id: new_fishing_spot.id,
@@ -32,28 +35,32 @@ module TestData
               address: dataset[:address],
             )
 
+            create_fishing_spot_locations << new_fishing_spot_location
+
             random_fish = fishes.sample
             new_fishing_spot_fish = FishingSpotFish.new(
               fishing_spot_id: new_fishing_spot.id,
               fish_id: random_fish.id,
             )
 
-            image_random_uuid = SecureRandom.uuid
-            random_number = rand(1..10000)
-            file_name = "test#{random_number}.jpg"
-            new_fishing_spot_images = FishingSpotImage.new(
-              fishing_spot_id: new_fishing_spot.id,
-              s3_key: "fishing_spots/#{image_random_uuid}/#{file_name}",
-              file_name: file_name,
-              content_type: 'image/jpeg',
-              file_size: random_number,
-              display_order: 1,
-            )
-
-            create_fishing_spots << new_fishing_spot
-            create_fishing_spot_locations << new_fishing_spot_location
             create_fishing_spot_fishes << new_fishing_spot_fish
-            create_fishing_spot_images << new_fishing_spot_images
+
+            2.times do |i|
+              image_random_uuid = SecureRandom.uuid
+              random_number = rand(1..10000)
+              file_name = Faker::File.file_name(ext: 'jpg')
+
+              new_fishing_spot_images = FishingSpotImage.new(
+                fishing_spot_id: new_fishing_spot.id,
+                s3_key: "fishing_spots/#{image_random_uuid}/#{file_name}",
+                file_name: file_name,
+                content_type: 'image/jpeg',
+                file_size: random_number,
+                display_order: i,
+              )
+
+              create_fishing_spot_images << new_fishing_spot_images
+            end
           end
 
           ActiveRecord::Base.transaction do

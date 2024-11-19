@@ -17,7 +17,8 @@ module TestData
                 s3_key: "supports/contact/#{SecureRandom.uuid}/image#{random_number}.jpg",
                 file_name: "image#{random_number}.jpg",
                 content_type: "image/jpeg",
-                file_size: 1024
+                file_size: 1024,
+                display_order: j + 1
               )
             end
           end

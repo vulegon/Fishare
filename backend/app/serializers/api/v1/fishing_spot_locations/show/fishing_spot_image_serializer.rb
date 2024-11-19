@@ -1,9 +1,9 @@
 module Api
   module V1
-    module FishingSpots
+    module FishingSpotLocations
       module Show
         class FishingSpotImageSerializer < ActiveModel::Serializer
-          attributes :id, :s3_key, :file_name, :content_type, :display_order
+          attributes :id, :s3_key, :file_name, :content_type
         end
       end
     end

@@ -1,6 +1,6 @@
 module Api
   module V1
-    module FishingSpots
+    module FishingSpotLocations
       module Show
         class FishingSpotSerializer < ActiveModel::Serializer
           attributes :id, :name, :description, :prefecture_name, :latitude, :longitude, :address, :images, :fishes
@@ -27,7 +27,7 @@ module Api
           end
 
           def fishes
-            object.fishes.map do |fish|
+            object.fishes.order(display_order: :asc).map do |fish|
               FishingSpotFishSerializer.new(fish).as_json
             end
           end

@@ -1,6 +1,6 @@
 module Api
   module V1
-    module FishingSpots
+    module FishingSpotLocations
       module Show
         class FishingSpotFishSerializer < ActiveModel::Serializer
           attributes :id, :name

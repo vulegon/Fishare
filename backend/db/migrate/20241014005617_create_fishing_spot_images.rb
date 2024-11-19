@@ -11,5 +11,6 @@ class CreateFishingSpotImages < ActiveRecord::Migration[7.0]
     end
 
     add_index :fishing_spot_images, %i[s3_key], unique: true, name: 'index_fishing_spot_images_on_s3_key_unique'
+    add_index :fishing_spot_images, %i[fishing_spot_id display_order], unique: true, name: 'index_fishing_spot_images_on_spot_id_and_display_order_unique'
   end
 end

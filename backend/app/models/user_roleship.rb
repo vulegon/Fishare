@@ -10,16 +10,21 @@
 #
 # Indexes
 #
-#  index_user_roleships_on_user_id       (user_id)
-#  index_user_roleships_on_user_role_id  (user_role_id)
+#  index_user_roleships_on_user_id                          (user_id)
+#  index_user_roleships_on_user_id_and_user_role_id_unique  (user_id,user_role_id) UNIQUE
+#  index_user_roleships_on_user_role_id                     (user_role_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (user_id => users.id)
 #  fk_rails_...  (user_role_id => user_roles.id)
 #
+
+# ユーザーと権限の関連を管理する交差モデル
 class UserRoleship < ApplicationRecord
   audited
   belongs_to :user
   belongs_to :user_role
+
+  validates :user_id, presence: true, uniqueness: { scope: :user_role_id }
 end

@@ -1,0 +1,1 @@
+export { GoogleMapPage } from './GoogleMapPage';

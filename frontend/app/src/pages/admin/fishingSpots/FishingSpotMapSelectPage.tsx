@@ -1,12 +1,14 @@
-import React from 'react';
-import { MainLayout } from 'features/layouts';
-import { FishingSpotSelectLoadMap } from 'features/admin/fishingSpots/map/select/FishingSpotSelectLoadMap';
+import { FishingSpotLoadGoogleMap } from "components/fishingSpots/googleMap/";
+import { MainLayout } from "features/layouts";
+import React from "react";
 
 export const FishingSpotMapSelectPage: React.FC = () => {
   return (
     <>
       <MainLayout mainContainerPadding={0}>
-        <FishingSpotSelectLoadMap/>
+        <FishingSpotLoadGoogleMap
+          isNew={true}
+        />
       </MainLayout>
     </>
   );

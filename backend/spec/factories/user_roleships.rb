@@ -10,8 +10,9 @@
 #
 # Indexes
 #
-#  index_user_roleships_on_user_id       (user_id)
-#  index_user_roleships_on_user_role_id  (user_role_id)
+#  index_user_roleships_on_user_id                          (user_id)
+#  index_user_roleships_on_user_id_and_user_role_id_unique  (user_id,user_role_id) UNIQUE
+#  index_user_roleships_on_user_role_id                     (user_role_id)
 #
 # Foreign Keys
 #

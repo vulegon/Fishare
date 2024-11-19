@@ -2,11 +2,14 @@ import axios, { AxiosInstance } from 'axios';
 import {
   Fish,
   Prefecture,
+  FishingSpotLocation,
+  FishingSpot,
 } from 'interfaces/api';
 import { User } from 'interfaces/contexts/User';
 import { notifyError } from 'utils/toast/notifyError';
 import { s3Client } from './s3Client';
 import { CreateFishingSpot } from 'interfaces/api/admin/fishingSpots/CreateFishingSpot';
+import Decimal from 'decimal.js';
 
 const API_VERSION_PATH = '/api/v1/';
 
@@ -37,6 +40,7 @@ class ApiClient {
     }
   }
 
+  // お問い合わせを作成
   public async createContact(data: {
     name: string,
     email: string
@@ -63,6 +67,7 @@ class ApiClient {
     }
   }
 
+  // 現在のユーザー情報を取得
   public async getCurrentUser(): Promise<User | null> {
     try {
       const response = await this.client.get('users/current_user');
@@ -84,6 +89,7 @@ class ApiClient {
     }
   }
 
+  // 魚のマスターデータを取得
   public async getFish(): Promise<{ fishes: Fish[] }>{
     try {
       const response = await this.client.get('fishes');
@@ -119,6 +125,39 @@ class ApiClient {
       const response = await this.client.post('fishing_spots', postData);
 
       return { message: response.data.message };
+    } catch (error) {
+      notifyError(error);
+      throw error;
+    }
+  }
+
+  // 釣り場の場所を取得
+  public async getFishingSpotLocations(): Promise<{ fishingSpotLocations: FishingSpotLocation[] }> {
+    try {
+      const response = await this.client.get('fishing_spot_locations');
+      const data = response.data;
+      const locations = data.fishing_spot_locations.map((fishingSpotLocation: FishingSpotLocation) => {
+        return {
+          id: fishingSpotLocation.id,
+          fishing_spot_id: fishingSpotLocation.fishing_spot_id,
+          prefecture_id: fishingSpotLocation.prefecture_id,
+          address: fishingSpotLocation.address,
+          latitude: new Decimal(fishingSpotLocation.latitude).toNumber(),
+          longitude: new Decimal(fishingSpotLocation.longitude).toNumber(),
+        }
+      })
+      return { fishingSpotLocations: locations };
+    } catch (error) {
+      notifyError(error);
+      throw error;
+    }
+  }
+
+  public async showFishingSpot(id: string): Promise<FishingSpot | string> {
+    try {
+      const response = await this.client.get(`fishing_spots/${id}`);
+      const data = response.data;
+      return 'hoge'
     } catch (error) {
       notifyError(error);
       throw error;

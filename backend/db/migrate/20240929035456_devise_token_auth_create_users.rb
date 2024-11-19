@@ -1,6 +1,6 @@
 class DeviseTokenAuthCreateUsers < ActiveRecord::Migration[7.0]
   def change
-    create_table :users, id: :uuid  do |t|
+    create_table :users, id: :uuid, comment: 'ユーザー'   do |t|
       t.string :name, null: false, comment: '名前'
       t.string :email, null: false, comment: 'メールアドレス'
       ## Required

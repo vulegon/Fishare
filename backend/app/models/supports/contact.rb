@@ -2,13 +2,13 @@
 #
 # Table name: support_contacts
 #
-#  id                                      :uuid             not null, primary key
-#  content                                 :text             not null
-#  email                                   :string           not null
-#  name                                    :string           not null
-#  created_at                              :datetime         not null
-#  updated_at                              :datetime         not null
-#  support_contact_category_id(カテゴリID) :uuid             not null
+#  id                                                  :uuid             not null, primary key
+#  content(お問い合わせ内容)                           :text             not null
+#  email(お問い合わせ者のメールアドレス)               :string           not null
+#  name(お問い合わせ者の名前)                          :string           not null
+#  created_at                                          :datetime         not null
+#  updated_at                                          :datetime         not null
+#  support_contact_category_id(お問い合わせカテゴリID) :uuid             not null
 #
 module Supports
   class Contact < ApplicationRecord

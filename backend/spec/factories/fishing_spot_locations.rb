@@ -13,8 +13,9 @@
 #
 # Indexes
 #
-#  index_fishing_spot_locations_on_fishing_spot_id  (fishing_spot_id)
-#  index_fishing_spot_locations_on_prefecture_id    (prefecture_id)
+#  index_fishing_spot_locations_on_fishing_spot_id                (fishing_spot_id)
+#  index_fishing_spot_locations_on_latitude_and_longitude_unique  (latitude,longitude) UNIQUE
+#  index_fishing_spot_locations_on_prefecture_id                  (prefecture_id)
 #
 # Foreign Keys
 #
@@ -25,8 +26,8 @@ FactoryBot.define do
   factory :fishing_spot_location do
     association :fishing_spot
     association :prefecture
-    address { "テスト住所1" }
-    latitude { 35.65858 }
-    longitude { 139.745433 }
+    address { "#{Faker::Address.state} #{Faker::Address.city} #{Faker::Address.street_address}" }
+    latitude { BigDecimal(rand(20.0000000..46.0000000).round(7).to_s) }
+    longitude { BigDecimal(rand(122.0000000..154.0000000).round(7).to_s) }
   end
 end

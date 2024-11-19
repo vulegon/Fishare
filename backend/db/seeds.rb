@@ -7,4 +7,6 @@ ActiveRecord::Base.transaction do
   puts 'Supports::Contactのデータを登録しました'
   ::TestData::UserLoader.load
   puts 'Userのデータを登録しました'
+  ::TestData::FishingSpots::FishingSpotLoader.load
+  puts 'FishingSpotのデータを登録しました'
 end

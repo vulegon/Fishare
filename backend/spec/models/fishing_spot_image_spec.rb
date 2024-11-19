@@ -14,8 +14,9 @@
 #
 # Indexes
 #
-#  index_fishing_spot_images_on_fishing_spot_id  (fishing_spot_id)
-#  index_fishing_spot_images_on_s3_key_unique    (s3_key) UNIQUE
+#  index_fishing_spot_images_on_fishing_spot_id                   (fishing_spot_id)
+#  index_fishing_spot_images_on_s3_key_unique                     (s3_key) UNIQUE
+#  index_fishing_spot_images_on_spot_id_and_display_order_unique  (fishing_spot_id,display_order) UNIQUE
 #
 # Foreign Keys
 #

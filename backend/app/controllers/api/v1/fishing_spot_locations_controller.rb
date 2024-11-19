@@ -13,6 +13,24 @@ module Api
 
         render json: json, status: :ok
       end
+
+      # 釣り場の詳細を取得する
+      def show
+        fishing_spot_location = ::FishingSpotLocation.find_by(id: params[:id])
+
+        if fishing_spot_location.nil?
+          render_404_error(message: '釣り場が見つかりません') and return
+        end
+
+        fishing_spot = fishing_spot_location.fishing_spot
+
+        serialized_fishing_spot = ::Api::V1::FishingSpotLocations::Show::FishingSpotSerializer.new(
+          fishing_spot_location,
+          fishing_spot: fishing_spot
+        ).as_json
+
+        render status: :ok, json: { fishing_spot: serialized_fishing_spot }
+      end
     end
   end
 end

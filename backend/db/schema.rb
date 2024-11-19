@@ -38,8 +38,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_14_005617) do
 
   create_table "fish", id: :uuid, default: -> { "gen_random_uuid()" }, comment: "魚のマスタ", force: :cascade do |t|
     t.string "name", null: false, comment: "魚の名前"
+    t.integer "display_order", null: false, comment: "表示順"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["display_order"], name: "index_fish_on_display_order"
     t.index ["name"], name: "index_fish_on_name_unique", unique: true
   end
 
@@ -62,6 +64,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_14_005617) do
     t.integer "display_order", null: false, comment: "表示順"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["fishing_spot_id", "display_order"], name: "index_fishing_spot_images_on_spot_id_and_display_order_unique", unique: true
     t.index ["fishing_spot_id"], name: "index_fishing_spot_images_on_fishing_spot_id"
     t.index ["s3_key"], name: "index_fishing_spot_images_on_s3_key_unique", unique: true
   end

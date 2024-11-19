@@ -2,6 +2,7 @@ module Api
   module V1
     module Supports
       class ContactsController < ::Api::V1::ApplicationController
+        # お問い合わせを作成する
         def create
           create_params = ::Api::V1::Supports::Contacts::CreateParameter.new(params)
 

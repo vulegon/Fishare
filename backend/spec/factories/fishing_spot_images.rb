@@ -24,6 +24,11 @@
 #
 FactoryBot.define do
   factory :fishing_spot_image do
-    
+    association :fishing_spot
+    s3_key { "fishing_spots/#{SecureRandom.uuid}" }
+    file_name { Faker::File.file_name(dir: '', ext: 'jpg').delete_prefix("/") }
+    content_type { 'image/jpeg' }
+    file_size { rand(1..10000) }
+    display_order { rand(0..100) }
   end
 end

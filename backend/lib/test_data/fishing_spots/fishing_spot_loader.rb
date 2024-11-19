@@ -48,11 +48,11 @@ module TestData
             2.times do |i|
               image_random_uuid = SecureRandom.uuid
               random_number = rand(1..10000)
-              file_name = Faker::File.file_name(ext: 'jpg')
+              file_name = Faker::File.file_name(dir: '', ext: 'jpg')
 
               new_fishing_spot_images = FishingSpotImage.new(
                 fishing_spot_id: new_fishing_spot.id,
-                s3_key: "fishing_spots/#{image_random_uuid}/#{file_name}",
+                s3_key: "fishing_spots/#{image_random_uuid}#{file_name}",
                 file_name: file_name,
                 content_type: 'image/jpeg',
                 file_size: random_number,

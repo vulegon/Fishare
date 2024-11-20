@@ -11,12 +11,14 @@ export const CenteredLoader: React.FC<CenteredLoaderProps> = ({
   color = '#1976D2',
 }) => {
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh'  // 全画面中央に配置
-    }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh'  // 全画面中央に配置
+      }}
+    >
       <BeatLoader size={size} color={color}/>
     </div>
   );

@@ -14,7 +14,7 @@ interface FishingSpotShowViewProps {
 const DRAWER_WIDTH = "500px";
 
 const FishingSpotBox = styled(Box)({
-  marginLeft: 2
+  marginLeft: '16px',
 });
 
 export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({

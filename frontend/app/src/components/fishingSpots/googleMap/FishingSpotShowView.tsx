@@ -68,11 +68,7 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
       }}
     >
       <Stack spacing={2} useFlexGap>
-        <Box
-          sx={{
-            height: '400px',
-          }}
-        >
+        <Box sx={{ height: '400px'}}>
           {
             (isLoaded) ?
               (

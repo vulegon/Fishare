@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Drawer, Divider, Box, Stack, Typography } from "@mui/material";
+import { Drawer, Divider, Box, Stack, Typography, Chip } from "@mui/material";
 import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
 import { FishingSpotLocation, FishingSpot } from "interfaces/api";
 import { CenteredLoader } from "components/common";
@@ -88,6 +88,17 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
           <Typography variant="subtitle1">
             {fishingSpot?.name}
           </Typography>
+        </FishingSpotBox>
+        <Divider />
+        <FishingSpotBox>
+          <Typography variant="subtitle1" sx={{fontWeight: 600}}>
+            釣れる魚
+          </Typography>
+          <Stack direction="row" spacing={1}>
+            {fishingSpot?.fishes.map((fish) => (
+              <Chip key={fish.id} label={fish.name} color="primary"/>
+            ))}
+          </Stack>
         </FishingSpotBox>
       </Stack>
     </Drawer>

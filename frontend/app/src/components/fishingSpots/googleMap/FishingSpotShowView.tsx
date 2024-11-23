@@ -91,7 +91,7 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
         </FishingSpotBox>
         <Divider />
         <FishingSpotBox>
-          <Typography variant="subtitle1" sx={{fontWeight: 600}}>
+          <Typography variant="subtitle1" sx={{fontWeight: 600}} gutterBottom>
             釣れる魚
           </Typography>
           <Stack direction="row" spacing={1}>

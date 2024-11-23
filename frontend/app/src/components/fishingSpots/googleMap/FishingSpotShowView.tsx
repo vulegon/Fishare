@@ -5,6 +5,7 @@ import { FishingSpotLocation, FishingSpot } from "interfaces/api";
 import { CenteredLoader } from "components/common";
 import apiClient from "api/v1/apiClient";
 import { styled } from "@mui/material/styles";
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 interface FishingSpotShowViewProps {
   selectedLocation: FishingSpotLocation | null;
@@ -67,7 +68,7 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
         onClose();
       }}
     >
-      <Stack spacing={2} useFlexGap>
+      <Stack spacing={3} useFlexGap>
         <Box sx={{ height: '400px'}}>
           {
             (isLoaded) ?
@@ -99,6 +100,21 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
               <Chip key={fish.id} label={fish.name} color="primary"/>
             ))}
           </Stack>
+        </FishingSpotBox>
+        <Divider />
+        <FishingSpotBox>
+          <Stack direction="row" spacing={2}>
+            <LocationOnIcon />
+            <Typography variant="body1">
+              {fishingSpot?.address}
+            </Typography>
+          </Stack>
+        </FishingSpotBox>
+        <Divider />
+        <FishingSpotBox>
+          <Typography variant="subtitle1" sx={{fontWeight: 600}} gutterBottom>
+            写真
+          </Typography>
         </FishingSpotBox>
       </Stack>
     </Drawer>

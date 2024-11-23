@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Drawer, Divider, Box, Stack, Typography, Chip } from "@mui/material";
+import { Drawer, Divider, Box, Stack, Typography, Chip, Grid,  } from "@mui/material";
 import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
 import { FishingSpotLocation, FishingSpot } from "interfaces/api";
 import { CenteredLoader } from "components/common";
 import apiClient from "api/v1/apiClient";
 import { styled } from "@mui/material/styles";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { S3Image } from "interfaces/api/s3";
 
 interface FishingSpotShowViewProps {
   selectedLocation: FishingSpotLocation | null;
@@ -25,6 +26,7 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
   const [streetViewImageUrl, setStreetViewImageUrl] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [fishingSpot, setFishingSpot] = useState<FishingSpot | null>(null);
+  const [selectedImage, setSelectedImage] = useState<S3Image | null>(null);
 
   const fetchStreetViewImage = useCallback(async () => {
     if (!selectedLocation) return;
@@ -112,6 +114,39 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
           <Typography variant="subtitle1" sx={{fontWeight: 600}} gutterBottom>
             写真
           </Typography>
+          <Grid
+              container
+              spacing={{ xs: 2, md: 3 }}
+              columns={{ xs: 8, sm: 12, md: 12 }}
+              sx={{ margin: 3 }}
+            >
+              {fishingSpot?.images.map((image) => (
+                <Grid
+                  item
+                  xs={4}
+                  sm={4}
+                  md={4}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "start",
+                    alignItems: "center",
+                    margin: 0,
+                  }}
+                >
+                  <img
+                    src={image.s3_url}
+                    alt={image.file_name}
+                    style={{
+                      width: "100%",
+                      height: "150px",
+                      objectFit: "cover",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => setSelectedImage(image)} // 画像クリック時に詳細をセット
+                  />
+                </Grid>
+              ))}
+            </Grid>
         </FishingSpotBox>
       </Stack>
     </Drawer>

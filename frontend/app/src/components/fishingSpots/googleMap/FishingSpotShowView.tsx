@@ -80,9 +80,15 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
           }
         </Box>
         <FishingSpotBox>
-          <Typography variant="h5" sx={{fontWeight: 600}}>
+          <Typography variant="h5" sx={{fontWeight: 600}} gutterBottom>
             釣り場情報
           </Typography>
+          <Stack direction="row" spacing={2}>
+            <LocationOnIcon />
+            <Typography variant="body1">
+              {fishingSpot?.address}
+            </Typography>
+          </Stack>
         </FishingSpotBox>
         <Divider />
         <FishingSpotBox>
@@ -99,15 +105,6 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
             {fishingSpot?.fishes.map((fish) => (
               <Chip key={fish.id} label={fish.name} color="primary"/>
             ))}
-          </Stack>
-        </FishingSpotBox>
-        <Divider />
-        <FishingSpotBox>
-          <Stack direction="row" spacing={2}>
-            <LocationOnIcon />
-            <Typography variant="body1">
-              {fishingSpot?.address}
-            </Typography>
           </Stack>
         </FishingSpotBox>
         <Divider />

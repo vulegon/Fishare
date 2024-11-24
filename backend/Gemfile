@@ -17,6 +17,7 @@ gem 'redis', '~> 4.0'
 gem 'devise'
 gem 'devise_token_auth'
 gem 'activerecord-import'
+gem 'aws-sdk-s3'
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]

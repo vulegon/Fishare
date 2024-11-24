@@ -11,6 +11,9 @@ COPY Gemfile.lock /api/Gemfile.lock
 RUN gem update --system && \
     bundle install
 
+# vimやnanoなどのエディタをインストール
+RUN apt-get update && apt-get install -y vim nano
+
 COPY . /api
 
 COPY entrypoint.sh /usr/bin/

@@ -25,7 +25,7 @@ module Api
               :email,
               :content,
               :contact_category,
-              images: [:file_name, :s3_key, :content_type, :file_size]
+              images: [:file_name, :s3_key, :content_type, :file_size, :display_order]
             )
             super(permitted_params.to_h.deep_symbolize_keys)
             @support_contact_category = ::Supports::ContactCategory.find_by(name: contact_category)

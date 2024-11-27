@@ -20,7 +20,8 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
                   s3_key: 'S3キー',
                   file_name:  'ファイル名',
                   content_type: 'ファイルの拡張子',
-                  file_size: 1000
+                  file_size: 1000,
+                  display_order: 1
                 }
               ],
               contact_category: 'other'
@@ -203,7 +204,8 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
             s3_key: 'S3キー',
             file_name:  'ファイル名',
             content_type: 'ファイルの拡張子',
-            file_size: 1000
+            file_size: 1000,
+            display_order: 1
           }
         ],
         contact_category: 'other'
@@ -217,7 +219,8 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
             s3_key: 'S3キー',
             file_name:  'ファイル名',
             content_type: 'ファイルの拡張子',
-            file_size: 1000
+            file_size: 1000,
+            display_order: 1
           }
         ]
       )

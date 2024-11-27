@@ -12,6 +12,7 @@ module Supports
         file_name: param[:file_name],
         content_type: param[:content_type],
         file_size: param[:file_size],
+        display_order: param[:display_order]
       )
     end
 

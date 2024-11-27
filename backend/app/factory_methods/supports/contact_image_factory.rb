@@ -9,7 +9,6 @@ module Supports
         id: image_id,
         support_contact_id: contact_id,
         s3_key: param[:s3_key],
-        s3_url: param[:s3_url],
         file_name: param[:file_name],
         content_type: param[:content_type],
         file_size: param[:file_size],

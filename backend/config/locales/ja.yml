@@ -33,7 +33,7 @@ ja:
         email: メールアドレス
         content: お問い合わせ内容
         images: 画像
-        contact_category: お問い合わせカテゴリ
+        contact_category: お問い合わせ種類
       api/v1/fishing_spots/create_parameter:
         name: 釣り場名称
         description: 釣り場説明

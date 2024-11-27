@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
+  let_it_be(:contact_category) { create(:support_contact_category, name: 'other') }
+
   describe '#valid?' do
     subject { create_parameter.valid? }
     let(:create_parameter) { described_class.new(ActionController::Parameters.new(params)) }
@@ -16,10 +18,9 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
               images: [
                 {
                   s3_key: 'S3キー',
-                  s3_url: 'S3のURL',
                   file_name:  'ファイル名',
                   content_type: 'ファイルの拡張子',
-                  file_size: 'ファイルサイズ'
+                  file_size: 1000
                 }
               ],
               contact_category: 'other'
@@ -181,7 +182,10 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
             }
           }
 
-          it { expect(subject).to eq false }
+          it {
+            expect(subject).to eq false
+            expect(create_parameter.errors.full_messages).to include('お問い合わせ種類が見つかりません')
+          }
         end
       end
     end
@@ -197,10 +201,9 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
         images: [
           {
             s3_key: 'S3キー',
-            s3_url: 'S3のURL',
             file_name:  'ファイル名',
             content_type: 'ファイルの拡張子',
-            file_size: 'ファイルサイズ'
+            file_size: 1000
           }
         ],
         contact_category: 'other'
@@ -212,10 +215,9 @@ RSpec.describe Api::V1::Supports::Contacts::CreateParameter do
         [
           {
             s3_key: 'S3キー',
-            s3_url: 'S3のURL',
             file_name:  'ファイル名',
             content_type: 'ファイルの拡張子',
-            file_size: 'ファイルサイズ'
+            file_size: 1000
           }
         ]
       )

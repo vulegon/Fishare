@@ -20,7 +20,13 @@ module Api
           validate :contact_category_exists
 
           def initialize(params)
-            permitted_params = params.permit(:name, :email, :content, :contact_category, images: [:file_name, :s3_key, :content_type, :file_size, :s3_url])
+            permitted_params = params.permit(
+              :name,
+              :email,
+              :content,
+              :contact_category,
+              images: [:file_name, :s3_key, :content_type, :file_size]
+            )
             super(permitted_params.to_h.deep_symbolize_keys)
             @support_contact_category = ::Supports::ContactCategory.find_by(name: contact_category)
           end

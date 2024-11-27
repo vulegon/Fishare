@@ -1,16 +1,18 @@
+import React from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import SendIcon from '@mui/icons-material/Send';
-import { Alert } from '@mui/material';
-import AlertTitle from '@mui/material/AlertTitle';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import CssBaseline from '@mui/material/CssBaseline';
-import Stack from '@mui/material/Stack';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Stepper from '@mui/material/Stepper';
+import {
+  Alert,
+  Box,
+  AlertTitle,
+  Container,
+  CssBaseline,
+  Stack,
+  Step,
+  StepLabel,
+  Stepper,
+} from '@mui/material';
 import apiClient from 'api/v1/apiClient';
-import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { EmailSchema } from 'validators/email';
 import * as z from 'zod';
@@ -57,7 +59,6 @@ export const ContactForm: React.FC = () => {
     setValue,
     watch,
     formState: {
-      errors,
       isValid,
       isSubmitting,
     },
@@ -67,7 +68,7 @@ export const ContactForm: React.FC = () => {
 
   const onSubmit = async (data: ContactData) => {
     try {
-      const res = await apiClient.createContact(
+      await apiClient.createContact(
         {
           name: data.name,
           email: data.email,

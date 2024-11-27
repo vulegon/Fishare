@@ -32,13 +32,14 @@ class S3Client {
 
       await s3.upload(params).promise();
 
-      return {
+      const s3Image = {
         s3_key: s3Key,
         file_name: file.name,
         content_type: file.type,
         file_size: file.size,
-        s3_url: `https://${bucketName}.s3-${region}.amazonaws.com/${s3Key}`
       };
+
+      return s3Image
     } catch (error) {
       notifyError(
         error,

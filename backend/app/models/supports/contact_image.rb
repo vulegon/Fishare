@@ -34,7 +34,7 @@ module Supports
     validates :s3_key, presence: true, uniqueness: true
     validates :file_name, presence: true
     validates :content_type, presence: true
-    validates :file_size, presence: true, numericality: { greater_than: 0 }
-    validates :display_order, presence: true, uniqueness: { scope: :support_contact_id }, numericality: { greater_than: 0 }
+    validates :file_size, presence: true, numericality: { greater_than_or_equal_to: 0 }
+    validates :display_order, presence: true, uniqueness: { scope: :support_contact_id }, numericality: { greater_than_or_equal_to: 0 }
   end
 end

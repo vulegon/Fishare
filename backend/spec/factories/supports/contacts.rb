@@ -12,9 +12,9 @@
 #
 FactoryBot.define do
   factory :support_contact, class: 'Supports::Contact' do
+    association :support_contact_category
     name { "テスト 太郎" }
     email { "contact@test.com" }
     content { "お問い合わせ内容サンプル" }
-    support_contact_category_id { ::Supports::ContactCategory.pluck(:id).sample }
   end
 end

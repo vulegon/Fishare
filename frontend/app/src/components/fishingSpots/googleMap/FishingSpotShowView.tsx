@@ -134,7 +134,7 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
                   }}
                 >
                   <img
-                    src={image.s3_url}
+                    src={image.s3_key}
                     alt={image.file_name}
                     style={{
                       width: "100%",

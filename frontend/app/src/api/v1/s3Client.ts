@@ -18,7 +18,7 @@ const s3 = new S3({
 })
 
 class S3Client {
-  public async uploadFileS3(file: File, directory: string): Promise<S3Image> {
+  public async uploadFileS3(file: File, directory: string, order?: number): Promise<S3Image> {
     try {
       const uuid = uuidv4();
       const s3Key = `${directory}/${uuid}/${file.name}`;
@@ -37,6 +37,7 @@ class S3Client {
         file_name: file.name,
         content_type: file.type,
         file_size: file.size,
+        display_order: order ?? 0,
       };
 
       return s3Image
@@ -53,8 +54,9 @@ class S3Client {
     try {
       const s3Images: S3Image[] = [];
 
-      for (const file of files) {
-        const uploadedImage = await this.uploadFileS3(file, directory);
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const uploadedImage = await this.uploadFileS3(file, directory, i);
         s3Images.push(uploadedImage);
       }
 

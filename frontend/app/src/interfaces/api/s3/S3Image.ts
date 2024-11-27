@@ -3,4 +3,5 @@ export interface S3Image {
   file_name: string;
   content_type: string;
   file_size: number;
+  display_order: number;
 }

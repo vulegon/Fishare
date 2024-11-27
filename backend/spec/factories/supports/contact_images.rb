@@ -14,8 +14,9 @@
 #
 # Indexes
 #
-#  index_support_contact_images_on_s3_key_unique       (s3_key) UNIQUE
-#  index_support_contact_images_on_support_contact_id  (support_contact_id)
+#  index_support_contact_images_on_contact_id_and_display_order  (support_contact_id,display_order) UNIQUE
+#  index_support_contact_images_on_s3_key_unique                 (s3_key) UNIQUE
+#  index_support_contact_images_on_support_contact_id            (support_contact_id)
 #
 # Foreign Keys
 #

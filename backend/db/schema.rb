@@ -115,6 +115,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_14_005617) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["s3_key"], name: "index_support_contact_images_on_s3_key_unique", unique: true
+    t.index ["support_contact_id", "display_order"], name: "index_support_contact_images_on_contact_id_and_display_order", unique: true
     t.index ["support_contact_id"], name: "index_support_contact_images_on_support_contact_id"
   end
 

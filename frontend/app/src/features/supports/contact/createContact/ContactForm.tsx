@@ -108,10 +108,12 @@ export const ContactForm: React.FC = () => {
   // zodのバリデーションを効かせるためにhandleSubmitをラップ
   const handleNext = handleSubmit(() => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    window.scrollTo({ top: 0, behavior: "auto" });
   });
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    window.scrollTo({ top: 0, behavior: "auto" });
   };
 
   return (

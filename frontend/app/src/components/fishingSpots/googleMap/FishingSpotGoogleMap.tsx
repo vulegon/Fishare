@@ -59,9 +59,9 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
         fullscreenControl: false,
         mapTypeId: 'hybrid'
       }}
-      onClick={()=>{
+      onClick={(event: google.maps.MapMouseEvent) => {
         if (isNew) {
-          onMapClick;
+          onMapClick(event);
         }
       }}
     >

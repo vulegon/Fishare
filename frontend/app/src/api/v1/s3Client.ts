@@ -42,6 +42,7 @@ class S3Client {
 
       return s3Image
     } catch (error) {
+      console.error(error);
       notifyError(
         error,
         'ファイルのアップロード中にエラーが発生しました。ファイルの容量が大きすぎる、ファイルを移動されている、通信環境が悪いなどが考えられます。時間を置くかファイルを再度選択してお試しください。'

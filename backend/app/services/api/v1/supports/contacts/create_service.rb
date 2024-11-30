@@ -8,7 +8,7 @@ module Api
             # @param params [Api::V1::Supports::Contacts::CreateParameter]
             # @return [Supports::Contact] 永続化されたお問い合わせ
             def create!(params)
-              contact = ::Supports::ContactFactory.new.build(params)
+              contact = ::Supports::ContactFactory.new.build(params, params.support_contact_category.id)
               contact_images = ::Supports::ContactImageFactory.new.build_all(params.images, contact.id)
 
               ActiveRecord::Base.transaction do

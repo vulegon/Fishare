@@ -18,7 +18,7 @@ const s3 = new S3({
 })
 
 class S3Client {
-  public async uploadFileS3(file: File, directory: string): Promise<S3Image> {
+  public async uploadFileS3(file: File, directory: string, order?: number): Promise<S3Image> {
     try {
       const uuid = uuidv4();
       const s3Key = `${directory}/${uuid}/${file.name}`;
@@ -32,14 +32,17 @@ class S3Client {
 
       await s3.upload(params).promise();
 
-      return {
+      const s3Image = {
         s3_key: s3Key,
         file_name: file.name,
         content_type: file.type,
         file_size: file.size,
-        s3_url: `https://${bucketName}.s3-${region}.amazonaws.com/${s3Key}`
+        display_order: order ?? 0,
       };
+
+      return s3Image
     } catch (error) {
+      console.error(error);
       notifyError(
         error,
         'ファイルのアップロード中にエラーが発生しました。ファイルの容量が大きすぎる、ファイルを移動されている、通信環境が悪いなどが考えられます。時間を置くかファイルを再度選択してお試しください。'
@@ -52,8 +55,9 @@ class S3Client {
     try {
       const s3Images: S3Image[] = [];
 
-      for (const file of files) {
-        const uploadedImage = await this.uploadFileS3(file, directory);
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const uploadedImage = await this.uploadFileS3(file, directory, i);
         s3Images.push(uploadedImage);
       }
 

@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Supports::ContactFactory do
+  let_it_be(:support_contact_category) { create(:support_contact_category, name: 'other') }
+
   describe '#build' do
-    subject { described_class.new.build(create_params) }
+    subject { described_class.new.build(create_params, support_contact_category.id) }
     let(:create_params) { Api::V1::Supports::Contacts::CreateParameter.new(ActionController::Parameters.new(params)) }
     let(:params) {
       {

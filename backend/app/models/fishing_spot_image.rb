@@ -28,5 +28,9 @@ class FishingSpotImage < ApplicationRecord
   audited
   belongs_to :fishing_spot
 
-  validates :content_type, :display_order, :file_name, :file_size, :s3_key, presence: true
+  validates :s3_key, presence: true, uniqueness: true
+  validates :file_name, presence: true
+  validates :content_type, presence: true
+  validates :file_size, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :display_order, presence: true, uniqueness: { scope: :fishing_spot_id }, numericality: { greater_than_or_equal_to: 0 }
 end

@@ -1,0 +1,5 @@
+bucket         = "prod-fishare-terraform-state-bucket"
+key            = "terraform.tfstate"
+region         = "ap-northeast-1"
+dynamodb_table = "prod-fishare-terraform-state-lock-table"
+encrypt        = true

@@ -28,7 +28,7 @@ FactoryBot.define do
     s3_key { "fishing_spots/#{SecureRandom.uuid}" }
     file_name { Faker::File.file_name(dir: '', ext: 'jpg').delete_prefix("/") }
     content_type { 'image/jpeg' }
-    file_size { rand(1..10000) }
-    display_order { rand(0..100) }
+    file_size { 1024 }
+    display_order { 0 }
   end
 end

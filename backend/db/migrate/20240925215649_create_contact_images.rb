@@ -11,5 +11,6 @@ class CreateContactImages < ActiveRecord::Migration[7.0]
     end
 
     add_index :support_contact_images, %i[s3_key], unique: true, name: 'index_support_contact_images_on_s3_key_unique'
+    add_index :support_contact_images, %i[support_contact_id display_order], unique: true, name: 'index_support_contact_images_on_contact_id_and_display_order'
   end
 end

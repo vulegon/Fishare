@@ -43,10 +43,12 @@ services:
       - 1080:1080 # Webインターフェース用
       - 1025:1025 # SMTP用
   redis:
+    container_name: fishare-redis
     image: redis:alpine
     ports:
       - "6379:6379"
   sidekiq:
+    container_name: fishare-sidekiq
     build:
       context: ./backend/
       dockerfile: Dockerfile

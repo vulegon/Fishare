@@ -153,11 +153,11 @@ class ApiClient {
     }
   }
 
-  public async showFishingSpot(id: string): Promise<FishingSpot | string> {
+  public async showFishingSpot(id: string): Promise<FishingSpot> {
     try {
-      const response = await this.client.get(`fishing_spots/${id}`);
+      const response = await this.client.get(`fishing_spot_locations/${id}/fishing_spot`);
       const data = response.data;
-      return 'hoge'
+      return data.fishing_spot;
     } catch (error) {
       notifyError(error);
       throw error;

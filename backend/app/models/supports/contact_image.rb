@@ -14,18 +14,27 @@
 #
 # Indexes
 #
-#  index_support_contact_images_on_s3_key_unique       (s3_key) UNIQUE
-#  index_support_contact_images_on_support_contact_id  (support_contact_id)
+#  index_support_contact_images_on_contact_id_and_display_order  (support_contact_id,display_order) UNIQUE
+#  index_support_contact_images_on_s3_key_unique                 (s3_key) UNIQUE
+#  index_support_contact_images_on_support_contact_id            (support_contact_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (support_contact_id => support_contacts.id)
 #
+
+# お問い合わせ画像
 module Supports
   class ContactImage < ApplicationRecord
     self.table_name = 'support_contact_images'
     audited
 
     belongs_to :contact, class_name: 'Supports::Contact', foreign_key: :support_contact_id, inverse_of: :images
+
+    validates :s3_key, presence: true, uniqueness: true
+    validates :file_name, presence: true
+    validates :content_type, presence: true
+    validates :file_size, presence: true, numericality: { greater_than_or_equal_to: 0 }
+    validates :display_order, presence: true, uniqueness: { scope: :support_contact_id }, numericality: { greater_than_or_equal_to: 0 }
   end
 end

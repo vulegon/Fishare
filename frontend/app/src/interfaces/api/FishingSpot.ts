@@ -6,7 +6,9 @@ export interface FishingSpot {
   id: string;
   name: string;
   description: string;
-  location: FishingSpotLocation;
+  address: string;
+  latitude: number;
+  longitude: number;
   images: S3Image[];
   fishes: Fish[];
 }

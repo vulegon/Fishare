@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe ::Api::V1::Supports::Contacts::CreateService do
+  let_it_be(:other_contact_category) { create(:support_contact_category, name: 'other') }
+  let_it_be(:bug_report_contact_category) { create(:support_contact_category, name: 'bug_report') }
+
   describe '.create!' do
     subject { described_class.create!(create_params) }
     let(:create_params) { ::Api::V1::Supports::Contacts::CreateParameter.new(ActionController::Parameters.new(params)) }
@@ -14,14 +17,12 @@ RSpec.describe ::Api::V1::Supports::Contacts::CreateService do
           images: [
             {
               s3_key: 's3_key',
-              s3_url: 's3_url',
               file_name: 'file_name',
               content_type: 'content_type',
               file_size: 100
             },
             {
               s3_key: 's3_key2',
-              s3_url: 's3_url2',
               file_name: 'file_name2',
               content_type: 'content_type2',
               file_size: 200
@@ -43,14 +44,12 @@ RSpec.describe ::Api::V1::Supports::Contacts::CreateService do
         expect(subject.images).to match_array([
           have_attributes(
             s3_key: 's3_key',
-            s3_url: 's3_url',
             file_name: 'file_name',
             content_type: 'content_type',
             file_size: 100
           ),
           have_attributes(
             s3_key: 's3_key2',
-            s3_url: 's3_url2',
             file_name: 'file_name2',
             content_type: 'content_type2',
             file_size: 200

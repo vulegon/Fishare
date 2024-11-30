@@ -19,8 +19,9 @@ Rails.application.routes.draw do
       get 'users/current_user', to: 'users#show_current_user'
 
       resources :fishes, only: %i[index]
-      resources :fishing_spots, only: %i[create show]
+      resources :fishing_spots, only: %i[create]
       resources :fishing_spot_locations, only: %i[index]
+      get 'fishing_spot_locations/:id/fishing_spot', to: 'fishing_spot_locations#fishing_spot', as: 'fishing_spot_location_fishing_spot'
     end
   end
 end

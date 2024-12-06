@@ -62,3 +62,47 @@ resource "aws_security_group" "rds_sg" {
     Name = "${var.env}-${var.product_name}-rds-sg"
   }
 }
+
+resource "aws_security_group" "nat_instance_sg" {
+  vpc_id = var.vpc_id
+  name = "${var.env}-${var.product_name}-nat-instance-sg"
+  description = "NAT Instance Security Group"
+
+  ingress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = [var.private_subnet_cidr] # プライベートサブネットからのHTTPを許可
+  }
+
+  ingress {
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    cidr_blocks = [var.private_subnet_cidr] # プライベートサブネットからのHTTPSを許可
+  }
+
+  ingress {
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = var.my_ips # 自分のIPアドレスからSSHを許可
+  }
+
+  egress {
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # すべてのIPアドレスからHTTPを許可
+  }
+
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # すべてのIPアドレスからHTTPSを許可
+  }
+  tags = {
+    Name = "${var.env}-${var.product_name}-nat-instance-sg"
+  }
+}

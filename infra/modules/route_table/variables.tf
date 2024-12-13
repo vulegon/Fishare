@@ -18,3 +18,12 @@ variable "product_name" {
   type        = string
 }
 
+variable "public_subnet_id" {
+  description = "パブリックサブネットのID"
+  type        = string
+}
+
+variable "private_subnet_id" {
+  description = "プライベートサブネットのID"
+  type        = string
+}

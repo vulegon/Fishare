@@ -59,6 +59,7 @@ module "route_table" {
   product_name = var.product_name
   public_subnet_id = module.subnet.public_subnet_ids[0]
   private_subnet_id = module.subnet.private_subnet_ids[0]
+  nat_instance_network_interface_id = module.ec2.nat_instance_network_interface_id
 }
 
 module "security_group" {
@@ -124,27 +125,27 @@ module "ecr" {
   env = var.env
 }
 
-module "ecs" {
-  source = "./modules/ecs"
-  product_name = var.product_name
-  env = var.env
-  desired_count = 1 # 個人開発のため、最小構成で構築。本番環境では適切な数を設定すること。
-  api_security_group_ids = [module.security_group.ecs_service_api_sg_id]
-  front_security_group_ids = [module.security_group.ecs_service_front_sg_id]
-  redis_security_group_ids = [module.security_group.redis_sg_id]
-  sidekiq_security_group_ids = [module.security_group.sidekiq_sg_id]
-  public_subnet_ids = module.subnet.public_subnet_ids
-  private_subnet_ids = module.subnet.private_subnet_ids
-  log_region = var.tokyo_availability_zone
-  ecs_task_execution_role_arn = module.iam.ecs_task_execution_role_arn
-  ecs_task_role_arn = module.iam.ecs_task_role_arn
-  api_repository_url = module.ecr.api_repository_url
-  front_repository_url = module.ecr.front_repository_url
-  api_ecs_log_group_name = module.cloudwatch.api_ecs_log_group_name
-  front_ecs_log_group_name = module.cloudwatch.front_ecs_log_group_name
-  redis_ecs_log_group_name = module.cloudwatch.redis_ecs_log_group_name
-  sidekiq_ecs_log_group_name = module.cloudwatch.sidekiq_ecs_log_group_name
-}
+# module "ecs" {
+#   source = "./modules/ecs"
+#   product_name = var.product_name
+#   env = var.env
+#   desired_count = 1 # 個人開発のため、最小構成で構築。本番環境では適切な数を設定すること。
+#   api_security_group_ids = [module.security_group.ecs_service_api_sg_id]
+#   front_security_group_ids = [module.security_group.ecs_service_front_sg_id]
+#   redis_security_group_ids = [module.security_group.redis_sg_id]
+#   sidekiq_security_group_ids = [module.security_group.sidekiq_sg_id]
+#   public_subnet_ids = module.subnet.public_subnet_ids
+#   private_subnet_ids = module.subnet.private_subnet_ids
+#   log_region = var.tokyo_availability_zone
+#   ecs_task_execution_role_arn = module.iam.ecs_task_execution_role_arn
+#   ecs_task_role_arn = module.iam.ecs_task_role_arn
+#   api_repository_url = module.ecr.api_repository_url
+#   front_repository_url = module.ecr.front_repository_url
+#   api_ecs_log_group_name = module.cloudwatch.api_ecs_log_group_name
+#   front_ecs_log_group_name = module.cloudwatch.front_ecs_log_group_name
+#   redis_ecs_log_group_name = module.cloudwatch.redis_ecs_log_group_name
+#   sidekiq_ecs_log_group_name = module.cloudwatch.sidekiq_ecs_log_group_name
+# }
 
 module "cloudwatch" {
   source = "./modules/cloud_watch"

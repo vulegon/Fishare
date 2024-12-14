@@ -23,3 +23,11 @@ output "secret_access_key" {
   value = aws_iam_access_key.access_key.secret
   sensitive = true
 }
+
+output "ecs_task_execution_role_arn" {
+  value = aws_iam_role.ecs_task_execution.arn
+}
+
+output "ecs_task_role_arn" {
+  value = aws_iam_role.ecs_task_role.arn
+}

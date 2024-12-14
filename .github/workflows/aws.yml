@@ -1,0 +1,62 @@
+name: Deploy to Amazon ECS
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  AWS_REGION: ap-northeast-1
+  ECR_REPOSITORY_API: production-fishare-api
+  ECR_REPOSITORY_FRONT: production-fishare-front
+  ECS_SERVICE_API: production-fishare-api-service
+  ECS_SERVICE_FRONT: production-fishare-front-service
+  ECS_CLUSTER: production-fishare-cluster
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push API image
+        id: build-api
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_API:$IMAGE_TAG ./api
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY_API:$IMAGE_TAG
+
+    - name: Build, tag, and push FRONT image
+      id: build-front
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_FRONT:$IMAGE_TAG ./front
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONT:$IMAGE_TAG
+
+    - name: Update API service
+      run: |
+        aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} \
+          --service ${{ env.ECS_SERVICE_API }} --force-new-deployment
+
+    - name: Update FRONT service
+      run: |
+        aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} \
+          --service ${{ env.ECS_SERVICE_FRONT }} --force-new-deployment

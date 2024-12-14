@@ -2,12 +2,12 @@ version: '3'
 services:
   api:
     container_name: fishare-api
-    build: ./backend/
+    build: ./api/
     command: /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     environment:
       - REDIS_URL=redis://redis:6379/1
     volumes:
-      - ./backend:/api
+      - ./api:/api
     ports:
       - 3001:3000
     depends_on:
@@ -26,10 +26,10 @@ services:
       - '5432:5432'
   front:
     container_name: fishare-front
-    build: ./frontend/
+    build: ./front/
     command: /bin/sh -c "npm start"
     volumes:
-      - ./frontend/app:/front
+      - ./front/app:/front
     ports:
       - 3000:3000
     tty: true
@@ -50,11 +50,11 @@ services:
   sidekiq:
     container_name: fishare-sidekiq
     build:
-      context: ./backend/
+      context: ./api/
       dockerfile: Dockerfile
     command: bundle exec sidekiq
     volumes:
-      - ./backend:/api
+      - ./api:/api
     environment:
       - REDIS_URL=redis://redis:6379/1
     depends_on:

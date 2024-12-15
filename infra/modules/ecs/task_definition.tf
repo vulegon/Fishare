@@ -11,7 +11,7 @@ resource "aws_ecs_task_definition" "api" {
   container_definitions = jsonencode([
     {
       name      = "${var.env}-${var.product_name}-api"
-      image     = "${var.api_repository_url}:latest"
+      image     = var.api_repository_url
       command = ["bundle", "exec", "rails", "s", "-p", "3000", "-b"]
       essential = true
       portMappings = [
@@ -51,7 +51,7 @@ resource "aws_ecs_task_definition" "front" {
   container_definitions = jsonencode([
     {
       name      = "${var.env}-${var.product_name}-front"
-      image     = "${var.front_repository_url}:latest"
+      image     = var.front_repository_url
       command = ["npm", "start"]
       essential = true
       portMappings = [
@@ -89,7 +89,7 @@ resource "aws_ecs_task_definition" "redis" {
   container_definitions = jsonencode([
     {
       name      = "${var.env}-${var.product_name}-redis"
-      image     = "redis:alpine"
+      image     = var.redis_repository_url
       essential = true
       portMappings = [
         {
@@ -120,7 +120,7 @@ resource "aws_ecs_task_definition" "sidekiq" {
   container_definitions = jsonencode([
     {
       name      = "${var.env}-${var.product_name}-sidekiq"
-      image     = "${var.api_repository_url}:latest"
+      image     = var.api_repository_url
       essential = true
       command = ["bundle", "exec", "sidekiq"]
 

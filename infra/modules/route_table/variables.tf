@@ -27,3 +27,8 @@ variable "private_subnet_id" {
   description = "プライベートサブネットのID"
   type        = string
 }
+
+variable "nat_instance_network_interface_id" {
+  description = "NATインスタンスのネットワークインターフェースID"
+  type        = string
+}

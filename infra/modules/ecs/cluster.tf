@@ -1,5 +1,5 @@
 resource "aws_ecs_cluster" "app_cluster" {
-  name = "${var.env}-${var.product_name}-app-cluster"
+  name = "${var.env}-${var.product_name}-cluster"
 }
 
 resource "aws_ecs_cluster_capacity_providers" "app_cluster_capacity_providers" {

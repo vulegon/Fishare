@@ -59,6 +59,7 @@ module "route_table" {
   product_name = var.product_name
   public_subnet_id = module.subnet.public_subnet_ids[0]
   private_subnet_id = module.subnet.private_subnet_ids[0]
+  nat_instance_network_interface_id = module.ec2.nat_instance_network_interface_id
 }
 
 module "security_group" {
@@ -140,6 +141,7 @@ module "ecs" {
   ecs_task_role_arn = module.iam.ecs_task_role_arn
   api_repository_url = module.ecr.api_repository_url
   front_repository_url = module.ecr.front_repository_url
+  redis_repository_url = module.ecr.redis_repository_url
   api_ecs_log_group_name = module.cloudwatch.api_ecs_log_group_name
   front_ecs_log_group_name = module.cloudwatch.front_ecs_log_group_name
   redis_ecs_log_group_name = module.cloudwatch.redis_ecs_log_group_name

@@ -39,7 +39,7 @@ jobs:
       id: build-api
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
+        IMAGE_TAG: latest
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_API:$IMAGE_TAG ./api
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_API:$IMAGE_TAG
@@ -48,7 +48,7 @@ jobs:
       id: build-front
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
+        IMAGE_TAG: latest
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_FRONT:$IMAGE_TAG ./front
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONT:$IMAGE_TAG
@@ -57,7 +57,7 @@ jobs:
       id: build-redis
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
+        IMAGE_TAG: latest
       run: |
         docker pull redis:alpine
         docker tag redis:alpine $ECR_REGISTRY/$ECR_REPOSITORY_REDIS:$IMAGE_TAG

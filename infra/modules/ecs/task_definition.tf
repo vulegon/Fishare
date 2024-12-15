@@ -89,7 +89,7 @@ resource "aws_ecs_task_definition" "redis" {
   container_definitions = jsonencode([
     {
       name      = "${var.env}-${var.product_name}-redis"
-      image     = "redis:alpine"
+      image     = var.redis_repository_url
       essential = true
       portMappings = [
         {

@@ -110,18 +110,12 @@ resource "aws_security_group" "nat_instance_sg" {
   name = "${var.env}-${var.product_name}-nat-instance-sg"
   description = "NAT Instance Security Group"
 
+  # プライベートサブネットからのすべての通信を許可
   ingress {
-    from_port = 80
-    to_port = 80
-    protocol = "tcp"
-    cidr_blocks = [var.private_subnet_cidr] # プライベートサブネットからのHTTPを許可
-  }
-
-  ingress {
-    from_port = 443
-    to_port = 443
-    protocol = "tcp"
-    cidr_blocks = [var.private_subnet_cidr] # プライベートサブネットからのHTTPSを許可
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [var.private_subnet_cidr]
   }
 
   ingress {

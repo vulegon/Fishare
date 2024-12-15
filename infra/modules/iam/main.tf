@@ -51,6 +51,16 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_logs" {
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
 }
 
+resource "aws_iam_role_policy_attachment" "ecs_task_ecr_readonly" {
+  role       = aws_iam_role.ecs_task_execution.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
+resource "aws_iam_role_policy_attachment" "ecs_task_execution_admin" {
+  role       = aws_iam_role.ecs_task_execution.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+}
+
 # タスクロール (task_role_arn)
 resource "aws_iam_role" "ecs_task_role" {
   name               = "${var.env}-${var.product_name}-ecs-task-role"
@@ -70,7 +80,7 @@ resource "aws_iam_role" "ecs_task_role" {
 EOF
 }
 
-# マネージドポリシーアタッチ (S3 & Secrets Manager フルアクセス)
+# # マネージドポリシーアタッチ (S3 & Secrets Manager フルアクセス)
 resource "aws_iam_role_policy_attachment" "ecs_task_s3_access" {
   role       = aws_iam_role.ecs_task_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
@@ -80,3 +90,8 @@ resource "aws_iam_role_policy_attachment" "ecs_task_secretsmanager_access" {
   role       = aws_iam_role.ecs_task_role.name
   policy_arn = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
 }
+
+# resource "aws_iam_role_policy_attachment" "ecs_task_s3_access" {
+#   role       = aws_iam_role.ecs_task_role.name
+#   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+# }

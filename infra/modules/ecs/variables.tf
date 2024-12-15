@@ -63,6 +63,11 @@ variable "front_repository_url" {
   type        = string
 }
 
+variable "redis_repository_url" {
+  description = "Redis用コンテナイメージのECRリポジトリURL"
+  type        = string
+}
+
 variable "log_region" {
   description = "ログを出力するリージョン"
   type        = string

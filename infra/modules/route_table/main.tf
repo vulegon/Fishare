@@ -34,3 +34,8 @@ resource "aws_route_table_association" "private" {
   subnet_id      = var.private_subnet_id
   route_table_id = aws_route_table.private.id
 }
+
+resource "aws_main_route_table_association" "main" {
+  vpc_id          = var.vpc_id
+  route_table_id  = aws_route_table.private.id
+}

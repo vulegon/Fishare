@@ -5,9 +5,15 @@ resource "aws_ecs_service" "api_service" {
   desired_count   = var.desired_count
 
   network_configuration {
-    subnets          = var.private_subnet_ids
-    security_groups  = var.api_security_group_ids
-    assign_public_ip = false
+    subnets          = var.public_subnet_ids
+    security_groups  = var.api_service_security_group_ids
+    assign_public_ip = true
+  }
+
+  load_balancer {
+    target_group_arn = var.api_alb_target_group_arn
+    container_name   = "${var.env}-${var.product_name}-api"
+    container_port   = 3000
   }
 }
 
@@ -19,8 +25,14 @@ resource "aws_ecs_service" "front" {
 
   network_configuration {
     subnets         = var.public_subnet_ids
-    security_groups = var.front_security_group_ids
+    security_groups = var.front_service_security_group_ids
     assign_public_ip = true
+  }
+
+  load_balancer {
+    target_group_arn = var.front_alb_target_group_arn
+    container_name   = "${var.env}-${var.product_name}-front"
+    container_port   = 8000
   }
 }
 
@@ -31,9 +43,9 @@ resource "aws_ecs_service" "redis" {
   desired_count   = var.desired_count
 
   network_configuration {
-    subnets          = var.private_subnet_ids
-    security_groups  = var.redis_security_group_ids
-    assign_public_ip = false
+    subnets          = var.public_subnet_ids
+    security_groups  = var.redis_service_security_group_ids
+    assign_public_ip = true
   }
 }
 
@@ -44,8 +56,8 @@ resource "aws_ecs_service" "sidekiq" {
   desired_count   = var.desired_count
 
   network_configuration {
-    subnets          = var.private_subnet_ids
-    security_groups  = var.sidekiq_security_group_ids
-    assign_public_ip = false
+    subnets          = var.public_subnet_ids
+    security_groups  = var.sidekiq_service_security_group_ids
+    assign_public_ip = true
   }
 }

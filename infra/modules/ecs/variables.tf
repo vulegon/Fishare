@@ -13,22 +13,22 @@ variable "desired_count" {
   type        = number
 }
 
-variable "api_security_group_ids" {
+variable "api_service_security_group_ids" {
   description = "apiセキュリティグループID"
   type        = list(string)
 }
 
-variable "front_security_group_ids" {
+variable "front_service_security_group_ids" {
   description = "frontセキュリティグループID"
   type        = list(string)
 }
 
-variable "redis_security_group_ids" {
+variable "redis_service_security_group_ids" {
   description = "redisセキュリティグループID"
   type        = list(string)
 }
 
-variable "sidekiq_security_group_ids" {
+variable "sidekiq_service_security_group_ids" {
   description = "sidekiqセキュリティグループID"
   type        = list(string)
 }
@@ -68,11 +68,6 @@ variable "redis_repository_url" {
   type        = string
 }
 
-variable "log_region" {
-  description = "ログを出力するリージョン"
-  type        = string
-}
-
 variable "api_ecs_log_group_name" {
   description = "API用ECSロググループ"
   type        = string
@@ -90,5 +85,15 @@ variable "redis_ecs_log_group_name" {
 
 variable "sidekiq_ecs_log_group_name" {
   description = "Sidekiq用ECSロググループ"
+  type        = string
+}
+
+variable "api_alb_target_group_arn" {
+  description = "API用ALBのターゲットグループARN"
+  type        = string
+}
+
+variable "front_alb_target_group_arn" {
+  description = "フロント用ALBのターゲットグループARN"
   type        = string
 }

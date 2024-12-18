@@ -27,22 +27,22 @@ module "subnet" {
   target_availability_zones = [var.tokyo_availability_zone, var.osaka_availability_zone]
 }
 
-module "elastic_ip" {
-  source = "./modules/elastic_ip"
-  env = var.env
-  product_name = var.product_name
-  nat_instance_id = module.ec2.nat_instance_id
-}
+# module "elastic_ip" {
+#   source = "./modules/elastic_ip"
+#   env = var.env
+#   product_name = var.product_name
+#   nat_instance_id = module.ec2.nat_instance_id
+# }
 
-module "ec2" {
-  source = "./modules/ec2"
-  env = var.env
-  product_name = var.product_name
-  nat_ami = "ami-0c3fd0f5d33134a76" # Amazon Linux 2
-  nat_instance_type = "t2.micro"
-  public_subnet_id = module.subnet.public_subnet_ids[0]
-  nat_security_group_ids = [module.security_group.nat_instance_sg_id]
-}
+# module "ec2" {
+#   source = "./modules/ec2"
+#   env = var.env
+#   product_name = var.product_name
+#   nat_ami = "ami-0c3fd0f5d33134a76" # Amazon Linux 2
+#   nat_instance_type = "t2.micro"
+#   public_subnet_id = module.subnet.public_subnet_ids[0]
+#   nat_security_group_ids = [module.security_group.nat_instance_sg_id]
+# }
 
 module "internet_gateway" {
   source = "./modules/internet_gateway"
@@ -57,9 +57,9 @@ module "route_table" {
   internet_gateway_id = module.internet_gateway.internet_gateway_id
   env = var.env
   product_name = var.product_name
-  public_subnet_id = module.subnet.public_subnet_ids[0]
+  public_subnet_ids = module.subnet.public_subnet_ids
   private_subnet_id = module.subnet.private_subnet_ids[0]
-  nat_instance_network_interface_id = module.ec2.nat_instance_network_interface_id
+  # nat_instance_network_interface_id = module.ec2.nat_instance_network_interface_id
 }
 
 module "security_group" {
@@ -103,9 +103,11 @@ module "alb" {
   vpc_id = module.vpc.vpc_id
   env = var.env
   product_name = var.product_name
-  security_group_ids = [module.security_group.alb_sg_id]
-  subnet_ids = module.subnet.public_subnet_ids
-  certificate_arn = module.acm.ssl_certificate_arn
+  api_alb_sg_ids = [module.security_group.api_alb_id]
+  front_alb_sg_ids = [module.security_group.front_alb_id]
+  public_subnet_ids = module.subnet.public_subnet_ids
+  front_certificate_arn = module.acm.front_certificate_arn
+  api_certificate_arn = module.acm.api_certificate_arn
 }
 
 module "rds" {
@@ -130,13 +132,12 @@ module "ecs" {
   product_name = var.product_name
   env = var.env
   desired_count = 1 # 個人開発のため、最小構成で構築。本番環境では適切な数を設定すること。
-  api_security_group_ids = [module.security_group.ecs_service_api_sg_id]
-  front_security_group_ids = [module.security_group.ecs_service_front_sg_id]
-  redis_security_group_ids = [module.security_group.redis_sg_id]
-  sidekiq_security_group_ids = [module.security_group.sidekiq_sg_id]
+  api_service_security_group_ids = [module.security_group.api_service_id]
+  front_service_security_group_ids = [module.security_group.front_service_id]
+  redis_service_security_group_ids = [module.security_group.redis_service_id]
+  sidekiq_service_security_group_ids = [module.security_group.sidekiq_service_id]
   public_subnet_ids = module.subnet.public_subnet_ids
   private_subnet_ids = module.subnet.private_subnet_ids
-  log_region = var.tokyo_availability_zone
   ecs_task_execution_role_arn = module.iam.ecs_task_execution_role_arn
   ecs_task_role_arn = module.iam.ecs_task_role_arn
   api_repository_url = module.ecr.api_repository_url
@@ -146,6 +147,8 @@ module "ecs" {
   front_ecs_log_group_name = module.cloudwatch.front_ecs_log_group_name
   redis_ecs_log_group_name = module.cloudwatch.redis_ecs_log_group_name
   sidekiq_ecs_log_group_name = module.cloudwatch.sidekiq_ecs_log_group_name
+  api_alb_target_group_arn = module.alb.api_alb_target_group_arn
+  front_alb_target_group_arn = module.alb.front_alb_target_group_arn
 }
 
 module "cloudwatch" {

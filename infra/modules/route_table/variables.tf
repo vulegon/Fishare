@@ -18,17 +18,12 @@ variable "product_name" {
   type        = string
 }
 
-variable "public_subnet_id" {
+variable "public_subnet_ids" {
   description = "パブリックサブネットのID"
-  type        = string
+  type        = list(string)
 }
 
 variable "private_subnet_id" {
   description = "プライベートサブネットのID"
-  type        = string
-}
-
-variable "nat_instance_network_interface_id" {
-  description = "NATインスタンスのネットワークインターフェースID"
   type        = string
 }

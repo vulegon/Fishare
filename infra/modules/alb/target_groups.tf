@@ -1,7 +1,8 @@
-resource "aws_lb_target_group" "alb_target_group" {
-  name     = "${var.env}-${var.product_name}-tg"
-  port     = 80
+resource "aws_lb_target_group" "api" {
+  name     = "${var.env}-${var.product_name}-api-tg"
+  port     = 3000
   protocol = "HTTP"
+  target_type = "ip"
   vpc_id   = var.vpc_id
 
   health_check {
@@ -14,6 +15,25 @@ resource "aws_lb_target_group" "alb_target_group" {
   }
 
   tags = {
-    Name = "${var.env}-${var.product_name}-tg"
+    Name = "${var.env}-${var.product_name}-api-tg"
+  }
+}
+
+resource "aws_lb_target_group" "front" {
+  name     = "${var.env}-${var.product_name}-front-tg"
+  port     = 8000
+  protocol = "HTTP"
+  target_type = "ip"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    enabled  = true
+    path     = "/health_check"
+    port     = 8000
+    protocol = "HTTP"
+  }
+
+  tags = {
+    Name = "${var.env}-${var.product_name}-front-tg"
   }
 }

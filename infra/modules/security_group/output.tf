@@ -1,27 +1,27 @@
-output "alb_sg_id" {
-  value = aws_security_group.alb_sg.id
-}
-
-output "ecs_service_api_sg_id" {
-  value = aws_security_group.ecs_service_api_sg.id
-}
-
-output "ecs_service_front_sg_id" {
-  value = aws_security_group.ecs_service_front_sg.id
-}
-
 output "rds_sg_id" {
   value = aws_security_group.rds_sg.id
 }
 
-output "nat_instance_sg_id" {
-  value = aws_security_group.nat_instance_sg.id
+output "api_service_id" {
+  value = aws_security_group.api_service.id
 }
 
-output "redis_sg_id" {
-  value = aws_security_group.redis_sg.id
+output "api_alb_id" {
+  value = aws_security_group.api_alb.id
 }
 
-output "sidekiq_sg_id" {
-  value = aws_security_group.sidekiq_sg.id
+output "front_service_id" {
+  value = aws_security_group.front_service.id
+}
+
+output "front_alb_id" {
+  value = aws_security_group.front_alb.id
+}
+
+output "redis_service_id" {
+  value = aws_security_group.redis_service.id
+}
+
+output "sidekiq_service_id" {
+  value = aws_security_group.sidekiq_service.id
 }

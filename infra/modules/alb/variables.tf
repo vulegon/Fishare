@@ -13,17 +13,27 @@ variable "product_name" {
   type        = string
 }
 
-variable "security_group_ids" {
-  description = "セキュリティグループのID"
+variable "api_alb_sg_ids" {
+  description = "APIセキュリティグループのID"
   type        = list(string)
 }
 
-variable "subnet_ids" {
-  description = "サブネットのID"
+variable "front_alb_sg_ids" {
+  description = "frontセキュリティグループのID"
   type        = list(string)
 }
 
-variable "certificate_arn" {
-  description = "ACM証明書のARN"
+variable "public_subnet_ids" {
+  description = "パブリックサブネットのID"
+  type        = list(string)
+}
+
+variable "front_certificate_arn" {
+  description = "FRONT ACM証明書のARN"
+  type        = string
+}
+
+variable "api_certificate_arn" {
+  description = "API ACM証明書のARN"
   type        = string
 }

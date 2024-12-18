@@ -15,12 +15,15 @@ module Api
     end
     # lib ディレクトリをオートロードパスに追加
     config.autoload_paths << Rails.root.join('lib')
-    Faker::Config.locale = :ja
     config.i18n.default_locale = :ja
     config.active_job.queue_adapter = :sidekiq
     config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::TimeWithZone, ActiveSupport::TimeZone, BCrypt::Password, BigDecimal]
     config.session_store :cookie_store, key: '_interslice_session'
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use config.session_store, config.session_options
+
+    if Rails.env.development? || Rails.env.test?
+      Faker::Config.locale = :ja
+    end
   end
 end

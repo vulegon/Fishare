@@ -23,7 +23,7 @@ resource "aws_ecs_task_definition" "api" {
       environment = [
         {
           name = "RAILS_ENV"
-          value = "${var.env}"
+          value = var.env
         },
         {
           name = "REDIS_URL"
@@ -89,6 +89,7 @@ resource "aws_ecs_task_definition" "redis" {
   cpu                      = "256"
   memory                   = "512"
   execution_role_arn       = var.ecs_task_execution_role_arn
+  task_role_arn            = var.ecs_task_role_arn
 
   container_definitions = jsonencode([
     {

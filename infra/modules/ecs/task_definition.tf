@@ -56,7 +56,7 @@ resource "aws_ecs_task_definition" "front" {
     {
       name      = "${var.env}-${var.product_name}-front"
       image     = "${var.front_repository_url}:latest"
-      command = ["npm", "start"]
+      command = ["sh", "-c", "cd app && npm start"]
       essential = true
       portMappings = [
         {

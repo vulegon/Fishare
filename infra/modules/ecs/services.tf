@@ -41,6 +41,7 @@ resource "aws_ecs_service" "redis" {
   cluster         = aws_ecs_cluster.app_cluster.id
   task_definition = aws_ecs_task_definition.redis.arn
   desired_count   = var.desired_count
+  enable_execute_command = true
 
   network_configuration {
     subnets          = var.public_subnet_ids

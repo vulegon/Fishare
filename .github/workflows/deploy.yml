@@ -9,9 +9,11 @@ env:
   ECR_REPOSITORY_API: production-fishare-api
   ECR_REPOSITORY_FRONT: production-fishare-front
   ECR_REPOSITORY_REDIS: production-fishare-redis
+  ECR_REPOSITORY_SIDEKIQ: production-fishare-sidekiq
   ECS_SERVICE_API: production-fishare-api-service
   ECS_SERVICE_FRONT: production-fishare-front-service
   ECS_SERVICE_REDIS: production-fishare-redis-service
+  ECS_SERVICE_SIDEKIQ: production-fishare-sidekiq-service
   ECS_CLUSTER: production-fishare-cluster
 
 jobs:
@@ -43,6 +45,7 @@ jobs:
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_API:$IMAGE_TAG ./api
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_API:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_SIDEKIQ:latest
 
     - name: Build, tag, and push FRONT image
       id: build-front
@@ -67,6 +70,8 @@ jobs:
       run: |
         aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} \
           --service ${{ env.ECS_SERVICE_API }} --force-new-deployment
+        aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} \
+          --service ${{ env.ECS_SERVICE_SIDEKIQ }} --force-new-deployment
 
     - name: Update FRONT service
       run: |

@@ -38,11 +38,6 @@ variable "public_subnet_ids" {
   type        = list(string)
 }
 
-variable "private_subnet_ids" {
-  description = "プライベートサブネットID"
-  type        = list(string)
-}
-
 variable "ecs_task_execution_role_arn" {
   description = "ECS タスク実行ロールのARN"
   type        = string
@@ -65,6 +60,11 @@ variable "front_repository_url" {
 
 variable "redis_repository_url" {
   description = "Redis用コンテナイメージのECRリポジトリURL"
+  type        = string
+}
+
+variable "sidekiq_repository_url" {
+  description = "Sidekiq用コンテナイメージのECRリポジトリURL"
   type        = string
 }
 

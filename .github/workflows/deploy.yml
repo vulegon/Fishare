@@ -45,7 +45,15 @@ jobs:
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_API:$IMAGE_TAG ./api
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_API:$IMAGE_TAG
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY_SIDEKIQ:latest
+
+    - name: Build, tag, and push SIDEKIQ image
+      id: build-sidekiq
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: latest
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_SIDEKIQ:$IMAGE_TAG ./api
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_SIDEKIQ:$IMAGE_TAG
 
     - name: Build, tag, and push FRONT image
       id: build-front
@@ -82,3 +90,8 @@ jobs:
       run: |
         aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} \
           --service ${{ env.ECS_SERVICE_REDIS }} --force-new-deployment
+
+    - name: Update SIDEKIQ service
+      run: |
+        aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} \
+          --service ${{ env.ECS_SERVICE_SIDEKIQ }} --force-new-deployment

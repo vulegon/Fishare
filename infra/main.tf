@@ -137,12 +137,12 @@ module "ecs" {
   redis_service_security_group_ids = [module.security_group.redis_service_id]
   sidekiq_service_security_group_ids = [module.security_group.sidekiq_service_id]
   public_subnet_ids = module.subnet.public_subnet_ids
-  private_subnet_ids = module.subnet.private_subnet_ids
   ecs_task_execution_role_arn = module.iam.ecs_task_execution_role_arn
   ecs_task_role_arn = module.iam.ecs_task_role_arn
   api_repository_url = module.ecr.api_repository_url
   front_repository_url = module.ecr.front_repository_url
   redis_repository_url = module.ecr.redis_repository_url
+  sidekiq_repository_url = module.ecr.sidekiq_repository_url
   api_ecs_log_group_name = module.cloudwatch.api_ecs_log_group_name
   front_ecs_log_group_name = module.cloudwatch.front_ecs_log_group_name
   redis_ecs_log_group_name = module.cloudwatch.redis_ecs_log_group_name

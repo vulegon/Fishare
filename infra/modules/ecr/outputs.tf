@@ -9,3 +9,7 @@ output "front_repository_url" {
 output "redis_repository_url" {
   value = aws_ecr_repository.redis_repository.repository_url
 }
+
+output "sidekiq_repository_url" {
+  value = aws_ecr_repository.sidekiq_repository.repository_url
+}

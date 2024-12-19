@@ -126,7 +126,7 @@ resource "aws_ecs_task_definition" "sidekiq" {
   container_definitions = jsonencode([
     {
       name      = "${var.env}-${var.product_name}-sidekiq"
-      image     = "${var.api_repository_url}:latest"
+      image     = "${var.sidekiq_repository_url}:latest"
       essential = true
       command = ["bundle", "exec", "sidekiq"]
       environment = [

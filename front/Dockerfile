@@ -13,4 +13,4 @@ RUN npm install
 
 ARG NODE_ENV
 # production時のみbuild
-RUN if [ "$NODE_ENV" = "production" ]; then npm run build; fi
+RUN if [ "$NODE_ENV" = "production" ]; then npm run build && npm install -g serve; fi

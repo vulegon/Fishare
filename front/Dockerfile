@@ -14,5 +14,3 @@ RUN npm install
 ARG NODE_ENV
 # production時のみbuild
 RUN if [ "$NODE_ENV" = "production" ]; then npm run build; fi
-
-WORKDIR /front

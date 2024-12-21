@@ -29,7 +29,7 @@ services:
     build: ./front/
     command: /bin/sh -c "npm start"
     volumes:
-      - ./front/app:/front
+      - ./front/app:/front/app
     ports:
       - 3000:3000
     tty: true

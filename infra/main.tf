@@ -132,23 +132,22 @@ module "ecs" {
   product_name = var.product_name
   env = var.env
   desired_count = 1 # 個人開発のため、最小構成で構築。本番環境では適切な数を設定すること。
-  api_service_security_group_ids = [module.security_group.api_service_id]
+  api_service_security_group_ids = [module.security_group.api_service_id, module.security_group.sidekiq_service_id]
   front_service_security_group_ids = [module.security_group.front_service_id]
   redis_service_security_group_ids = [module.security_group.redis_service_id]
-  sidekiq_service_security_group_ids = [module.security_group.sidekiq_service_id]
   public_subnet_ids = module.subnet.public_subnet_ids
   ecs_task_execution_role_arn = module.iam.ecs_task_execution_role_arn
   ecs_task_role_arn = module.iam.ecs_task_role_arn
   api_repository_url = module.ecr.api_repository_url
   front_repository_url = module.ecr.front_repository_url
   redis_repository_url = module.ecr.redis_repository_url
-  sidekiq_repository_url = module.ecr.sidekiq_repository_url
   api_ecs_log_group_name = module.cloudwatch.api_ecs_log_group_name
   front_ecs_log_group_name = module.cloudwatch.front_ecs_log_group_name
   redis_ecs_log_group_name = module.cloudwatch.redis_ecs_log_group_name
   sidekiq_ecs_log_group_name = module.cloudwatch.sidekiq_ecs_log_group_name
   api_alb_target_group_arn = module.alb.api_alb_target_group_arn
   front_alb_target_group_arn = module.alb.front_alb_target_group_arn
+  api_rails_master_key_arn = data.aws_ssm_parameter.rails_master_key.arn
 }
 
 module "cloudwatch" {

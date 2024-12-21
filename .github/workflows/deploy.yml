@@ -9,11 +9,9 @@ env:
   ECR_REPOSITORY_API: production-fishare-api
   ECR_REPOSITORY_FRONT: production-fishare-front
   ECR_REPOSITORY_REDIS: production-fishare-redis
-  ECR_REPOSITORY_SIDEKIQ: production-fishare-sidekiq
   ECS_SERVICE_API: production-fishare-api-service
   ECS_SERVICE_FRONT: production-fishare-front-service
   ECS_SERVICE_REDIS: production-fishare-redis-service
-  ECS_SERVICE_SIDEKIQ: production-fishare-sidekiq-service
   ECS_CLUSTER: production-fishare-cluster
 
 jobs:
@@ -45,15 +43,6 @@ jobs:
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_API:$IMAGE_TAG ./api
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_API:$IMAGE_TAG
-
-    - name: Build, tag, and push SIDEKIQ image
-      id: build-sidekiq
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: latest
-      run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_SIDEKIQ:$IMAGE_TAG ./api
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY_SIDEKIQ:$IMAGE_TAG
 
     - name: Build, tag, and push FRONT image
       id: build-front
@@ -88,8 +77,3 @@ jobs:
       run: |
         aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} \
           --service ${{ env.ECS_SERVICE_REDIS }} --force-new-deployment
-
-    - name: Update SIDEKIQ service
-      run: |
-        aws ecs update-service --cluster ${{ env.ECS_CLUSTER }} \
-          --service ${{ env.ECS_SERVICE_SIDEKIQ }} --force-new-deployment

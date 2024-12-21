@@ -36,16 +36,3 @@ resource "aws_ecr_repository" "redis_repository" {
     Name = "${var.env}-${var.product_name}-redis"
   }
 }
-
-resource "aws_ecr_repository" "sidekiq_repository" {
-  name = "${var.env}-${var.product_name}-sidekiq"
-
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-  image_tag_mutability = "MUTABLE"
-
-  tags = {
-    Name = "${var.env}-${var.product_name}-sidekiq"
-  }
-}

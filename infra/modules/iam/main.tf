@@ -91,7 +91,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_secretsmanager_access" {
   policy_arn = "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
 }
 
-# resource "aws_iam_role_policy_attachment" "ecs_task_s3_access" {
-#   role       = aws_iam_role.ecs_task_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
-# }
+resource "aws_iam_role_policy_attachment" "ecs_task_admin" {
+  role       = aws_iam_role.ecs_task_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+}

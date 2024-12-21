@@ -94,6 +94,9 @@ GEM
       aws-sdk-core (~> 3, >= 3.210.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
+    aws-sdk-ssm (1.186.0)
+      aws-sdk-core (~> 3, >= 3.210.0)
+      aws-sigv4 (~> 1.5)
     aws-sigv4 (1.10.1)
       aws-eventstream (~> 1, >= 1.0.2)
     bcrypt (3.1.20)
@@ -320,6 +323,7 @@ DEPENDENCIES
   annotate
   audited
   aws-sdk-s3
+  aws-sdk-ssm
   bootsnap
   debug
   devise

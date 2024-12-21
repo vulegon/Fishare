@@ -16,7 +16,7 @@ test:
 
 production:
   <<: *default
-  database: <%= ENV['POSTGRES_DB'] %>
-  host: <%= ENV['POSTGRES_HOST'] %>
-  username: <%= ENV['POSTGRES_USER'] %>
-  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  database: <%= Aws::SSM::Client.new.get_parameter(name: "/fishare/production/POSTGRES_DB", with_decryption: true).parameter.value rescue nil %>
+  host: <%= Aws::SSM::Client.new.get_parameter(name: "/fishare/production/POSTGRES_HOST", with_decryption: true).parameter.value rescue nil %>
+  username: <%= Aws::SSM::Client.new.get_parameter(name: "/fishare/production/POSTGRES_USER", with_decryption: true).parameter.value rescue nil %>
+  password: <%= Aws::SSM::Client.new.get_parameter(name: "/fishare/production/POSTGRES_PASSWORD", with_decryption: true).parameter.value rescue nil %>

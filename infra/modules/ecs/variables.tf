@@ -28,11 +28,6 @@ variable "redis_service_security_group_ids" {
   type        = list(string)
 }
 
-variable "sidekiq_service_security_group_ids" {
-  description = "sidekiqセキュリティグループID"
-  type        = list(string)
-}
-
 variable "public_subnet_ids" {
   description = "パブリックサブネットID"
   type        = list(string)
@@ -63,11 +58,6 @@ variable "redis_repository_url" {
   type        = string
 }
 
-variable "sidekiq_repository_url" {
-  description = "Sidekiq用コンテナイメージのECRリポジトリURL"
-  type        = string
-}
-
 variable "api_ecs_log_group_name" {
   description = "API用ECSロググループ"
   type        = string
@@ -95,5 +85,10 @@ variable "api_alb_target_group_arn" {
 
 variable "front_alb_target_group_arn" {
   description = "フロント用ALBのターゲットグループARN"
+  type        = string
+}
+
+variable "api_rails_master_key_arn" {
+  description = "API用のRAILS_MASTER_KEYのARN"
   type        = string
 }

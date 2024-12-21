@@ -132,9 +132,10 @@ module "ecs" {
   product_name = var.product_name
   env = var.env
   desired_count = 1 # 個人開発のため、最小構成で構築。本番環境では適切な数を設定すること。
-  api_service_security_group_ids = [module.security_group.api_service_id, module.security_group.sidekiq_service_id]
+  api_service_security_group_ids = [module.security_group.api_service_id]
   front_service_security_group_ids = [module.security_group.front_service_id]
   redis_service_security_group_ids = [module.security_group.redis_service_id]
+  sidekiq_service_security_group_ids = [module.security_group.sidekiq_service_id]
   public_subnet_ids = module.subnet.public_subnet_ids
   ecs_task_execution_role_arn = module.iam.ecs_task_execution_role_arn
   ecs_task_role_arn = module.iam.ecs_task_role_arn

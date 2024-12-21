@@ -13,7 +13,6 @@ env:
   ECS_SERVICE_FRONT: production-fishare-front-service
   ECS_SERVICE_REDIS: production-fishare-redis-service
   ECS_CLUSTER: production-fishare-cluster
-  NODE_ENV: production
 
 jobs:
   deploy:
@@ -51,7 +50,7 @@ jobs:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         IMAGE_TAG: latest
       run: |
-        docker build --build-arg NODE_ENV=$NODE_ENV -t $ECR_REGISTRY/$ECR_REPOSITORY_FRONT:$IMAGE_TAG ./front
+        docker build --build-arg NODE_ENV=production -t $ECR_REGISTRY/$ECR_REPOSITORY_FRONT:$IMAGE_TAG ./front
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONT:$IMAGE_TAG
 
     - name: Build, tag, and push REDIS image

@@ -52,8 +52,8 @@ resource "aws_ecs_task_definition" "front" {
   family                   = "${var.env}-${var.product_name}-front"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = "512"
-  memory                   = "1024"
+  cpu                      = "1024"
+  memory                   = "2048"
 
   execution_role_arn = var.ecs_task_execution_role_arn
   task_role_arn      = var.ecs_task_role_arn
@@ -62,7 +62,7 @@ resource "aws_ecs_task_definition" "front" {
     {
       name      = "${var.env}-${var.product_name}-front"
       image     = "${var.front_repository_url}:latest"
-      command = ["npm", "start"]
+      command = ["serve", "-s", "build", "-l", "8000"]
       essential = true
       portMappings = [
         {
@@ -73,7 +73,7 @@ resource "aws_ecs_task_definition" "front" {
       environment = [
         {
           name = "NODE_ENV"
-          value = "${var.env}"
+          value = var.env
         }
       ]
       logConfiguration = {

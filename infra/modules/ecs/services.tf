@@ -35,30 +35,3 @@ resource "aws_ecs_service" "front" {
     container_port   = 8000
   }
 }
-
-resource "aws_ecs_service" "redis" {
-  name            = "${var.env}-${var.product_name}-redis-service"
-  cluster         = aws_ecs_cluster.app_cluster.id
-  task_definition = aws_ecs_task_definition.redis.arn
-  desired_count   = var.desired_count
-  enable_execute_command = true
-
-  network_configuration {
-    subnets          = var.public_subnet_ids
-    security_groups  = var.redis_service_security_group_ids
-    assign_public_ip = true
-  }
-}
-
-resource "aws_ecs_service" "sidekiq" {
-  name            = "${var.env}-${var.product_name}-sidekiq-service"
-  cluster         = aws_ecs_cluster.app_cluster.id
-  task_definition = aws_ecs_task_definition.sidekiq.arn
-  desired_count   = var.desired_count
-
-  network_configuration {
-    subnets          = var.public_subnet_ids
-    security_groups  = var.sidekiq_service_security_group_ids
-    assign_public_ip = true
-  }
-}

@@ -23,16 +23,6 @@ variable "front_service_security_group_ids" {
   type        = list(string)
 }
 
-variable "redis_service_security_group_ids" {
-  description = "redisセキュリティグループID"
-  type        = list(string)
-}
-
-variable "sidekiq_service_security_group_ids" {
-  description = "sidekiqセキュリティグループID"
-  type        = list(string)
-}
-
 variable "public_subnet_ids" {
   description = "パブリックサブネットID"
   type        = list(string)

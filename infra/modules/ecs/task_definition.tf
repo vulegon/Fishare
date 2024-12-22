@@ -47,7 +47,7 @@ resource "aws_ecs_task_definition" "api" {
     },
     {
       name      = "${var.env}-${var.product_name}-redis"
-      image     = "${var.redis_repository_url}:latest"
+      image     = "redis:alpine"
       essential = true
       portMappings = [
         {

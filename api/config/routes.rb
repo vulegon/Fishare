@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
-  get 'health_check', to: proc { [200, { 'Content-Type' => 'application/json' }, ['{"status":"ok"}']] }
-
   namespace :api do
     namespace :v1 do
+      get 'health_check', to: proc { [200, { 'Content-Type' => 'application/json' }, ['{"status":"ok"}']] }
+
       resources :prefectures, only: [:index]
 
       namespace :supports do

@@ -1,8 +1,8 @@
-output "alb_dns_name" {
+output "front_alb_dns_name" {
   value = aws_lb.front.dns_name
 }
 
-output "alb_zone_id" {
+output "front_alb_zone_id" {
   value = aws_lb.front.zone_id
 }
 

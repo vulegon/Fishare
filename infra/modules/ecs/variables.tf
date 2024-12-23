@@ -87,3 +87,8 @@ variable "api_rails_master_key_arn" {
   description = "API用のRAILS_MASTER_KEYのARN"
   type        = string
 }
+
+variable "react_app_google_map_api_key_arn" {
+  description = "REACT_APP_GOOGLE_MAP_API_KEYのARN"
+  type        = string
+}

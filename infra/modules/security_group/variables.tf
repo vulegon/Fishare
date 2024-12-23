@@ -13,11 +13,6 @@ variable "product_name" {
   type        = string
 }
 
-variable "my_ips" {
-  description = "自分のIPアドレス"
-  type        = list(string)
-}
-
 variable "private_subnet_cidr" {
   description = "プライベートサブネットのCIDR"
   type        = string

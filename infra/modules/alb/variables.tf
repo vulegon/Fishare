@@ -13,11 +13,6 @@ variable "product_name" {
   type        = string
 }
 
-variable "api_alb_sg_ids" {
-  description = "APIセキュリティグループのID"
-  type        = list(string)
-}
-
 variable "front_alb_sg_ids" {
   description = "frontセキュリティグループのID"
   type        = list(string)
@@ -28,12 +23,7 @@ variable "public_subnet_ids" {
   type        = list(string)
 }
 
-variable "front_certificate_arn" {
-  description = "FRONT ACM証明書のARN"
-  type        = string
-}
-
-variable "api_certificate_arn" {
-  description = "API ACM証明書のARN"
+variable "fishare_certificate_arn" {
+  description = "ACM証明書のARN"
   type        = string
 }

@@ -10,10 +10,10 @@ variable "product_name" {
 
 variable "domain_name" {
   type        = string
-  description = "ドメイン名"
+  description = "FRONTドメイン名"
 }
 
-variable "validation_record_fqdns" {
+variable "front_validation_record_fqdns" {
   type        = list(string)
-  description = "ACMのバリデーション用のレコードのFQDN"
+  description = "FRONT ACMのバリデーション用のレコードのFQDN"
 }

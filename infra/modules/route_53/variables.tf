@@ -9,7 +9,7 @@ variable "env" {
 }
 
 variable "domain_name" {
-  description = "ドメイン名"
+  description = "FRONTドメイン名"
   type        = string
 }
 
@@ -19,16 +19,16 @@ variable "ttl" {
 }
 
 variable "domain_validation_options" {
-  description = "The domain validation options for the ACM certificate"
+  description = "ドメインのバリデーションオプション"
   type        = any
 }
 
-variable "alb_dns_name" {
-  description = "DNS名"
+variable "front_alb_dns_name" {
+  description = "FRONTDNS名"
   type        = string
 }
 
-variable "alb_zone_id" {
-  description = "ゾーンID"
+variable "front_alb_zone_id" {
+  description = "FRONTゾーンID"
   type        = string
 }

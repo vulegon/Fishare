@@ -48,11 +48,6 @@ variable "front_repository_url" {
   type        = string
 }
 
-variable "redis_repository_url" {
-  description = "Redis用コンテナイメージのECRリポジトリURL"
-  type        = string
-}
-
 variable "api_ecs_log_group_name" {
   description = "API用ECSロググループ"
   type        = string

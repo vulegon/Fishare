@@ -25,6 +25,8 @@ module Api
 
     config.x.cors = Rails.application.config_for(:cors)
 
-    Faker::Config.locale = :ja
+    if Rails.env.development? || Rails.env.test?
+      Faker::Config.locale = :ja
+    end
   end
 end

@@ -1,0 +1,8 @@
+development: &development
+  origin: http://localhost:8000
+
+test:
+  <<: *development
+
+production:
+  origin: https://<%= Rails.application.config.x.service_name %>

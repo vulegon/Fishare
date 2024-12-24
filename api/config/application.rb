@@ -21,9 +21,10 @@ module Api
     config.session_store :cookie_store, key: '_interslice_session'
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use config.session_store, config.session_options
+    config.x.service_name = 'fishare'
 
-    if Rails.env.development? || Rails.env.test?
-      Faker::Config.locale = :ja
-    end
+    config.x.cors = Rails.application.config_for(:cors)
+
+    Faker::Config.locale = :ja
   end
 end

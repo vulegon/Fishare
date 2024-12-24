@@ -119,18 +119,6 @@ resource "aws_ecs_task_definition" "front" {
           hostPort      = 8000
         }
       ]
-      environment = [
-        {
-          name = "NODE_ENV"
-          value = var.env
-        }
-      ]
-      secrets = [
-        {
-          name      = "REACT_APP_GOOGLE_MAP_API_KEY"
-          valueFrom = var.react_app_google_map_api_key_arn
-        }
-      ]
       logConfiguration = {
         logDriver = "awslogs"
         options = {

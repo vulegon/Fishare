@@ -49,7 +49,6 @@ module "security_group" {
   vpc_id = module.vpc.vpc_id
   env = var.env
   product_name = var.product_name
-  # my_ips = ["59.156.50.156/32"]
   private_subnet_cidr = var.private_subnet_cidrs[0]
 }
 
@@ -125,7 +124,6 @@ module "ecs" {
   api_alb_target_group_arn = module.alb.api_alb_target_group_arn
   front_alb_target_group_arn = module.alb.front_alb_target_group_arn
   api_rails_master_key_arn = data.aws_ssm_parameter.rails_master_key.arn
-  react_app_google_map_api_key_arn = data.aws_ssm_parameter.react_app_google_map_api_key.arn
 }
 
 module "cloudwatch" {

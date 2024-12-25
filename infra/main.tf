@@ -8,6 +8,7 @@ module "s3" {
   source = "./modules/s3"
   product_name = var.product_name
   env = var.env
+  domain_name = var.domain_name
 }
 
 module "vpc" {

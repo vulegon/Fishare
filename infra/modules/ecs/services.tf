@@ -16,6 +16,18 @@ resource "aws_ecs_service" "api_service" {
     container_name   = "${var.env}-${var.product_name}-api"
     container_port   = 3000
   }
+
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE_SPOT"
+    base              = 1   # 最低1つのインスタンスをFARGATE_SPOTで確保
+    weight            = 2   # FARGATE_SPOTを優先的に使用
+  }
+
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE"
+    base              = 0   # FARGATEは補助的に使用
+    weight            = 1   # FARGATEはFARGATE_SPOTが不足した場合に使用される
+  }
 }
 
 resource "aws_ecs_service" "front" {
@@ -34,5 +46,17 @@ resource "aws_ecs_service" "front" {
     target_group_arn = var.front_alb_target_group_arn
     container_name   = "${var.env}-${var.product_name}-front"
     container_port   = 8000
+  }
+
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE_SPOT"
+    base              = 1   # 最低1つのインスタンスをFARGATE_SPOTで確保
+    weight            = 2   # FARGATE_SPOTを優先的に使用
+  }
+
+  capacity_provider_strategy {
+    capacity_provider = "FARGATE"
+    base              = 0   # FARGATEは補助的に使用
+    weight            = 1   # FARGATEはFARGATE_SPOTが不足した場合に使用される
   }
 }

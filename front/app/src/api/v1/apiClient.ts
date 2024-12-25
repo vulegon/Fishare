@@ -105,7 +105,6 @@ class ApiClient {
   public async createFishingSpot(data: CreateFishingSpot): Promise<{ message: string }> {
     try {
       const s3Images = await s3Client.uploadAllFileS3(data.images, 'fishing_spots');
-    console.log(data);
 
       const postData = {
         name: data.name,

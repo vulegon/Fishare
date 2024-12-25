@@ -125,7 +125,6 @@ export const JapanMap: React.FC = () => {
     */
     .on(`click`, function (event: any, item: any) {
       const prefectureName = d3.select<SVGPathElement, GeoJsonFeature>(this).datum().properties.name_ja;
-      console.log(prefectures);
       const target_prefecture = prefectures.find((prefecture) => prefecture.name === prefectureName);
       if (!target_prefecture) return;
       navigate(`/prefectures/${target_prefecture.id}/fishing_spots`);

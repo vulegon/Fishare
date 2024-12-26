@@ -7,3 +7,8 @@ variable "product_name" {
   type        = string
   description = "プロダクト名"
 }
+
+variable "domain_name" {
+  type        = string
+  description = "ドメイン名"
+}

@@ -24,6 +24,7 @@ module Api
     config.x.service_name = 'fishare'
 
     config.x.cors = Rails.application.config_for(:cors)
+    config.x.lib_aws = Rails.application.config_for(:lib_aws)
 
     Faker::Config.locale = :ja
   end

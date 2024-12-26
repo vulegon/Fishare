@@ -1,0 +1,12 @@
+development: &development
+  access_key_id: <%= ENV['AWS_ACCESS_KEY_ID'] %>
+  secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+  region: <%= ENV['AWS_REGION'] %>
+
+test:
+  <<: *development
+
+production:
+  access_key_id: <%= Aws::SSM::Client.new.get_parameter(name: "/fishare/production/aws/access_key_id", with_decryption: true).parameter.value rescue nil %>
+  secret_access_key: <%= Aws::SSM::Client.new.get_parameter(name: "/fishare/production/aws/secret_access_key", with_decryption: true).parameter.value rescue nil %>
+  region: <%= ENV['AWS_REGION'] %>

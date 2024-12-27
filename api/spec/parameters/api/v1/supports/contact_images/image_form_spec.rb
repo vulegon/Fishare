@@ -5,7 +5,7 @@ RSpec.describe Api::V1::Supports::ContactImages::ImageForm do
 
   describe '#valid?' do
     subject { parameter.valid? }
-    let(:parameter) { described_class.new(ActionController::Parameters.new(params)) }
+    let(:parameter) { described_class.new(params) }
 
     context 'パラメータが有効の場合' do
       let(:params) { { file_name: 'サンプル.jpg', content_type: 'image/jpeg' } }

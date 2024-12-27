@@ -10,10 +10,6 @@ module Api
           attribute :content_type, :string
 
           validates :file_name, :content_type, presence: true
-
-          def initialize(params)
-            super(params.permit(self.class.attribute_names))
-          end
         end
       end
     end

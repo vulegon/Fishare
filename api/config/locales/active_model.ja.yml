@@ -1,0 +1,20 @@
+ja:
+  activemodel:
+    attributes:
+      api/v1/supports/contacts/create_parameter:
+        name: 名前
+        email: メールアドレス
+        content: お問い合わせ内容
+        images: 画像
+        contact_category: お問い合わせ種類
+      api/v1/fishing_spots/create_parameter:
+        name: 釣り場名称
+        description: 釣り場説明
+        location: 釣り場住所
+        fishes: 魚種
+        images: 画像
+      api/v1/supports/contact_images/image_form:
+        file_name: ファイル名
+        content_type: 拡張子
+      api/v1/supports/contact_images/generate_presigned_urls_parameter:
+        images: 画像

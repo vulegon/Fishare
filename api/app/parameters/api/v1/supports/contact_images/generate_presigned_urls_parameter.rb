@@ -17,6 +17,8 @@ module Api
             super(permitted_params.to_h.deep_symbolize_keys)
           end
 
+          attr_reader :image_forms
+
           private
 
           def images_must_be_valid

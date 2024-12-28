@@ -12,7 +12,7 @@ RSpec.describe ::Api::V1::Supports::ContactImages::GeneratePresignedUrlSerialize
 
     it '整形されたデータが返ってくること' do
       expect(subject[:s3_key]).to eq("supports/contact_images/#{random_uuid}/test.jpg")
-      expect(subject[:url]).to a_string_including("supports/contact_images/#{random_uuid}/test.jpg")
+      expect(subject[:presigned_url]).to a_string_including("supports/contact_images/#{random_uuid}/test.jpg")
     end
   end
 end

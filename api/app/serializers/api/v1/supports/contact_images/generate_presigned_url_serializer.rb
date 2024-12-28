@@ -11,7 +11,7 @@ module Api
 
           def as_json
             {
-              url: @s3_helper.put_presigned_url(
+              presigned_url: @s3_helper.put_presigned_url(
                 bucket_name: Rails.configuration.x.lib_aws.s3[:support_contact_image_bucket],
                 key: @s3_key,
                 content_type: @image_form.content_type

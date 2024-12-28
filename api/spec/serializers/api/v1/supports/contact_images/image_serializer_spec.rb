@@ -27,9 +27,9 @@ RSpec.describe ::Api::V1::Supports::ContactImages::ImageSerializer, type: :seria
 
     it '整形されたデータが返ってくること' do
       expect(subject[:images].first[:s3_key]).to eq("supports/contact_images/#{random_uuid}/サンプル1.jpg")
-      expect(subject[:images].first[:url]).to be_present
+      expect(subject[:images].first[:presigned_url]).to be_present
       expect(subject[:images].last[:s3_key]).to eq("supports/contact_images/#{random_uuid}/サンプル2.jpg")
-      expect(subject[:images].last[:url]).to be_present
+      expect(subject[:images].last[:presigned_url]).to be_present
     end
   end
 end

@@ -7,7 +7,8 @@ Rails.application.routes.draw do
 
       namespace :supports do
         resource :contact, only: [:create]
-        post 'contact_images/put_presigned_urls', to: 'contact_images#generate_presigned_urls'
+
+        post 'contact_images/generate_presigned_urls', to: 'contact_images#generate_presigned_urls'
       end
 
       namespace :admin do

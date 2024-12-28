@@ -2,7 +2,7 @@ module Api
   module V1
     module Supports
       class ContactImagesController < ::Api::V1::ApplicationController
-        # お問い合わせ画像をアップロードする用のURLを発行する
+        # お問い合わせ画像をアップロードする用のPresigned URLを生成する
         def generate_presigned_urls
           parameter = ::Api::V1::Supports::ContactImages::GeneratePresignedUrlsParameter.new(params)
 

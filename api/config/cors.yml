@@ -1,5 +1,5 @@
 development: &development
-  origin: http://localhost:8000
+  origin: http://localhost:3000
 
 test:
   <<: *development

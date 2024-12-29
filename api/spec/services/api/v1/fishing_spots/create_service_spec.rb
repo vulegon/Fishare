@@ -26,7 +26,8 @@ RSpec.describe ::Api::V1::FishingSpots::CreateService do
                 s3_url: 'S3のURL',
                 file_name:  'ファイル名',
                 content_type: 'ファイルの拡張子',
-                file_size: 100
+                file_size: 100,
+                display_order: 1
               }
             ],
             fishes: [
@@ -57,7 +58,8 @@ RSpec.describe ::Api::V1::FishingSpots::CreateService do
             s3_url: 'S3のURL',
             file_name: 'ファイル名',
             content_type: 'ファイルの拡張子',
-            file_size: 100
+            file_size: 100,
+            display_order: 1
           )
         )
         expect(fishing_spot.images).to all(be_persisted)

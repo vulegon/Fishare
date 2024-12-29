@@ -27,7 +27,8 @@ describe Api::V1::FishingSpotsController, type: :request do
             s3_url: 'S3のURL',
             file_name:  'ファイル名',
             content_type: 'ファイルの拡張子',
-            file_size: 10
+            file_size: 10,
+            display_order: 1
           }
         ],
         fishes: [
@@ -65,7 +66,8 @@ describe Api::V1::FishingSpotsController, type: :request do
                 s3_url: 'S3のURL',
                 file_name:  'ファイル名',
                 content_type: 'ファイルの拡張子',
-                file_size: 10
+                file_size: 10,
+                display_order: 1
               }
             ],
             fishes: [

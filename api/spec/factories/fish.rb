@@ -16,5 +16,6 @@
 FactoryBot.define do
   factory :fish do
     name { "テスト魚1" }
+    display_order { 1 }
   end
 end

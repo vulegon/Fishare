@@ -24,6 +24,8 @@ Rails.application.routes.draw do
 
       resources :fishes, only: %i[index]
       resources :fishing_spots, only: %i[create]
+      post 'fishing_spots/generate_presigned_urls', to: 'fishing_spots#generate_presigned_urls'
+
       resources :fishing_spot_locations, only: %i[index]
       get 'fishing_spot_locations/:id/fishing_spot', to: 'fishing_spot_locations#fishing_spot', as: 'fishing_spot_location_fishing_spot'
     end

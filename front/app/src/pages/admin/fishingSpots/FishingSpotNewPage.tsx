@@ -1,53 +1,56 @@
-import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Typography,
-  Stack,
-  Button,
-} from "@mui/material";
-import { MainLayout } from "features/layouts";
+import { faFish } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { zodResolver } from "@hookform/resolvers/zod";
+import InfoIcon from "@mui/icons-material/Info";
+import MapIcon from "@mui/icons-material/Map";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
+import RoomIcon from "@mui/icons-material/Room";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
-import { useSearchParams } from "react-router-dom";
+import { fetchAddress } from "api/lib/libGoogle/geocodeClient";
+import { getFish } from "api/v1/fish";
+import { createFishingSpot } from "api/v1/fishingSpots";
+import { getPrefectures } from "api/v1/prefectures";
+import { FileUploader } from "components/common/FileUploader";
+import { InputTextField } from "components/common/InputTextField";
 import {
   FishingSpotNewLoadMap,
   Label,
 } from "features/admin/fishingSpots/map/new/";
-import { fetchAddress } from "api/lib/libGoogle/geocodeClient";
-import { Prefecture } from "interfaces/api";
-import apiClient from "api/v1/apiClient";
-import RoomIcon from "@mui/icons-material/Room";
-import InfoIcon from "@mui/icons-material/Info";
-import MapIcon from "@mui/icons-material/Map";
-import { faFish } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import MyLocationIcon from "@mui/icons-material/MyLocation";
-import { Fish } from "interfaces/api";
-import * as z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { FormProvider, useForm } from 'react-hook-form';
-import { InputTextField } from "components/common/InputTextField";
-import { FileUploader } from "components/common/FileUploader";
 import { FishingSpotFishSelecter } from "features/admin/fishingSpots/map/new/FishingSpotFishSelecter";
+import { MainLayout } from "features/layouts";
+import { Fish, Prefecture } from "interfaces/api";
 import { CreateFishingSpot } from "interfaces/api/admin/fishingSpots/CreateFishingSpot";
+import React, { useEffect, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useSearchParams } from "react-router-dom";
 import { notifySuccess } from "utils/toast/notifySuccess";
+import * as z from "zod";
 
 const schema = z.object({
-  name: z.string().min(2, '名前は2文字以上である必要があります').max(50, '名前は100文字以内で入力してください'),
-  images: z.array(z.instanceof(File)).max(9, '画像は最大9枚までです'),
+  name: z
+    .string()
+    .min(2, "名前は2文字以上である必要があります")
+    .max(50, "名前は100文字以内で入力してください"),
+  images: z.array(z.instanceof(File)).max(9, "画像は最大9枚までです"),
   location: z.object({
     prefecture: z.object({
-      id: z.string().nonempty('都道府県を選択してください'),
-      name: z.string().nonempty('都道府県名を入力してください'),
+      id: z.string().nonempty("都道府県を選択してください"),
+      name: z.string().nonempty("都道府県名を入力してください"),
     }),
-    address: z.string().min(1, '住所を入力してください'),
+    address: z.string().min(1, "住所を入力してください"),
     latitude: z.number(),
     longitude: z.number(),
   }),
-  fish: z.array(z.object({
-    id: z.string(),
-    name: z.string(),
-  })).min(1, '釣れる魚を選択してください'),
-  description: z.string().min(10, '説明は10文字以上入力してください'),
+  fish: z
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+      })
+    )
+    .min(1, "釣れる魚を選択してください"),
+  description: z.string().min(10, "説明は10文字以上入力してください"),
 });
 
 export const FishingSpotNewPage: React.FC = () => {
@@ -60,11 +63,11 @@ export const FishingSpotNewPage: React.FC = () => {
 
   const useFormMethods = useForm({
     defaultValues: {
-      name: '',
-      description: '',
+      name: "",
+      description: "",
       location: {
-        prefecture: { id: '', name: '' } as Prefecture,
-        address: '',
+        prefecture: { id: "", name: "" } as Prefecture,
+        address: "",
         latitude: 0,
         longitude: 0,
       },
@@ -72,22 +75,20 @@ export const FishingSpotNewPage: React.FC = () => {
       fish: [] as Fish[],
     },
     resolver: zodResolver(schema),
-    mode: 'onChange'
+    mode: "onChange",
   });
 
   const {
     handleSubmit,
     setValue,
     watch,
-    formState: {
-      isValid,
-    },
+    formState: { isValid },
   } = useFormMethods;
-  const images = watch('images');
+  const images = watch("images");
 
   const onSubmit = async (data: CreateFishingSpot) => {
     try {
-      const res = await apiClient.createFishingSpot(data);
+      const res = await createFishingSpot(data);
       notifySuccess(res.message);
     } catch (err) {
       console.error(err);
@@ -98,21 +99,18 @@ export const FishingSpotNewPage: React.FC = () => {
     const fetchData = async () => {
       setIsLoaded(false);
       const addressResponse = await fetchAddress(marker.lat, marker.lng);
-      const prefectureData = await apiClient.getPrefectures();
+      const prefectureData = await getPrefectures();
       const findPrefecture = prefectureData.prefectures.find(
         (pref: Prefecture) => pref.name === addressResponse.prefecture
       );
 
       if (!findPrefecture) return;
-      setValue(
-        'location',
-        {
-          prefecture: findPrefecture,
-          address: addressResponse.address,
-          latitude: marker.lat,
-          longitude: marker.lng,
-        }
-      );
+      setValue("location", {
+        prefecture: findPrefecture,
+        address: addressResponse.address,
+        latitude: marker.lat,
+        longitude: marker.lng,
+      });
     };
 
     const loadData = async () => {
@@ -125,7 +123,7 @@ export const FishingSpotNewPage: React.FC = () => {
 
   useEffect(() => {
     const fetchFish = async () => {
-      const response = await apiClient.getFish();
+      const response = await getFish();
       setFish(response.fishes);
     };
 
@@ -147,7 +145,7 @@ export const FishingSpotNewPage: React.FC = () => {
       files.push(e.target.files[i]);
     }
 
-    setValue('images', [...images, ...files]);
+    setValue("images", [...images, ...files]);
     e.target.value = "";
   };
 
@@ -155,7 +153,7 @@ export const FishingSpotNewPage: React.FC = () => {
   const handleOnDeleteFile = (index: number) => {
     const updatedImages = [...images];
     updatedImages.splice(index, 1);
-    setValue('images', updatedImages);
+    setValue("images", updatedImages);
   };
 
   return (
@@ -204,12 +202,12 @@ export const FishingSpotNewPage: React.FC = () => {
                 <Stack spacing={3}>
                   <Box>
                     <Label label={"釣り場の名前"} icon={<MyLocationIcon />} />
-                    <InputTextField name={"name"}/>
+                    <InputTextField name={"name"} />
                   </Box>
 
                   <Box>
                     <Label label={"住所"} icon={<RoomIcon />} />
-                    <InputTextField name="location.address" />
+                    <InputTextField name='location.address' />
                   </Box>
 
                   <Box>
@@ -231,19 +229,12 @@ export const FishingSpotNewPage: React.FC = () => {
                         />
                       }
                     />
-                    <FishingSpotFishSelecter
-                      name='fish'
-                      fish={fish}
-                    />
+                    <FishingSpotFishSelecter name='fish' fish={fish} />
                   </Box>
 
                   <Box>
                     <Label label={"説明"} icon={<InfoIcon />} />
-                    <InputTextField
-                      name="description"
-                      multiline
-                      rows={5}
-                    />
+                    <InputTextField name='description' multiline rows={5} />
                   </Box>
                 </Stack>
 

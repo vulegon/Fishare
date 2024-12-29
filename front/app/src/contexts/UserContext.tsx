@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { User } from 'interfaces/contexts/User';
-import apiClient from 'api/v1/apiClient';
+import { getCurrentUser } from 'api/v1/users';
 
 // Contextの型定義
 interface UserContextType {
@@ -36,7 +36,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const currentUser = await apiClient.getCurrentUser();
+        const currentUser = await getCurrentUser();
         setUser(currentUser);
       } catch (error) {
         console.log(error);

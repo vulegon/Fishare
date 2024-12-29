@@ -4,9 +4,9 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
-import apiClient from 'api/v1/apiClient'
 import { FishingSpotLocation } from 'interfaces/api';
 import { FishingSpotShowView } from './FishingSpotShowView';
+import { getFishingSpotLocations } from 'api/v1/fishingSpotLocations';
 
 interface FishingSpotGoogleMapProps {
   isNew?: boolean;
@@ -23,7 +23,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
   const [selectedLocation, setSelectedLocation] = useState<FishingSpotLocation | null>(null);
 
   const fetchFishingSpotLocations = useCallback(async () => {
-    const response = await apiClient.getFishingSpotLocations();
+    const response = await getFishingSpotLocations();
     setExistLocation(response.fishingSpotLocations);
   }, []);
 

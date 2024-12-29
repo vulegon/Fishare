@@ -12,13 +12,13 @@ import {
   StepLabel,
   Stepper,
 } from '@mui/material';
-import apiClient from 'api/v1/apiClient';
 import { FormProvider, useForm } from 'react-hook-form';
 import { EmailSchema } from 'validators/email';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FileUploaderField, FormButton, InputFieldGroup, SectionTitle, SelectBoxGroup } from './components';
 import { ContactData } from './interfaces/ContactData';
+import { createContact } from 'api/v1/supports/contacts';
 
 const schema = z.object({
   name: z.string().min(2, '名前は2文字以上である必要があります').max(50, '名前は50文字以内で入力してください'),
@@ -68,7 +68,7 @@ export const ContactForm: React.FC = () => {
 
   const onSubmit = async (data: ContactData) => {
     try {
-      await apiClient.createContact(
+      await createContact(
         {
           name: data.name,
           email: data.email,

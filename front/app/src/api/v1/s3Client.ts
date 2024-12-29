@@ -1,46 +1,20 @@
-import S3 from 'aws-sdk/clients/s3';
-import { S3Image } from 'interfaces/api/s3/S3Image';
+import axios from 'axios';
 import { notifyError } from 'utils/toast/notifyError';
-import { v4 as uuidv4 } from 'uuid';
-
-// IAMユーザの認証情報の「アクセスキーID」から確認できます。
-const accessKeyId = process.env.REACT_APP_S3_ACCESS_KEY_ID;
-// IAMユーザのシークレットアクセスキー。アクセスキーを作ったときだけ見れるやつです。
-const secretAccessKey = process.env.REACT_APP_S3_SECRET_ACCESS_KEY;
-const bucketName = process.env.REACT_APP_S3_BUCKET_NAME ?? ''; // バケット名
-const region = process.env.REACT_APP_S3_REGION; // リージョン
-
-// S3クライアントの設定
-const s3 = new S3({
-  accessKeyId,
-  secretAccessKey,
-  region,
-})
+import { UploadFileS3Params } from 'interfaces/api/s3/UploadFileS3Params';
 
 class S3Client {
-  public async uploadFileS3(file: File, directory: string, order?: number): Promise<S3Image> {
+  /*
+    ファイルをS3にアップロードする
+    @param file: File アップロードするファイル
+    @param preSignedUrl: string アップロード用のPresigned URL
+  */
+  public async uploadFileS3({ file, preSignedUrl }: UploadFileS3Params): Promise<void> {
     try {
-      const uuid = uuidv4();
-      const s3Key = `${directory}/${uuid}/${file.name}`;
-      const params: S3.Types.PutObjectRequest = {
-        Bucket: bucketName,
-        Key: s3Key, // ファイルのS3内でのパス
-        Body: file, // ファイルの内容
-        ACL: 'public-read', // 誰でもアクセス可能にする設定
-        ContentType: file.type, // ファイルのContent-Type
-      }
-
-      await s3.upload(params).promise();
-
-      const s3Image = {
-        s3_key: s3Key,
-        file_name: file.name,
-        content_type: file.type,
-        file_size: file.size,
-        display_order: order ?? 0,
-      };
-
-      return s3Image
+      await axios.put(preSignedUrl, file, {
+        headers: {
+          'Content-Type': file.type,
+        },
+      });
     } catch (error) {
       console.error(error);
       notifyError(
@@ -51,17 +25,17 @@ class S3Client {
     }
   }
 
-  public async uploadAllFileS3(files: File[], directory: string): Promise<S3Image[]> {
+  /*
+    ファイルを全てS3にアップロードする
+    @param fileUploadParams: UploadFileS3Params[] アップロードするファイルとPresigned URL
+  */
+  public async uploadAllFileS3(fileUploadParams: UploadFileS3Params[]): Promise<void> {
     try {
-      const s3Images: S3Image[] = [];
+      const uploadPromises = fileUploadParams.map(({ file, preSignedUrl }) =>
+        this.uploadFileS3({ file, preSignedUrl })
+      );
 
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const uploadedImage = await this.uploadFileS3(file, directory, i);
-        s3Images.push(uploadedImage);
-      }
-
-      return s3Images;
+      await Promise.all(uploadPromises);
     } catch (error) {
       throw error;
     }

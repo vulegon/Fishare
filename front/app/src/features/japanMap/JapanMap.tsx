@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import * as d3 from 'd3';
-import geoJson from './mapData/japan.geo.json';
-import { useNavigate } from 'react-router-dom';
-import apiClient from 'api/v1/apiClient';
-import { Prefecture } from 'interfaces/api';
+import { getPrefectures } from "api/v1/prefectures";
+import * as d3 from "d3";
+import { Prefecture } from "interfaces/api";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import geoJson from "./mapData/japan.geo.json";
 
 type GeoJsonFeature = {
   properties: {
@@ -22,7 +22,7 @@ export const JapanMap: React.FC = () => {
     const centerPos: [number, number] = [137.0, 38.2]; // 地図のセンター位置
     const scale = 1000; // 地図のスケール
 
-    d3.select('#map-container').selectAll('svg').remove();
+    d3.select("#map-container").selectAll("svg").remove();
 
     // 地図の投影設定
     const projection = d3
@@ -59,93 +59,98 @@ export const JapanMap: React.FC = () => {
       .attr(`stroke-width`, 0.25)
       .attr(`fill`, `#98E4C1`)
 
-    /**
-     * 都道府県領域の MouseOver イベントハンドラ
-     */
-    .on(`mouseover`, function (item: any) {
-      const centroid = path.centroid(item); // 都道府県の重心座標を取得
-      // ラベル用のグループ
-      const group = svg.append(`g`).attr(`id`, `label-group`);
+      /**
+       * 都道府県領域の MouseOver イベントハンドラ
+       */
+      .on(`mouseover`, function (item: any) {
+        const centroid = path.centroid(item); // 都道府県の重心座標を取得
+        // ラベル用のグループ
+        const group = svg.append(`g`).attr(`id`, `label-group`);
 
-      // 地図データから都道府県名を取得する
-      const label = item.properties.name_ja;
+        // 地図データから都道府県名を取得する
+        const label = item.properties.name_ja;
 
-      // 矩形を追加: テキストの枠
-      const rectElement = group
-        .append(`rect`)
-        .attr(`id`, `label-rect`)
-        .attr(`stroke`, `#666`)
-        .attr(`stroke-width`, 0.5)
-        .attr(`fill`, `#fff`);
+        // 矩形を追加: テキストの枠
+        const rectElement = group
+          .append(`rect`)
+          .attr(`id`, `label-rect`)
+          .attr(`stroke`, `#666`)
+          .attr(`stroke-width`, 0.5)
+          .attr(`fill`, `#fff`);
 
-      // テキストを追加
-      const textElement = group
-        .append(`text`)
-        .attr(`id`, `label-text`)
-        .attr("x", 10)  // x座標
-        .attr("y", 20) // y座標
-        .text(label)
-        .attr("font-size", "10px");
+        // テキストを追加
+        const textElement = group
+          .append(`text`)
+          .attr(`id`, `label-text`)
+          .attr("x", 10) // x座標
+          .attr("y", 20) // y座標
+          .text(label)
+          .attr("font-size", "10px");
 
-      // テキストのサイズから矩形のサイズを調整
-      const padding = { x: 5, y: 0 };
-      const textSize = textElement.node()?.getBBox();
-      if (!textSize) return;
-      rectElement
-        .attr(`x`, textSize.x - padding.x)
-        .attr(`y`, textSize.y - padding.y)
-        .attr(`width`, textSize.width + padding.x * 2)
-        .attr(`height`, textSize.height + padding.y * 2);
+        // テキストのサイズから矩形のサイズを調整
+        const padding = { x: 5, y: 0 };
+        const textSize = textElement.node()?.getBBox();
+        if (!textSize) return;
+        rectElement
+          .attr(`x`, textSize.x - padding.x)
+          .attr(`y`, textSize.y - padding.y)
+          .attr(`width`, textSize.width + padding.x * 2)
+          .attr(`height`, textSize.height + padding.y * 2);
 
         group.attr(`transform`, `translate(${centroid[0]}, ${centroid[1]})`);
-      // マウス位置の都道府県領域を赤色に変更
-      d3.select(this).attr(`fill`, `#CC4C39`);
-      d3.select(this).attr(`stroke-width`, `1`);
-    })
+        // マウス位置の都道府県領域を赤色に変更
+        d3.select(this).attr(`fill`, `#CC4C39`);
+        d3.select(this).attr(`stroke-width`, `1`);
+      })
 
-    /**
-     * 都道府県領域の MouseMove イベントハンドラ
-     */
-    .on('mousemove', function (event: MouseEvent, item: any) {
-      // テキストのサイズ情報を取得
-      const textElement = svg.select('#label-text').node() as SVGGraphicsElement | null;
+      /**
+       * 都道府県領域の MouseMove イベントハンドラ
+       */
+      .on("mousemove", function (event: MouseEvent, item: any) {
+        // テキストのサイズ情報を取得
+        const textElement = svg
+          .select("#label-text")
+          .node() as SVGGraphicsElement | null;
 
-      if (!textElement) return;
-      // マウス位置からラベルの位置を指定
-      const textSize = textElement.getBBox();
-      const labelPos = {
-        x: event.offsetX - textSize.width,
-        y: event.offsetY - textSize.height,
-      };
+        if (!textElement) return;
+        // マウス位置からラベルの位置を指定
+        const textSize = textElement.getBBox();
+        const labelPos = {
+          x: event.offsetX - textSize.width,
+          y: event.offsetY - textSize.height,
+        };
+      })
 
-    })
+      /**
+       * 都道府県領域の Click イベントハンドラ
+       */
+      .on(`click`, function (event: any, item: any) {
+        const prefectureName = d3
+          .select<SVGPathElement, GeoJsonFeature>(this)
+          .datum().properties.name_ja;
+        const target_prefecture = prefectures.find(
+          (prefecture) => prefecture.name === prefectureName
+        );
+        if (!target_prefecture) return;
+        navigate(`/prefectures/${target_prefecture.id}/fishing_spots`);
+      })
 
-    /**
-    * 都道府県領域の Click イベントハンドラ
-    */
-    .on(`click`, function (event: any, item: any) {
-      const prefectureName = d3.select<SVGPathElement, GeoJsonFeature>(this).datum().properties.name_ja;
-      const target_prefecture = prefectures.find((prefecture) => prefecture.name === prefectureName);
-      if (!target_prefecture) return;
-      navigate(`/prefectures/${target_prefecture.id}/fishing_spots`);
-    })
+      /**
+       * 都道府県領域の MouseOut イベントハンドラ
+       */
+      .on(`mouseout`, function (item: any) {
+        // ラベルグループを削除
+        svg.select("#label-group").remove();
 
-    /**
-     * 都道府県領域の MouseOut イベントハンドラ
-     */
-    .on(`mouseout`, function (item: any) {
-      // ラベルグループを削除
-      svg.select('#label-group').remove();
-
-      // マウス位置の都道府県領域を青色に戻す
-      d3.select(this).attr(`fill`, `#98E4C1`);
-      d3.select(this).attr(`stroke-width`, `0.25`);
-    });
+        // マウス位置の都道府県領域を青色に戻す
+        d3.select(this).attr(`fill`, `#98E4C1`);
+        d3.select(this).attr(`stroke-width`, `0.25`);
+      });
   };
 
   const fetchPrefectures = async () => {
     try {
-      const res = await apiClient.getPrefectures();
+      const res = await getPrefectures();
       setPrefectures(res.prefectures);
       setIsPrefectureLoad(true);
     } catch (err) {
@@ -160,7 +165,10 @@ export const JapanMap: React.FC = () => {
 
   return (
     <div>
-      <div id="map-container" style={{ width: '100%', height: '80vh', minHeight: '900px' }}></div>
+      <div
+        id='map-container'
+        style={{ width: "100%", height: "80vh", minHeight: "900px" }}
+      ></div>
     </div>
   );
 };

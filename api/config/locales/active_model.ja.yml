@@ -13,8 +13,8 @@ ja:
         location: 釣り場住所
         fishes: 魚種
         images: 画像
-      api/v1/supports/contact_images/image_form:
+      api/v1/s3/image_form:
         file_name: ファイル名
         content_type: 拡張子
-      api/v1/supports/contact_images/generate_presigned_urls_parameter:
+      api/v1/s3/presigned_url_parameter:
         images: 画像

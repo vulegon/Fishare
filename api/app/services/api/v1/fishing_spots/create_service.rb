@@ -18,6 +18,8 @@ module Api
               FishingSpotFishRepository.save_all!(fishing_spot_fishes)
               FishingSpotLocationRepository.save!(fishing_spot_location)
             end
+
+            fishing_spot.reload
           end
         end
       end

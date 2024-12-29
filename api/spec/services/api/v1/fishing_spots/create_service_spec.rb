@@ -43,37 +43,56 @@ RSpec.describe ::Api::V1::FishingSpots::CreateService do
           }
         }
 
-      it '永続化されていること' do
-        subject
-        fishing_spot = ::FishingSpot.find_by(name: params[:name])
-        expect(fishing_spot).to have_attributes(
+      it 'fishing_spotが永続化されること' do
+        expect(subject).to be_persisted
+      end
+
+      it 'fishing_spotが期待値の内容であること' do
+        expect(subject).to have_attributes(
           name: params[:name],
           description: params[:description]
         )
-        expect(fishing_spot).to be_persisted
-        expect(fishing_spot.images).to contain_exactly(
+      end
+
+      it 'fishing_spot_imagesが永続化されること' do
+        expect(subject.images).to all(be_persisted)
+      end
+
+      it 'fishing_spot_imagesが期待値の内容であること' do
+        expect(subject.images).to contain_exactly(
           have_attributes(
-            fishing_spot_id: fishing_spot.id,
+            fishing_spot_id: subject.id,
             s3_key: 'S3キー',
-            s3_url: 'S3のURL',
             file_name: 'ファイル名',
             content_type: 'ファイルの拡張子',
             file_size: 100,
             display_order: 1
           )
         )
-        expect(fishing_spot.images).to all(be_persisted)
-        expect(fishing_spot.locations).to contain_exactly(
+      end
+
+      it 'fishing_spot_locationsが永続化されること' do
+        expect(subject.locations).to all(be_persisted)
+      end
+
+      it 'fishing_spot_locationsが期待値の内容であること' do
+        expect(subject.locations).to contain_exactly(
           have_attributes(
+            fishing_spot_id: subject.id,
             address: '東京都渋谷区',
             latitude: 35.658034,
             longitude: 139.701636,
-            fishing_spot_id: fishing_spot.id,
             prefecture_id: prefecture.id
           )
         )
-        expect(fishing_spot.locations).to all(be_persisted)
-        expect(fishing_spot.fishes).to contain_exactly(
+      end
+
+      it 'fishing_spot_fishesが永続化されること' do
+        expect(subject.fishes).to all(be_persisted)
+      end
+
+      it 'fishing_spot_fishesが期待値の内容であること' do
+        expect(subject.fishes).to contain_exactly(
           have_attributes(
             id: fish_1.id,
             name: fish_1.name
@@ -83,7 +102,80 @@ RSpec.describe ::Api::V1::FishingSpots::CreateService do
             name: fish_2.name
           )
         )
-        expect(fishing_spot.fishes).to all(be_persisted)
+      end
+    end
+
+    context "imagesが設定されていない場合" do
+      let(:params) {
+        {
+          name: '釣り場1',
+          description: '1234567890',
+          location: {
+            prefecture: { id: prefecture.id, name: prefecture.name },
+            address: '東京都渋谷区',
+            latitude: 35.658034,
+            longitude: 139.701636
+          },
+          images: [],
+          fishes: [
+            {
+              id: fish_1.id,
+              name: fish_1.name
+            },
+            {
+              id: fish_2.id,
+              name: fish_2.name
+            }
+          ]
+        }
+      }
+
+      it 'fishing_spotが永続化されること' do
+        expect(subject).to be_persisted
+      end
+
+      it 'fishing_spotが期待値の内容であること' do
+        expect(subject).to have_attributes(
+          name: params[:name],
+          description: params[:description]
+        )
+      end
+
+      it 'fishing_spot_imagesが存在しないこと' do
+        expect(subject.images).to be_empty
+      end
+
+      it 'fishing_spot_locationsが永続化されること' do
+        expect(subject.locations).to all(be_persisted)
+      end
+
+      it 'fishing_spot_locationsが期待値の内容であること' do
+        expect(subject.locations).to contain_exactly(
+          have_attributes(
+            fishing_spot_id: subject.id,
+            address: '東京都渋谷区',
+            latitude: 35.658034,
+            longitude: 139.701636,
+            prefecture_id: prefecture.id
+          )
+        )
+      end
+
+      it 'fishing_spot_fishesが永続化されること' do
+        expect(subject.fishes).to all(be_persisted)
+      end
+
+      it 'fishing_spot_fishesが期待値の内容であること' do
+        expect(subject.fishes).to contain_exactly(
+          have_attributes(
+            id: fish_1.id,
+            name: fish_1.name
+          ),
+          have_attributes(
+            id: fish_2.id,
+            name: fish_2.name
+          )
+        )
       end
     end
   end

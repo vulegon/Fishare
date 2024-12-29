@@ -11,6 +11,7 @@ describe Api::V1::FishingSpotsController, type: :request do
       post api_v1_fishing_spots_path, params: params, headers: headers
       response
     }
+
     let(:params) {
       {
         name: '釣り場1',
@@ -24,7 +25,6 @@ describe Api::V1::FishingSpotsController, type: :request do
         images: [
           {
             s3_key: 'S3キー',
-            s3_url: 'S3のURL',
             file_name:  'ファイル名',
             content_type: 'ファイルの拡張子',
             file_size: 10,
@@ -63,7 +63,6 @@ describe Api::V1::FishingSpotsController, type: :request do
             images: [
               {
                 s3_key: 'S3キー',
-                s3_url: 'S3のURL',
                 file_name:  'ファイル名',
                 content_type: 'ファイルの拡張子',
                 file_size: 10,
@@ -74,6 +73,59 @@ describe Api::V1::FishingSpotsController, type: :request do
               {
                 id: fish.id,
                 name: fish.name
+              }
+            ]
+          }
+        }
+
+        it 'ステータスコード400が返ってくること' do
+          expect(subject).to have_http_status(:bad_request)
+        end
+      end
+    end
+
+    context '管理者以外の場合' do
+      let (:headers) { user.create_new_auth_token }
+
+      it 'ステータスコード403が返ってくること' do
+        expect(subject).to have_http_status(:forbidden)
+      end
+    end
+  end
+
+  describe 'POST #generate_presigned_urls' do
+    subject {
+      post api_v1_fishing_spots_generate_presigned_urls_path, params: params, headers: headers
+      response
+    }
+
+    let(:params) {
+      {
+        images: [
+          {
+            file_name:  'ファイル名.jpeg',
+            content_type: 'image/jpeg',
+          }
+        ]
+      }
+    }
+
+    context '管理者の場合' do
+      let (:headers) { admin.create_new_auth_token }
+
+      context 'パラメータが正しいとき' do
+        it 'ステータスコード200が返ってくること' do
+          expect(subject).to have_http_status(:ok)
+        end
+      end
+
+      context 'パラメータが不正なとき' do
+        let(:params) {
+          {
+            images: [
+              {
+                file_name:  'ファイル名.jpeg',
+                content_type: '',
               }
             ]
           }

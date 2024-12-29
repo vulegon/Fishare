@@ -1,13 +1,7 @@
 import { apiClient } from 'api/v1/apiClient';
 import { GeneratePresignedUrlResponse } from 'interfaces/api/supports/GeneratePresignedUrlResponse';
 import { GeneratePresignedUrlRequest } from 'interfaces/api/supports/GeneratePresignedUrlRequest';
-
-interface PreSignedUrlItem {
-  file: File;
-  s3_key: string;
-  url: string;
-}
-
+import { PreSignedUrlItem } from 'interfaces/api/s3/PresignedUrlItem';
 /*
   お問い合わせ画像をアップロードする用のPreSigned URLを生成する
   @param files: File[] アップロードするファイル

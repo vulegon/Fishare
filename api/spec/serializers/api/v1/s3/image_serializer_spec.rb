@@ -2,8 +2,10 @@ require 'rails_helper'
 
 RSpec.describe ::Api::V1::S3::ImageSerializer, type: :serializer do
   describe '#as_json' do
-    subject { described_class.new(parameter).as_json }
+    subject { described_class.new(parameter, prefix).as_json }
+
     let(:parameter) { ::Api::V1::S3::PresignedUrlParameter.new(ActionController::Parameters.new(params)) }
+    let(:prefix) { 'supports/contact_images' }
     let(:params) {
       {
         images: [

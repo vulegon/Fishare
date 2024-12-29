@@ -10,7 +10,7 @@ module Api
             render_form_error(parameter) and return
           end
 
-          json = ::Api::V1::S3::ImageSerializer.new(parameter).as_json
+          json = ::Api::V1::S3::ImageSerializer.new(parameter, 'supports/contact_images').as_json
 
           render json: json, status: :ok
         end

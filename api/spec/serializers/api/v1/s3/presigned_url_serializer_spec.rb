@@ -2,10 +2,11 @@ require 'rails_helper'
 
 RSpec.describe ::Api::V1::S3::PresignedUrlSerializer, type: :serializer do
   describe '#as_json' do
-    subject { described_class.new(image_form).as_json }
+    subject { described_class.new(image_form, prefix).as_json }
     let(:image_form) { ::Api::V1::S3::ImageForm.new(params) }
     let(:params) {{ file_name: 'test.jpg', content_type: 'image/jpeg' }}
     let(:random_uuid) { SecureRandom.uuid }
+    let(:prefix) { 'supports/contact_images' }
     before do
       allow(SecureRandom).to receive(:uuid).and_return(random_uuid)
     end

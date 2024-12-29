@@ -2,10 +2,10 @@ module Api
   module V1
     module S3
       class PresignedUrlSerializer
-        def initialize(image_form)
+        def initialize(image_form, prefix)
           @image_form = image_form
           @s3_helper = ::LibAws::S3Helper.new
-          @s3_key = @s3_helper.generate_s3_key(prefix: 'supports/contact_images', file_name: @image_form.file_name)
+          @s3_key = @s3_helper.generate_s3_key(prefix: prefix, file_name: @image_form.file_name)
         end
 
         def as_json

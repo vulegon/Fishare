@@ -20,13 +20,14 @@ module Api
         validate :latitude_exists
         validate :longitude_exists
         validate :fishes_exists
+        validate :images_must_be_valid, if: -> { images.present? }
 
         def initialize(params)
           permitted_params = params.permit(
             :name,
             :description,
             location: [ { prefecture: [:id, :name] }, :address, :latitude, :longitude],
-            images: [:file_name, :s3_key, :content_type, :file_size, :s3_url],
+            images: [:file_name, :s3_key, :content_type, :file_size, :s3_url, :display_order],
             fishes: [:id, :name]
           )
           super(permitted_params.to_h.deep_symbolize_keys)
@@ -60,6 +61,20 @@ module Api
           return if location[:longitude].present?
 
           errors.add(:location, 'の経度が見つかりません')
+        end
+
+        def images_must_be_valid
+          @image_forms = images.map{ |image| ImageForm.new(image) }
+
+          error_messages = []
+
+          @image_forms.each do |image_form|
+            error_messages << image_form.errors.full_messages.join('。') if image_form.invalid?
+          end
+
+          return if error_messages.blank?
+
+          errors.add(:images, error_messages.join('。'))
         end
 
         def fishes_exists

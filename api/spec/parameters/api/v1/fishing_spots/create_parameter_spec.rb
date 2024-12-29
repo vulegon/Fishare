@@ -24,10 +24,10 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
             images: [
               {
                 s3_key: 'S3キー',
-                s3_url: 'S3のURL',
                 file_name:  'ファイル名',
                 content_type: 'ファイルの拡張子',
-                file_size: 10
+                file_size: 10,
+                display_order: 1
               }
             ],
             fishes: [
@@ -312,6 +312,38 @@ RSpec.describe Api::V1::FishingSpots::CreateParameter do
             it_behaves_like 'パラメータが無効の場合の検証', '魚種が指定されていないか、存在しない魚が含まれています'
           end
         end
+      end
+
+      context 'imagesが誤りの場合' do
+        let(:params) {
+          {
+            name: '釣り場1',
+            description: '1234567890',
+            location: {
+              prefecture: { id: prefecture.id, name: prefecture.name },
+              address: '東京都渋谷区',
+              latitude: 35.658034,
+              longitude: 139.701636
+            },
+            images: [
+              {
+                file_name:  'ファイル名',
+                content_type: 'ファイルの拡張子',
+                file_size: 10,
+                display_order: 1
+              }
+            ],
+            fishes: [
+              { id: fish_1.id, name: fish_1.name },
+              { id: fish_2.id, name: fish_2.name }
+            ]
+          }
+        }
+
+        it {
+          expect(subject).to eq false
+          expect(create_parameter.errors[:images]).to a_string_including('s3キーを入力してください')
+        }
       end
     end
   end

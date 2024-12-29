@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Api::V1::Supports::ContactsController, type: :request do
   describe 'POST #generate_presigned_urls' do
     subject {
-      post api_v1_supports_contact_images_put_presigned_urls_path, params: params
+      post api_v1_supports_contact_images_generate_presigned_urls_path, params: params
       response
     }
 

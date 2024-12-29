@@ -14,6 +14,7 @@ module Api
             images: [:file_name, :content_type],
           )
           super(permitted_params.to_h.deep_symbolize_keys)
+          @image_forms = []
         end
 
         attr_reader :image_forms

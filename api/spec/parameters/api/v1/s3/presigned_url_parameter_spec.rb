@@ -7,22 +7,34 @@ RSpec.describe ::Api::V1::S3::PresignedUrlParameter do
     let(:parameter) { described_class.new(ActionController::Parameters.new(params)) }
 
     context 'パラメータが有効の場合' do
-      let(:params) {
-        {
-          images: [
-            {
-              file_name: 'サンプル1.jpg',
-              content_type: 'image/jpeg'
-            },
-            {
-              file_name: 'サンプル2.jpg',
-              content_type: 'image/jpeg'
-            }
-          ]
+      context 'imagesが設定されているとき' do
+        let(:params) {
+          {
+            images: [
+              {
+                file_name: 'サンプル1.jpg',
+                content_type: 'image/jpeg'
+              },
+              {
+                file_name: 'サンプル2.jpg',
+                content_type: 'image/jpeg'
+              }
+            ]
+          }
         }
-      }
 
-      it { is_expected.to be true }
+        it { is_expected.to be true }
+      end
+
+      context "imagesが設定されていないとき" do
+        let(:params) {
+          {
+            images: []
+          }
+        }
+
+        it { is_expected.to be true }
+      end
     end
 
     context 'パラメータが無効の場合' do
@@ -65,6 +77,41 @@ RSpec.describe ::Api::V1::S3::PresignedUrlParameter do
           end
         end
       end
+    end
+  end
+
+  describe '#image_forms' do
+    subject { parameter.image_forms }
+
+    let(:parameter) { described_class.new(ActionController::Parameters.new(params)) }
+
+    context 'imagesが設定されているとき' do
+      let(:params) {
+        {
+          images: [
+            {
+              file_name: 'サンプル1.jpg',
+              content_type: 'image/jpeg'
+            },
+            {
+              file_name: 'サンプル2.jpg',
+              content_type: 'image/jpeg'
+            }
+          ]
+        }
+      }
+
+      it { is_expected.to all(be_a(::Api::V1::S3::ImageForm)) }
+    end
+
+    context 'imagesが設定されていないとき' do
+      let(:params) {
+        {
+          images: []
+        }
+      }
+
+      it { is_expected.to be_empty }
     end
   end
 end

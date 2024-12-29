@@ -13,6 +13,12 @@ ja:
         location: 釣り場住所
         fishes: 魚種
         images: 画像
+      api/v1/fishing_spots/image_form:
+        s3_key: s3キー
+        file_name: ファイル名
+        content_type: 拡張子
+        file_size: ファイルサイズ
+        display_order: 表示順
       api/v1/s3/image_form:
         file_name: ファイル名
         content_type: 拡張子

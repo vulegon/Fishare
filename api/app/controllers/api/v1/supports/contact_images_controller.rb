@@ -4,13 +4,13 @@ module Api
       class ContactImagesController < ::Api::V1::ApplicationController
         # お問い合わせ画像をアップロードする用のPresigned URLを生成する
         def generate_presigned_urls
-          parameter = ::Api::V1::Supports::ContactImages::GeneratePresignedUrlsParameter.new(params)
+          parameter = ::Api::V1::S3::PresignedUrlParameter.new(params)
 
           if parameter.invalid?
             render_form_error(parameter) and return
           end
 
-          json = ::Api::V1::Supports::ContactImages::ImageSerializer.new(parameter).as_json
+          json = ::Api::V1::S3::ImageSerializer.new(parameter).as_json
 
           render json: json, status: :ok
         end

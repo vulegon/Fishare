@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe ::Api::V1::Supports::ContactImages::ImageSerializer, type: :serializer do
+RSpec.describe ::Api::V1::S3::ImageSerializer, type: :serializer do
   describe '#as_json' do
     subject { described_class.new(parameter).as_json }
-    let(:parameter) { ::Api::V1::Supports::ContactImages::GeneratePresignedUrlsParameter.new(ActionController::Parameters.new(params)) }
+    let(:parameter) { ::Api::V1::S3::PresignedUrlParameter.new(ActionController::Parameters.new(params)) }
     let(:params) {
       {
         images: [

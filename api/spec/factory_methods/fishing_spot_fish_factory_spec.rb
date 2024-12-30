@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe FishingSpotFishFactory do
+  let_it_be(:fish_1) { create(:fish, name: 'fish1') }
+  let_it_be(:fish_2) { create(:fish, name: 'fish2') }
+
   describe '#build' do
     subject { described_class.new.build(fish_id, fishing_spot_id) }
 
@@ -22,8 +25,8 @@ RSpec.describe FishingSpotFishFactory do
   describe '#build_all' do
     subject { described_class.new.build_all(fish_ids, fishing_spot_id) }
 
-    let(:fish_ids) { create_list(:fish, 2).map(&:id) }
     let(:fishing_spot_id) { SecureRandom.uuid }
+    let(:fish_ids) { [fish_1.id, fish_2.id] }
 
     it '永続化されていない釣り場と釣れる魚の中間テーブルの配列が返ってくること' do
       expect(subject).to all(be_a(FishingSpotFish))

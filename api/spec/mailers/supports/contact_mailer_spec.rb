@@ -1,8 +1,10 @@
 require "rails_helper"
 
 RSpec.describe Supports::ContactMailer, type: :mailer do
+  let_it_be(:contact_category) { create(:support_contact_category) }
+
   describe "#send_complete_mail" do
-    let(:contact) { create(:support_contact) }
+    let(:contact) { create(:support_contact, support_contact_category_id: contact_category.id) }
     let(:mail) { described_class.send_complete_mail(contact).deliver_now }
 
     it "お問い合わせメールが送信されること" do

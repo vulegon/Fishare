@@ -12,8 +12,11 @@ RSpec.describe ::Api::V1::FishingSpotLocations::Show::FishingSpotSerializer, typ
 
     let!(:fishing_spot_fish_1) { create(:fishing_spot_fish, fishing_spot: fishing_spot, fish: fish_1) }
     let!(:fishing_spot_fish_2) { create(:fishing_spot_fish, fishing_spot: fishing_spot, fish: fish_2) }
-    let!(:fishing_spot_image_1) { create(:fishing_spot_image, fishing_spot: fishing_spot, display_order: 0) }
-    let!(:fishing_spot_image_2) { create(:fishing_spot_image, fishing_spot: fishing_spot, display_order: 1) }
+    let!(:fishing_spot_image_1) { create(:fishing_spot_image, fishing_spot: fishing_spot, display_order: 0, s3_key: 'image_1') }
+    let!(:fishing_spot_image_2) { create(:fishing_spot_image, fishing_spot: fishing_spot, display_order: 1, s3_key: 'image_2') }
+    let(:s3_helper) { ::LibAws::S3Helper.new }
+    let(:presigned_url_1) { s3_helper.get_presigned_url(bucket_name: Rails.configuration.x.lib_aws.s3[:fishing_spot_image_bucket], key: fishing_spot_image_1.s3_key, expires_in: 3600) }
+    let(:presigned_url_2) { s3_helper.get_presigned_url(bucket_name: Rails.configuration.x.lib_aws.s3[:fishing_spot_image_bucket], key: fishing_spot_image_2.s3_key, expires_in: 3600) }
 
     it '整形されたfishing_spot_fishesが返ってくること' do
       expect(subject).to eq(
@@ -33,13 +36,15 @@ RSpec.describe ::Api::V1::FishingSpotLocations::Show::FishingSpotSerializer, typ
             id: fishing_spot_image_1.id,
             s3_key: fishing_spot_image_1.s3_key,
             file_name: fishing_spot_image_1.file_name,
-            content_type: fishing_spot_image_1.content_type
+            content_type: fishing_spot_image_1.content_type,
+            presigned_url: presigned_url_1
           },
           {
             id: fishing_spot_image_2.id,
             s3_key: fishing_spot_image_2.s3_key,
             file_name: fishing_spot_image_2.file_name,
-            content_type: fishing_spot_image_2.content_type
+            content_type: fishing_spot_image_2.content_type,
+            presigned_url: presigned_url_2
           }
         ]
       )

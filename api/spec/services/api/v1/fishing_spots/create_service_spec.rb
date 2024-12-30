@@ -11,37 +11,40 @@ RSpec.describe ::Api::V1::FishingSpots::CreateService do
 
     context "imagesが設定されている場合" do
       let(:params) {
-          {
-            name: '釣り場1',
-            description: '1234567890',
-            location: {
-              prefecture: { id: prefecture.id, name: prefecture.name },
-              address: '東京都渋谷区',
-              latitude: 35.658034,
-              longitude: 139.701636
+        {
+          name: '釣り場1',
+          description: '1234567890',
+          location: {
+            prefecture: { id: prefecture.id, name: prefecture.name },
+            address: '東京都渋谷区',
+            latitude: 35.658034,
+            longitude: 139.701636
+          },
+          images: [
+            {
+              s3_key: 'S3キー',
+              file_name:  'ファイル名',
+              content_type: 'ファイルの拡張子',
+              file_size: 100,
+              display_order: 1
+            }
+          ],
+          fishes: [
+            {
+              id: fish_1.id,
+              name: fish_1.name
             },
-            images: [
-              {
-                s3_key: 'S3キー',
-                s3_url: 'S3のURL',
-                file_name:  'ファイル名',
-                content_type: 'ファイルの拡張子',
-                file_size: 100,
-                display_order: 1
-              }
-            ],
-            fishes: [
-              {
-                id: fish_1.id,
-                name: fish_1.name
-              },
-              {
-                id: fish_2.id,
-                name: fish_2.name
-              }
-            ]
-          }
+            {
+              id: fish_2.id,
+              name: fish_2.name
+            }
+          ]
         }
+      }
+
+      before do
+        create_params.valid?
+      end
 
       it 'fishing_spotが永続化されること' do
         expect(subject).to be_persisted
@@ -59,9 +62,10 @@ RSpec.describe ::Api::V1::FishingSpots::CreateService do
       end
 
       it 'fishing_spot_imagesが期待値の内容であること' do
-        expect(subject.images).to contain_exactly(
+        fishing_spot = subject
+        expect(fishing_spot.images).to contain_exactly(
           have_attributes(
-            fishing_spot_id: subject.id,
+            fishing_spot_id: fishing_spot.id,
             s3_key: 'S3キー',
             file_name: 'ファイル名',
             content_type: 'ファイルの拡張子',

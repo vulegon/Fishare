@@ -93,6 +93,7 @@ export const FishingSpotNewPage: React.FC = () => {
     try {
       const res = await createFishingSpot(data);
       notifySuccess(res.message);
+      navigate("/admin/dashboards");
     } catch (error) {
       console.error(error);
       if (isAxiosError(error) && error.response?.status === 401) {

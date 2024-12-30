@@ -3,9 +3,6 @@ import { notifyError } from 'utils/toast/notifyError';
 import { s3Client } from 'api/v1/s3Client';
 import { CreateFishingSpot } from 'interfaces/api/admin/fishingSpots/CreateFishingSpot';
 import { FishingSpot } from 'interfaces/api/FishingSpot';
-import { GeneratePresignedUrlResponse } from 'interfaces/api/supports/GeneratePresignedUrlResponse';
-import { GeneratePresignedUrlRequest } from 'interfaces/api/supports/GeneratePresignedUrlRequest';
-import { PreSignedUrlItem } from 'interfaces/api/s3/PresignedUrlItem';
 import { generatePreSignedUrls } from 'api/v1/fishingSpotImages';
 
 /*
@@ -57,18 +54,3 @@ export async function createFishingSpot(data: CreateFishingSpot): Promise<{ mess
     throw error;
   }
 }
-
-/*
-  釣り場の詳細を取得します。
-  @param id 釣り場ID
-*/
-export async function showFishingSpot(id: string): Promise<FishingSpot> {
-    try {
-      const response = await apiClient.get(`fishing_spot_locations/${id}/fishing_spot`);
-      const data = response.data;
-      return data.fishing_spot;
-    } catch (error) {
-      notifyError(error);
-      throw error;
-    }
-  }

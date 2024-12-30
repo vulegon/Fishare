@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
-import { showFishingSpot } from "api/v1/fishingSpots";
+import { showFishingSpot } from "api/v1/fishingSpotLocations";
 import { CenteredLoader } from "components/common";
 import { FishingSpot, FishingSpotLocation } from "interfaces/api";
 import { S3Image } from "interfaces/api/s3";
@@ -146,7 +146,7 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
                 }}
               >
                 <img
-                  src={image.s3_key}
+                  src={image.presigned_url}
                   alt={image.file_name}
                   style={{
                     width: "100%",

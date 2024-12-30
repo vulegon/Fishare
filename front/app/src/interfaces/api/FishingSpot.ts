@@ -1,4 +1,3 @@
-import { FishingSpotLocation } from './FishingSpotLocation';
 import { S3Image } from './s3';
 import { Fish } from './Fish';
 

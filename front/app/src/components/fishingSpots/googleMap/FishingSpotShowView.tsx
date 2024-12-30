@@ -96,7 +96,7 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
         </Box>
         <FishingSpotBox>
           <Typography variant='h5' sx={{ fontWeight: 600 }} gutterBottom>
-            釣り場情報
+            {fishingSpot?.name}
           </Typography>
           <Stack direction='row' spacing={2}>
             <LocationOnIcon />
@@ -105,7 +105,10 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
         </FishingSpotBox>
         <Divider />
         <FishingSpotBox>
-          <Typography variant='subtitle1'>{fishingSpot?.name}</Typography>
+          <Typography variant='subtitle1' sx={{ fontWeight: 600 }} gutterBottom>
+            説明
+          </Typography>
+          <Typography variant='subtitle1'>{fishingSpot?.description}</Typography>
         </FishingSpotBox>
         <Divider />
         <FishingSpotBox>

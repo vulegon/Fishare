@@ -19,13 +19,15 @@ RSpec.describe ::Api::V1::Supports::Contacts::CreateService do
               s3_key: 's3_key',
               file_name: 'file_name',
               content_type: 'content_type',
-              file_size: 100
+              file_size: 100,
+              display_order: 1
             },
             {
               s3_key: 's3_key2',
               file_name: 'file_name2',
               content_type: 'content_type2',
-              file_size: 200
+              file_size: 200,
+              display_order: 2
             },
           ],
           contact_category: 'other'
@@ -46,13 +48,15 @@ RSpec.describe ::Api::V1::Supports::Contacts::CreateService do
             s3_key: 's3_key',
             file_name: 'file_name',
             content_type: 'content_type',
-            file_size: 100
+            file_size: 100,
+            display_order: 1
           ),
           have_attributes(
             s3_key: 's3_key2',
             file_name: 'file_name2',
             content_type: 'content_type2',
-            file_size: 200
+            file_size: 200,
+            display_order: 2
           )
         ])
         expect(subject.images).to all(be_persisted)

@@ -21,6 +21,7 @@ module Api
         validate :longitude_exists
         validate :fishes_exists
         validate :images_must_be_valid, if: -> { images.present? }
+        validate :latitude_and_longitude_must_be_valid, if: -> { location[:latitude].present? && location[:longitude].present? }
 
         def initialize(params)
           permitted_params = params.permit(
@@ -33,9 +34,10 @@ module Api
           super(permitted_params.to_h.deep_symbolize_keys)
           @prefecture = ::Prefecture.find_by(id: location[:prefecture][:id])
           @fishing_spot_fishes = ::Fish.where(id: fishes.map { |fish| fish[:id] })
+          @image_forms = []
         end
 
-        attr_reader :prefecture, :fishing_spot_fishes
+        attr_reader :prefecture, :fishing_spot_fishes, :image_forms
 
         private
 
@@ -81,6 +83,13 @@ module Api
           return if fishes.size == fishing_spot_fishes.size && fishing_spot_fishes.size > 0
 
           errors.add(:fishes, 'が指定されていないか、存在しない魚が含まれています')
+        end
+
+        def latitude_and_longitude_must_be_valid
+          fishing_spot_location = ::FishingSpotLocation.where(latitude: location[:latitude], longitude: location[:longitude])
+          return if fishing_spot_location.blank?
+
+          errors.add(:location, 'の緯度経度は既に登録されています')
         end
       end
     end

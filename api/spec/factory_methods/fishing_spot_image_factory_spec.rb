@@ -35,13 +35,15 @@ RSpec.describe FishingSpotImageFactory do
           s3_key: 's3_key',
           file_name: 'file_name',
           content_type: 'content_type',
-          file_size: 100
+          file_size: 100,
+          display_order: 1
         },
         {
           s3_key: 's3_key2',
           file_name: 'file_name2',
           content_type: 'content_type2',
-          file_size: 200
+          file_size: 200,
+          display_order: 2
         },
       ]
     }
@@ -56,7 +58,8 @@ RSpec.describe FishingSpotImageFactory do
         s3_key: image_params[0][:s3_key],
         file_name: image_params[0][:file_name],
         content_type: image_params[0][:content_type],
-        file_size: image_params[0][:file_size]
+        file_size: image_params[0][:file_size],
+        display_order: image_params[0][:display_order]
       )
       expect(subject[0]).not_to be_persisted
       expect(subject[1].id).to be_present
@@ -65,7 +68,8 @@ RSpec.describe FishingSpotImageFactory do
         s3_key: image_params[1][:s3_key],
         file_name: image_params[1][:file_name],
         content_type: image_params[1][:content_type],
-        file_size: image_params[1][:file_size]
+        file_size: image_params[1][:file_size],
+        display_order: image_params[1][:display_order]
       )
       expect(subject[1]).not_to be_persisted
     end

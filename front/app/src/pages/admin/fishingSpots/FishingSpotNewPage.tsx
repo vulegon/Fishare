@@ -26,6 +26,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 import { notifySuccess } from "utils/toast/notifySuccess";
 import * as z from "zod";
+import { useNavigate } from 'react-router-dom';
+import { isAxiosError } from 'axios';
 
 const schema = z.object({
   name: z
@@ -60,6 +62,7 @@ export const FishingSpotNewPage: React.FC = () => {
   const [marker, setMarker] = useState<google.maps.LatLngLiteral>({ lat, lng });
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [fish, setFish] = React.useState<Fish[]>([]);
+  const navigate = useNavigate();
 
   const useFormMethods = useForm({
     defaultValues: {
@@ -90,8 +93,12 @@ export const FishingSpotNewPage: React.FC = () => {
     try {
       const res = await createFishingSpot(data);
       notifySuccess(res.message);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
+      if (isAxiosError(error) && error.response?.status === 401) {
+        navigate('/admin/sign_in');
+        return; // ここで終了する
+      }
     }
   };
 

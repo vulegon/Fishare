@@ -4,6 +4,7 @@ development: &development
   region: <%= ENV['AWS_REGION'] %>
   s3:
     support_contact_image_bucket: <%= "#{Rails.env}-#{Rails.application.config.x.service_name}-support-contact-images" %>
+    fishing_spot_image_bucket: <%= "#{Rails.env}-#{Rails.application.config.x.service_name}-fishing-spot-images" %>
 
 test:
   <<: *development
@@ -14,3 +15,4 @@ production:
   region: <%= ENV['AWS_REGION'] %>
   s3:
     support_contact_image_bucket: <%= "#{Rails.env}-#{Rails.application.config.x.service_name}-support-contact-images" %>
+    fishing_spot_image_bucket: <%= "#{Rails.env}-#{Rails.application.config.x.service_name}-fishing-spot-images" %>

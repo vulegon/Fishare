@@ -34,7 +34,7 @@ module Api
           render_403_error(message: create_spec.unsatisfied_reason) and return
         end
 
-        json = ::Api::V1::S3::ImageSerializer.new(generate_presigned_urls_params, 'fishing_spots').as_json
+        json = ::Api::V1::S3::ImageSerializer.new(generate_presigned_urls_params, 'fishing_spots', 'fishing_spot_image_bucket').as_json
 
         render status: :ok, json: json
       end

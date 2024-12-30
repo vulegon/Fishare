@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe Api::V1::Supports::ContactsController, type: :request do
+  let_it_be(:other_contact_category) { create(:support_contact_category, name: 'other') }
+
   describe 'POST #create' do
     subject {
       post api_v1_supports_contact_path, params: params

@@ -98,7 +98,7 @@ export const FishingSpotNewPage: React.FC = () => {
       console.error(error);
       if (isAxiosError(error) && error.response?.status === 401) {
         navigate('/admin/sign_in');
-        return; // ここで終了する
+        return;
       }
     }
   };

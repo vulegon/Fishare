@@ -6,30 +6,14 @@ import { FishingSpot } from 'interfaces/api/FishingSpot';
 import { GeneratePresignedUrlResponse } from 'interfaces/api/supports/GeneratePresignedUrlResponse';
 import { GeneratePresignedUrlRequest } from 'interfaces/api/supports/GeneratePresignedUrlRequest';
 import { PreSignedUrlItem } from 'interfaces/api/s3/PresignedUrlItem';
-import { useNavigate } from 'react-router-dom';
-import { isAxiosError } from 'axios';
+import { generatePreSignedUrls } from 'api/v1/fishingSpotImages';
 
 /*
   釣り場を作成します。
 */
 export async function createFishingSpot(data: CreateFishingSpot): Promise<{ message: string }> {
   try {
-    const requestData: GeneratePresignedUrlRequest = {
-      images: data.images.map((file) => {
-        return {
-          file_name: file.name,
-          content_type: file.type,
-        };
-      }),
-    };
-    const preSignedUrlResponse = await apiClient.post('fishing_spots/generate_presigned_urls', requestData);
-    const preSignedUrlData: GeneratePresignedUrlResponse = preSignedUrlResponse.data;
-
-    const preSignedUrlItems: PreSignedUrlItem[] = preSignedUrlData.images.map((item, index) => ({
-      file: data.images[index],        // 元の File オブジェクト
-      s3_key: item.s3_key,        // レスポンスの s3Key
-      url: item.presigned_url,             // レスポンスの url
-    }));
+    const preSignedUrlItems = await generatePreSignedUrls(data.images);
 
     const uploadFileS3Params = preSignedUrlItems.map((item) => {
       return {
@@ -38,7 +22,17 @@ export async function createFishingSpot(data: CreateFishingSpot): Promise<{ mess
       };
     });
 
-    const s3Images = await s3Client.uploadAllFileS3(uploadFileS3Params);
+    await s3Client.uploadAllFileS3(uploadFileS3Params);
+
+    const createContactImages = preSignedUrlItems.map((item, index) => {
+      return {
+        s3_key: item.s3_key,
+        file_name: item.file.name,
+        content_type: item.file.type,
+        file_size: item.file.size,
+        display_order: index,
+      };
+    });
 
     const postData = {
       name: data.name,
@@ -52,7 +46,7 @@ export async function createFishingSpot(data: CreateFishingSpot): Promise<{ mess
         latitude: data.location.latitude,
         longitude: data.location.longitude,
       },
-      images: s3Images,
+      images: createContactImages,
       fishes: data.fish
     };
     const response = await apiClient.post('fishing_spots', postData);

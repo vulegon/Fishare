@@ -93,7 +93,7 @@ export const FishingSpotNewPage: React.FC = () => {
     try {
       const res = await createFishingSpot(data);
       notifySuccess(res.message);
-      navigate("/fishing_spots");
+      navigate("/admin/fishing_spots/map/select");
     } catch (error) {
       console.error(error);
       if (isAxiosError(error) && error.response?.status === 401) {

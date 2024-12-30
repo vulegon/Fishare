@@ -10,7 +10,9 @@ module Api
 
         def as_json
           {
-            images: @image_forms.map { |image_form| PresignedUrlSerializer.new(image_form, @prefix, @bucket_name).as_json }
+            images: @image_forms.map do |image_form|
+              PresignedUrlSerializer.new(image_form, @prefix, @bucket_name).as_json
+            end
           }
         end
       end

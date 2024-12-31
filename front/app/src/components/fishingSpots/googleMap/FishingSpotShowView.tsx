@@ -7,6 +7,7 @@ import {
   Grid,
   Stack,
   Typography,
+  Card
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
@@ -93,6 +94,7 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
             <img
               src={streetViewImageUrl ?? undefined}
               alt='street view image'
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
             />
           ) : (
             <CenteredLoader />
@@ -156,11 +158,15 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
                   key={index}
                   src={image.presigned_url}
                 >
-                  <img
-                    src={image.presigned_url}
-                    alt={image.file_name}
-                    style={{ width: "100%", height: "150px", objectFit: "cover", cursor: "pointer" }}
-                  />
+                  <Card
+                    sx={{ width: "100%", height: "150px", objectFit: "cover", cursor: "pointer" }}
+                  >
+                    <img
+                      src={image.presigned_url}
+                      alt={image.file_name}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", cursor: "pointer" }}
+                    />
+                  </Card>
                 </PhotoView>
               </Grid>
             ))}

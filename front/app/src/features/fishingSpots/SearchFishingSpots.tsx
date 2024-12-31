@@ -89,9 +89,8 @@ export const SearchFishingSpots: React.FC = () => {
         <Typography variant="h4" sx={{ fontWeight: 'bold', textAlign: 'center', mb: 1 }}>
           釣り場検索
         </Typography>
-
         <Stack spacing={1}>
-          <Grid container spacing={3}>
+          <Grid container spacing={5}>
             <Grid item xs={12} md={6}>
               <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 1 }}>
                 釣り場名
@@ -202,10 +201,7 @@ export const SearchFishingSpots: React.FC = () => {
                 image={spot.imageUrl}
                 alt={spot.name}
               />
-
-              {/* コンテンツ */}
               <CardContent sx={{ flex: 1 }}>
-                {/* エリア情報 */}
                 <Typography
                   variant="body2"
                   color="primary"
@@ -213,8 +209,6 @@ export const SearchFishingSpots: React.FC = () => {
                 >
                   {spot.area}
                 </Typography>
-
-                {/* タグ */}
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
                   {spot.tags.map((tag, index) => (
                     <Chip
@@ -227,13 +221,9 @@ export const SearchFishingSpots: React.FC = () => {
                     />
                   ))}
                 </Box>
-
-                {/* タイトル */}
                 <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
                   {spot.name}
                 </Typography>
-
-                {/* 説明 */}
                 <Typography variant="body2" color="textSecondary">
                   {spot.description}
                 </Typography>
@@ -242,8 +232,6 @@ export const SearchFishingSpots: React.FC = () => {
           </Grid>
         ))}
       </Grid>
-
-      {/* ページネーション */}
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
         <Pagination count={6} color="primary" />
       </Box>

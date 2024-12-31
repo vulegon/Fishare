@@ -53,7 +53,7 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const sideBarItems = [
-  { label: "一覧から探す", icon: <ListIcon />, path: "/" },
+  { label: "検索して探す", icon: <ListIcon />, path: "/fishing_spots/search" },
   { label: "地図から探す", icon: <MapIcon />, path: "/fishing_spots" },
   {
     label: "お問い合わせ",

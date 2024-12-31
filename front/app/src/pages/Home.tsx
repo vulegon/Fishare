@@ -9,7 +9,7 @@ const Home: React.FC = () => {
       <MainLayout>
         <Box>
           <Typography variant='h6'>
-            釣り場を地図から探しましょう。都道府県をクリックすると、その都道府県の釣り場が表示されます。
+            都道府県をクリックすると、その都道府県の釣り場が表示されます。
           </Typography>
           <JapanMap />
         </Box>

@@ -58,7 +58,7 @@ export const SearchFishingSpots: React.FC = () => {
   const fetchFishingSpots = () => {
     // setFishingSpots(allSpots);
   };
-  const  fetchPrefectures = async () => {
+  const fetchPrefectures = async () => {
     const res = await getPrefectures();
     setPrefectures(res.prefectures);
   }
@@ -83,14 +83,14 @@ export const SearchFishingSpots: React.FC = () => {
         sx={{
           padding: "24px",
           borderRadius: "12px",
-          backgroundColor: "rgba(247, 247, 247, 0.5)",
+          backgroundColor: "rgba(247, 247, 247, 0.1)",
         }}
       >
         <Typography variant="h4" sx={{ fontWeight: 'bold', textAlign: 'center', mb: 1 }}>
           釣り場検索
         </Typography>
         <Stack spacing={1}>
-          <Grid container spacing={5}>
+          <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 1 }}>
                 釣り場名

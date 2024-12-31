@@ -13,8 +13,13 @@ import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
 import { showFishingSpot } from "api/v1/fishingSpotLocations";
 import { CenteredLoader } from "components/common";
 import { FishingSpot, FishingSpotLocation } from "interfaces/api";
-import { S3Image } from "interfaces/api/s3";
 import React, { useCallback, useEffect, useState } from "react";
+import 'react-photo-view/dist/react-photo-view.css';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import RotateRightIcon from '@mui/icons-material/RotateRight';
+import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 
 interface FishingSpotShowViewProps {
   selectedLocation: FishingSpotLocation | null;
@@ -36,7 +41,6 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
   );
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [fishingSpot, setFishingSpot] = useState<FishingSpot | null>(null);
-  const [selectedImage, setSelectedImage] = useState<S3Image | null>(null);
 
   const fetchStreetViewImage = useCallback(async () => {
     if (!selectedLocation) return;
@@ -126,39 +130,42 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
           <Typography variant='subtitle1' sx={{ fontWeight: 600 }} gutterBottom>
             写真
           </Typography>
+          <PhotoProvider
+            toolbarRender={({ rotate, onRotate, onScale, scale }) => {
+              return (
+                <>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <ZoomInIcon onClick={() => onScale(scale + 1)} sx={{ cursor: 'pointer' }} />
+                    <ZoomOutIcon onClick={() => onScale(scale - 1)} sx={{ cursor: 'pointer' }} />
+                    <RotateRightIcon onClick={() => onRotate(rotate + 90)} sx={{ cursor: 'pointer' }} />
+                    <RotateLeftIcon onClick={() => onRotate(rotate - 90)} sx={{ cursor: 'pointer' }} />
+                  </Stack>
+                </>
+              );
+            }}
+          >
           <Grid
             container
             spacing={{ xs: 2, md: 3 }}
             columns={{ xs: 8, sm: 12, md: 12 }}
             sx={{ margin: 3 }}
           >
-            {fishingSpot?.images.map((image) => (
-              <Grid
-                item
-                xs={4}
-                sm={4}
-                md={4}
-                sx={{
-                  display: "flex",
-                  justifyContent: "start",
-                  alignItems: "center",
-                  margin: 0,
-                }}
-              >
-                <img
+            {fishingSpot?.images.map((image, index) => (
+              <Grid item xs={4} sm={4} md={4} sx={{ display: "flex", justifyContent: "start", alignItems: "center", margin: 0}}>
+                <PhotoView
+                  key={index}
                   src={image.presigned_url}
-                  alt={image.file_name}
-                  style={{
-                    width: "100%",
-                    height: "150px",
-                    objectFit: "cover",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => setSelectedImage(image)} // 画像クリック時に詳細をセット
-                />
+                >
+                  <img
+                    src={image.presigned_url}
+                    alt={image.file_name}
+                    style={{ width: "100%", height: "150px", objectFit: "cover", cursor: "pointer" }}
+                  />
+                </PhotoView>
               </Grid>
             ))}
           </Grid>
+          </PhotoProvider>
         </FishingSpotBox>
       </Stack>
     </Drawer>

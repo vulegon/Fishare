@@ -29,5 +29,6 @@ FactoryBot.define do
     file_name { "contact_image.jpg" }
     content_type { "image/jpg" }
     file_size { 1024 }
+    display_order { 1 }
   end
 end

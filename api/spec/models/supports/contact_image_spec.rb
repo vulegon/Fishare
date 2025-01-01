@@ -28,7 +28,7 @@ RSpec.describe ::Supports::ContactImage, type: :model do
   let_it_be(:support_contact_category) { create(:support_contact_category) }
   let_it_be(:support_contact) { create(:support_contact, support_contact_category_id: support_contact_category.id) }
 
-  describe '.valid?' do
+  describe '#valid?' do
     subject { contact_image.valid? }
 
     let(:contact_image) {
@@ -192,6 +192,16 @@ RSpec.describe ::Supports::ContactImage, type: :model do
 
         it_behaves_like '無効な場合の検証'
       end
+    end
+  end
+
+  describe '#presigned_url' do
+    subject { contact_image.presigned_url }
+
+    let(:contact_image) { create(:support_contact_image, support_contact_id: support_contact.id) }
+
+    it 'Presigned URLを取得できること' do
+      expect(subject).to a_string_including(contact_image.s3_key)
     end
   end
 end

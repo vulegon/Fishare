@@ -15,7 +15,7 @@ module LibAws
     end
 
     # 画像を閲覧するPresigned URLを取得する
-    def get_presigned_url(bucket_name:, key:, expires_in:)
+    def get_presigned_url(bucket_name:, key:, expires_in: nil)
       bucket = @s3_resource.bucket(bucket_name)
       expires_in ||= DEFAULT_GET_URL_EXPIRATION
 

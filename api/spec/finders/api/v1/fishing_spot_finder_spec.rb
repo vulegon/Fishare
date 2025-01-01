@@ -49,4 +49,22 @@ RSpec.describe Api::V1::FishingSpotFinder, type: :finder do
       end
     end
   end
+
+  describe '#count' do
+    subject { described_class.new.count(search_parameter) }
+
+    let(:search_parameter) { ::Api::V1::FishingSpots::SearchParameter.new(ActionController::Parameters.new(params)) }
+
+    before do
+      search_parameter.valid?
+    end
+
+    context 'paramsが指定されていない場合' do
+      let(:params) { {} }
+
+      it '全ての釣り場数が取得できること' do
+        expect(subject).to eq(3)
+      end
+    end
+  end
 end

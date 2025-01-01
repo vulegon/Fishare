@@ -2,10 +2,18 @@ module Api
   module V1
     class FishingSpotFinder
       def search(search_parameter)
-        sort_order(build_query(search_parameter)).offset(search_parameter.offset).limit(search_parameter.limit)
+        sort_order(search_query(search_parameter)).offset(search_parameter.offset).limit(search_parameter.limit)
+      end
+
+      def count(search_parameter)
+        search_query(search_parameter).count
       end
 
       private
+
+      def search_query(search_parameter)
+        @search_query ||= build_query(search_parameter)
+      end
 
       def build_query(search_parameter)
         fishing_spots = FishingSpot.all

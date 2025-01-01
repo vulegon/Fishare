@@ -23,7 +23,7 @@ Rails.application.routes.draw do
       get 'users/current_user', to: 'users#show_current_user'
 
       resources :fishes, only: %i[index]
-      resources :fishing_spots, only: %i[create]
+      resources :fishing_spots, only: %i[index create]
       post 'fishing_spot_images/generate_presigned_urls', to: 'fishing_spot_images#generate_presigned_urls'
 
       resources :fishing_spot_locations, only: %i[index]

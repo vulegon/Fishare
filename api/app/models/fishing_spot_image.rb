@@ -33,4 +33,15 @@ class FishingSpotImage < ApplicationRecord
   validates :content_type, presence: true
   validates :file_size, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :display_order, presence: true, uniqueness: { scope: :fishing_spot_id }, numericality: { greater_than_or_equal_to: 0 }
+
+  scope :order_by_display_order, -> { order(display_order: :asc) }
+
+  # 画像を閲覧する用のPresigned URLを取得する
+  def presigned_url
+    s3_helper = LibAws::S3Helper.new
+    s3_helper.get_presigned_url(
+      bucket_name: Rails.configuration.x.lib_aws.s3[:fishing_spot_image_bucket],
+      key: self.s3_key
+    )
+  end
 end

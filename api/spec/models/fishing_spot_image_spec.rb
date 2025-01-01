@@ -137,4 +137,13 @@ RSpec.describe FishingSpotImage, type: :model do
       end
     end
   end
+
+  describe '#presigned_url' do
+    subject { fishing_spot_image.presigned_url }
+    let(:fishing_spot_image) { create(:fishing_spot_image) }
+
+    it 'presigned_urlを返すこと' do
+      expect(subject).to a_string_including(fishing_spot_image.s3_key)
+    end
+  end
 end

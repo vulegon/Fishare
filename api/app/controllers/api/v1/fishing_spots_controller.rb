@@ -38,6 +38,41 @@ module Api
 
         render status: :ok, json: { message: '釣り場を作成しました' }
       end
+
+      def update
+        update_params = ::Api::V1::FishingSpots::UpdateParameter.new(params)
+
+        if update_params.invalid?
+          render_form_error(update_params) and return
+        end
+
+        fishing_spot = FishingSpot.find_by(id: params[:id])
+
+        if fishing_spot.nil?
+          render_404_error(message: '釣り場が見つかりませんでした') and return
+        end
+
+        update_spec = ::FishingSpots::CreateSpecification.new
+        unless update_spec.satisfied_by?(current_user, fishing_spot)
+          render_403_error(message: update_spec.unsatisfied_reason) and return
+        end
+
+        ::Api::V1::FishingSpots::UpdateService.update!(fishing_spot, update_params)
+
+        render status: :ok, json: { message: '釣り場を更新しました' }
+      end
+
+      def show
+        fishing_spot = FishingSpot.find_by(id: params[:id])
+
+        if fishing_spot.nil?
+          render_404_error(message: '釣り場が見つかりませんでした') and return
+        end
+
+        json = ::Api::V1::FishingSpots::Show::FishingSpotSerializer.new(fishing_spot).as_json
+
+        render status: :ok, json: json
+      end
     end
   end
 end

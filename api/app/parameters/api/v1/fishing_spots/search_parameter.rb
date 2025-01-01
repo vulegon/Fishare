@@ -19,23 +19,23 @@ module Api
             fishes: [:id]
           )
           super(permitted_params.to_h.deep_symbolize_keys)
+          @prefecture = ::Prefecture.find_by(id: prefecture_id)
         end
 
-        attr_reader :fishes, :prefecture
+        attr_reader :fishing_spot_fishes, :prefecture
 
         private
 
         def prefecture_exists
-          @prefecture = ::Prefecture.find_by(id: prefecture_id)
           return if @prefecture.present?
 
           errors.add(:prefecture_id, 'が見つかりません')
         end
 
         def fishes_exists
-          @fishes = ::Fish.where(id: fishes.map { |fish| fish[:id] })
+          @fishing_spot_fishes = ::Fish.where(id: fishes.map { |fish| fish[:id] })
 
-          return if @fishes.present?
+          return if @fishing_spot_fishes.size == fishes.size
 
           errors.add(:fishes, 'が見つかりません')
         end

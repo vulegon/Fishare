@@ -10,7 +10,7 @@ module Api
           include ActiveRecord::AttributeMethods::BeforeTypeCast
 
           attribute :limit, :integer, default: 30
-          attribute :offset, :integer, default: 1
+          attribute :offset, :integer, default: 0
 
           validate :limit_must_be_integer
           validate :offset_must_be_integer
@@ -20,9 +20,9 @@ module Api
         end
 
         DEFAULT_LIMIT = 30
-        DEFAULT_OFFSET = 1
+        DEFAULT_OFFSET = 0
         MIN_LIMIT = 1
-        OFFSET_MIN_LIMIT = 1
+        OFFSET_MIN_LIMIT = 0
         MAX_LIMIT = 1000
 
         private

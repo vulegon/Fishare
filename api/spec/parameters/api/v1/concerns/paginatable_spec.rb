@@ -51,8 +51,8 @@ RSpec.describe Api::V1::Concerns::Paginatable do
         end
       end
 
-      context 'offsetが最小値である1未満の時' do
-        let(:params) { { offset: 0 } }
+      context 'offsetが最小値である0未満の時' do
+        let(:params) { { offset: -1 } }
 
         it { is_expected.to be false }
       end
@@ -126,7 +126,7 @@ RSpec.describe Api::V1::Concerns::Paginatable do
       let(:params) { {} }
 
       it 'デフォルト値が返ること' do
-        expect(subject).to eq 1
+        expect(subject).to eq 0
       end
     end
 

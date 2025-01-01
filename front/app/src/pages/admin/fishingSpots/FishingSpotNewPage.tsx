@@ -11,23 +11,22 @@ import { fetchAddress } from "api/lib/libGoogle/geocodeClient";
 import { getFish } from "api/v1/fish";
 import { createFishingSpot } from "api/v1/fishingSpots";
 import { getPrefectures } from "api/v1/prefectures";
+import { isAxiosError } from "axios";
 import { FileUploader } from "components/common/FileUploader";
 import { InputTextField } from "components/common/InputTextField";
+import { FishingSpotFishSelecter } from "components/fishingSpots/FishingSpotFishSelecter";
 import {
   FishingSpotNewLoadMap,
   Label,
 } from "features/admin/fishingSpots/map/new/";
-import { FishingSpotFishSelecter } from "features/admin/fishingSpots/map/new/FishingSpotFishSelecter";
 import { MainLayout } from "features/layouts";
 import { Fish, Prefecture } from "interfaces/api";
 import { CreateFishingSpot } from "interfaces/api/admin/fishingSpots/CreateFishingSpot";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { notifySuccess } from "utils/toast/notifySuccess";
 import * as z from "zod";
-import { useNavigate } from 'react-router-dom';
-import { isAxiosError } from 'axios';
 
 const schema = z.object({
   name: z
@@ -97,7 +96,7 @@ export const FishingSpotNewPage: React.FC = () => {
     } catch (error) {
       console.error(error);
       if (isAxiosError(error) && error.response?.status === 401) {
-        navigate('/admin/sign_in');
+        navigate("/admin/sign_in");
         return;
       }
     }

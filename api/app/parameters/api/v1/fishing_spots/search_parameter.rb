@@ -2,8 +2,7 @@ module Api
   module V1
     module FishingSpots
       class SearchParameter
-        include ActiveModel::Model
-        include ActiveModel::Attributes
+        include ::Api::V1::Concerns::Paginatable
 
         attribute :name, :string
         attribute :prefecture_id, :string

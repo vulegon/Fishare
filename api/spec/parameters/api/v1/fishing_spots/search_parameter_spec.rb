@@ -19,7 +19,9 @@ RSpec.describe Api::V1::FishingSpots::SearchParameter do
             fishes: [
               { id: fish_1.id },
               { id: fish_2.id }
-            ]
+            ],
+            offset: 0,
+            limit: 10
           }
         }
 

@@ -27,11 +27,6 @@ import { Fish } from 'interfaces/api';
 export const SearchFishingSpots: React.FC = () => {
   const [searchName, setSearchName] = useState('');
   const [searchPrefecture, setSearchPrefecture] = useState('');
-  const allSpots = [
-    { id: 1, name: '釣り場A', prefecture: '北海道' },
-    { id: 2, name: '釣り場B', prefecture: '東京都' },
-    // 追加のデータ...
-  ];
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
   const [fishes, setFishes] = useState<Fish[]>([]);
 
@@ -55,9 +50,6 @@ export const SearchFishingSpots: React.FC = () => {
       imageUrl: 'https://via.placeholder.com/300x200',
     },
   ];
-  const fetchFishingSpots = () => {
-    // setFishingSpots(allSpots);
-  };
   const fetchPrefectures = async () => {
     const res = await getPrefectures();
     setPrefectures(res.prefectures);
@@ -70,7 +62,7 @@ export const SearchFishingSpots: React.FC = () => {
   useEffect(() => {
     fetchPrefectures();
     fetchFish();
-  }, [searchName, searchPrefecture]);
+  }, []);
 
   const handleSearch = () => {
     console.log('検索ボタンがクリックされました');
@@ -101,9 +93,10 @@ export const SearchFishingSpots: React.FC = () => {
                 onChange={(e) => setSearchName(e.target.value)}
                 fullWidth
                 variant="outlined"
+                label="釣り場名"
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={5.5}>
               <Typography variant="body1" sx={{ fontWeight: 'bold', mb: 1 }}>
                 都道府県
               </Typography>
@@ -112,6 +105,14 @@ export const SearchFishingSpots: React.FC = () => {
                 <Select
                   value={searchPrefecture}
                   onChange={(e) => setSearchPrefecture(e.target.value)}
+                  MenuProps={{
+                    PaperProps: {
+                      style: {
+                        maxHeight: 300, // ドロップダウンの最大高さ
+                        overflow: "auto", // スクロールを有効化
+                      },
+                    },
+                  }}
                 >
                   {prefectures.map((prefecture) => (
                     <MenuItem key={prefecture.id} value={prefecture.name}>

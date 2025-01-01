@@ -18,4 +18,6 @@ class FishingSpot < ApplicationRecord
   has_many :images, class_name: 'FishingSpotImage', dependent: :destroy, inverse_of: :fishing_spot
 
   validates :description, :name, presence: true
+
+  scope :name_like, ->(name) { where('name ILIKE ?', "%#{ActiveRecord::Base.sanitize_sql_like(name)}%") }
 end

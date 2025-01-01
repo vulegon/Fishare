@@ -24,3 +24,7 @@ ja:
         content_type: 拡張子
       api/v1/s3/presigned_url_parameter:
         images: 画像
+      api/v1/fishing_spots/search_parameter:
+        name: 釣り場名称
+        prefecture_id: 都道府県
+        fishes: 魚種

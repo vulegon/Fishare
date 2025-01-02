@@ -33,13 +33,13 @@ const AppRoutes: React.FC = () => {
                 <Route path='/dashboards' element={<DashBoardPage />} />
                 <Route path='contacts' element={<ContactReviewPage />} />
                 <Route
-                  path='fishing_spots/map/select'
+                  path='fishing_spots/map/new'
                   element={<FishingSpotMapSelectPage />}
                 />
-                <Route
+                {/* <Route
                   path='fishing_spots/map/new'
                   element={<FishingSpotNewPage />}
-                />
+                /> */}
                 <Route path='*' element={<NotFound />} />
               </Routes>
             </AdminRoutes>

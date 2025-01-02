@@ -33,7 +33,7 @@ export const DashBoardPage: React.FC = () => {
       label: '釣り場の作成・更新',
       backGroundColor: 'linear-gradient(135deg, #3dd5f3 0%, #28a4d9 100%)',
       icon: <FontAwesomeIcon icon={faFish} style={{ fontSize: '40px', opacity: '0.8' }}/>,
-      path: '/admin/fishing_spots/map/select'
+      path: '/admin/fishing_spots/map/new'
     },
     {
       label: 'お問い合わせの確認(未完成)',

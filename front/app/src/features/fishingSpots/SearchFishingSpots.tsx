@@ -34,7 +34,7 @@ export const SearchFishingSpots: React.FC = () => {
     defaultValues: {
       name: "",
       prefecture_id: "",
-      fishes: [] as Fish[],
+      // fishes: [] as Fish[],
     },
   });
 
@@ -138,7 +138,10 @@ export const SearchFishingSpots: React.FC = () => {
                   <FormControl fullWidth variant='outlined'>
                     <InputLabel>都道府県</InputLabel>
                     <Select
-                      value={watch("prefecture_id")}
+                      value={
+                        prefectures.find((prefecture) => prefecture.id === watch("prefecture_id"))
+                          ?.name || "" // 選択された都道府県名を表示
+                      }
                       onChange={(e) =>{
                         const selectedPrefecture = prefectures.find(
                           (prefecture) => prefecture.name === e.target.value

@@ -235,7 +235,12 @@ export const SearchFishingSpots: React.FC = () => {
                 {/* 画像 */}
                 <CardMedia
                   component='img'
-                  sx={{ width: 300, height: 200 }}
+                  sx={{
+                    width: 300,
+                    height: 200,
+                    objectFit: "contain",
+                    backgroundColor: "#f0f0f0",
+                  }}
                   image={spot.images[0]?.presigned_url || "https://via.placeholder.com/300x200"}
                   alt={spot.name}
                 />

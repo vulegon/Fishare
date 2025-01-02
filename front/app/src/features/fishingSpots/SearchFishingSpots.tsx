@@ -27,6 +27,7 @@ import { searchFishingSpot } from "api/v1/fishingSpots";
 import { SearchFishingSpotResponse } from "interfaces/api/fishingSpots/SearchFishingSpotResponse";
 import { SelectChangeEvent } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
+import { CenteredLoader } from "components/common";
 
 export const SearchFishingSpots: React.FC = () => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
@@ -119,6 +120,11 @@ export const SearchFishingSpots: React.FC = () => {
       limit: itemsPerPage,
     });
   }, [currentPage, itemsPerPage]);
+
+  if (isSubmitting) {
+    // ローディング中にCenteredLoaderを表示
+    return <CenteredLoader />;
+  }
 
   return (
     <Container maxWidth='lg' sx={{ mt: 4 }}>
@@ -251,6 +257,11 @@ export const SearchFishingSpots: React.FC = () => {
                   borderRadius: "12px",
                   overflow: "hidden",
                   height: 200,
+                  transition: "transform 0.3s ease", // なめらかな拡大縮小のアニメーション
+                  "&:hover": {
+                    transform: "scale(1.05)", // ホバー時にカードを少し大きくする
+                    boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.2)", // ホバー時の影を強調
+                  },
                 }}
               >
                 {/* 画像 */}

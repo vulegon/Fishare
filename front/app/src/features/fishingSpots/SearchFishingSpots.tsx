@@ -57,12 +57,11 @@ export const SearchFishingSpots: React.FC = () => {
     try {
       const requestData = {
         ...data,
-        name: encodeURIComponent(data.name || ""),
         offset: (currentPage - 1) * itemsPerPage,
         limit: itemsPerPage,
       };
       setSearchParams({
-        name: requestData.name || "",
+        name: encodeURIComponent(data.name || ""),
         prefecture_id: requestData.prefecture_id || "",
         offset: requestData.offset.toString(),
         limit: requestData.limit.toString(),
@@ -100,7 +99,7 @@ export const SearchFishingSpots: React.FC = () => {
     fetchFish();
 
     const initialValues = {
-      name: searchParams.get("name") || "",
+      name: decodeURIComponent(searchParams.get("name") || ""),
       prefecture_id: searchParams.get("prefecture_id") || "",
       offset: parseInt(searchParams.get("offset") || "0", 10),
       limit: parseInt(searchParams.get("limit") || "10", 10),
@@ -141,7 +140,7 @@ export const SearchFishingSpots: React.FC = () => {
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={1}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={5.8}>
                   <Typography variant='body1' sx={{ fontWeight: "bold", mb: 1 }}>
                     釣り場名
                   </Typography>
@@ -153,7 +152,7 @@ export const SearchFishingSpots: React.FC = () => {
                     label='釣り場名'
                   />
                 </Grid>
-                <Grid item xs={12} md={5.5}>
+                <Grid item xs={12} md={5.8}>
                   <Typography variant='body1' sx={{ fontWeight: "bold", mb: 1 }}>
                     都道府県
                   </Typography>

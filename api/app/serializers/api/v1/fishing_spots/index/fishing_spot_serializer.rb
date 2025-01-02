@@ -23,13 +23,14 @@ module Api
           end
 
           def images
-            object.images.map do |image|
+            object.display_order_images.map do |image|
               {
                 id: image.id,
+                s3_key: image.s3_key,
                 file_name: image.file_name,
                 content_type: image.content_type,
                 file_size: image.file_size,
-                s3_key: image.s3_key,
+                display_order: image.display_order,
                 presigned_url: image.presigned_url
               }
             end

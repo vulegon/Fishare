@@ -3,6 +3,7 @@ module Api
     class FishingSpotsController < ApplicationController
       before_action :authenticate_user!, only: %i[create]
 
+      # 釣り場を検索します。
       def index
         searh_params = ::Api::V1::FishingSpots::SearchParameter.new(params)
 

@@ -16,7 +16,7 @@ module Api
 
           def fishing_spots
             ActiveModel::Serializer::CollectionSerializer.new(
-              relation.preload(locations: :prefecture, fishing_spot_fishes: :fish),
+              relation.preload(:display_order_images, locations: :prefecture, fishing_spot_fishes: :fish),
               serializer: ::Api::V1::FishingSpots::Index::FishingSpotSerializer,
             ).as_json
           end

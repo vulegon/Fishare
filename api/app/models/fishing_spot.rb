@@ -17,6 +17,8 @@ class FishingSpot < ApplicationRecord
   has_many :locations, class_name: 'FishingSpotLocation', dependent: :destroy, inverse_of: :fishing_spot
   has_many :images, class_name: 'FishingSpotImage', dependent: :destroy, inverse_of: :fishing_spot
 
+  has_many :display_order_images, -> { order_by_display_order }, class_name: 'FishingSpotImage', inverse_of: :fishing_spot
+
   validates :description, :name, presence: true
 
   scope :name_like, ->(name) { where('name ILIKE ?', "%#{ActiveRecord::Base.sanitize_sql_like(name)}%") }

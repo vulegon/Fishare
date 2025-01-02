@@ -78,11 +78,6 @@ export const SearchFishingSpots: React.FC = () => {
 
   const handlePageChange = async (event: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
-    await onSubmit({
-      ...useFormMethods.getValues(),
-      offset: (value - 1) * itemsPerPage,
-      limit: itemsPerPage,
-    });
   };
 
   const handleLimitChange = async (event: SelectChangeEvent<number>) => {
@@ -90,18 +85,20 @@ export const SearchFishingSpots: React.FC = () => {
     console.log(value);
     setItemsPerPage(value); // 表示件数を更新
     setCurrentPage(1);
-    await onSubmit({
-      ...useFormMethods.getValues(),
-      offset: 0,
-      limit: value,
-    });
   }
 
   useEffect(() => {
     fetchPrefectures();
     fetchFish();
-    onSubmit(useFormMethods.getValues());
   }, []);
+
+  useEffect(() => {
+    onSubmit({
+      ...useFormMethods.getValues(),
+      offset: (currentPage - 1) * itemsPerPage,
+      limit: itemsPerPage,
+    });
+  }, [currentPage, itemsPerPage]);
 
   return (
     <Container maxWidth='lg' sx={{ mt: 4 }}>
@@ -214,7 +211,7 @@ export const SearchFishingSpots: React.FC = () => {
             value={itemsPerPage}
             onChange={handleLimitChange}
           >
-            {[10, 20, 50].map((count) => (
+            {[10, 25, 50].map((count) => (
               <MenuItem key={count} value={count}>
                 {count} 件
               </MenuItem>
@@ -232,6 +229,7 @@ export const SearchFishingSpots: React.FC = () => {
                   flexDirection: "row",
                   borderRadius: "12px",
                   overflow: "hidden",
+                  height: 200,
                 }}
               >
                 {/* 画像 */}

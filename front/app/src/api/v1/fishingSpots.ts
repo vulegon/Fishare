@@ -2,11 +2,29 @@ import { apiClient } from 'api/v1/apiClient';
 import { notifyError } from 'utils/toast/notifyError';
 import { s3Client } from 'api/v1/s3Client';
 import { CreateFishingSpot } from 'interfaces/api/admin/fishingSpots/CreateFishingSpot';
-import { FishingSpot } from 'interfaces/api/FishingSpot';
 import { generatePreSignedUrls } from 'api/v1/fishingSpotImages';
+import { SearchFishingSpot } from 'interfaces/api/fishingSpots/SearchFishingSpot';
+import { SearchFishingSpotResponse } from 'interfaces/api/fishingSpots/SearchFishingSpotResponse';
+
+/*
+  釣り場を検索します。
+  GET api/v1/fishing_spots
+*/
+export async function searchFishingSpot(data: SearchFishingSpot): Promise<SearchFishingSpotResponse[]> {
+  try {
+    const response = await apiClient.get('fishing_spots', { params: data });
+
+    return response.data;
+  } catch (error) {
+    notifyError(error);
+    throw error;
+  }
+}
+
 
 /*
   釣り場を作成します。
+  POST api/v1/fishing_spots
 */
 export async function createFishingSpot(data: CreateFishingSpot): Promise<{ message: string }> {
   try {

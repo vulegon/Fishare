@@ -23,30 +23,24 @@ import { FishingSpotFishSelecter } from "components/fishingSpots/FishingSpotFish
 import { Fish, Prefecture } from "interfaces/api";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { SearchFishingSpot } from "interfaces/api/fishingSpots/SearchFishingSpot";
+import { searchFishingSpot } from "api/v1/fishingSpots";
 
 export const SearchFishingSpots: React.FC = () => {
-  const [searchName, setSearchName] = useState("");
-  const [searchPrefecture, setSearchPrefecture] = useState("");
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
   const [fishes, setFishes] = useState<Fish[]>([]);
 
   const useFormMethods = useForm({
     defaultValues: {
       name: "",
-      description: "",
-      location: {
-        prefecture: { id: "", name: "" } as Prefecture,
-        address: "",
-        latitude: 0,
-        longitude: 0,
-      },
-      images: [] as File[],
-      fish: [] as Fish[],
+      prefecture_id: "",
+      fishes: [] as Fish[],
     },
   });
 
   const {
     handleSubmit,
+    register,
     setValue,
     watch,
     formState: { isValid },
@@ -78,6 +72,15 @@ export const SearchFishingSpots: React.FC = () => {
       imageUrl: "https://via.placeholder.com/300x200",
     },
   ];
+
+  const onSubmit = async (data: SearchFishingSpot) => {
+    try {
+      const res = await searchFishingSpot(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const fetchPrefectures = async () => {
     const res = await getPrefectures();
     setPrefectures(res.prefectures);
@@ -113,74 +116,83 @@ export const SearchFishingSpots: React.FC = () => {
           釣り場検索
         </Typography>
         <FormProvider {...useFormMethods}>
-          <Stack spacing={1}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <Typography variant='body1' sx={{ fontWeight: "bold", mb: 1 }}>
-                  釣り場名
-                </Typography>
-                <TextField
-                  placeholder='例: 九頭竜川'
-                  value={searchName}
-                  onChange={(e) => setSearchName(e.target.value)}
-                  fullWidth
-                  variant='outlined'
-                  label='釣り場名'
-                />
-              </Grid>
-              <Grid item xs={12} md={5.5}>
-                <Typography variant='body1' sx={{ fontWeight: "bold", mb: 1 }}>
-                  都道府県
-                </Typography>
-                <FormControl fullWidth variant='outlined'>
-                  <InputLabel>都道府県</InputLabel>
-                  <Select
-                    value={searchPrefecture}
-                    onChange={(e) => setSearchPrefecture(e.target.value)}
-                    MenuProps={{
-                      PaperProps: {
-                        style: {
-                          maxHeight: 300, // ドロップダウンの最大高さ
-                          overflow: "auto", // スクロールを有効化
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Stack spacing={1}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <Typography variant='body1' sx={{ fontWeight: "bold", mb: 1 }}>
+                    釣り場名
+                  </Typography>
+                  <TextField
+                    placeholder='例: 九頭竜川'
+                    {...register("name")}
+                    fullWidth
+                    variant='outlined'
+                    label='釣り場名'
+                  />
+                </Grid>
+                <Grid item xs={12} md={5.5}>
+                  <Typography variant='body1' sx={{ fontWeight: "bold", mb: 1 }}>
+                    都道府県
+                  </Typography>
+                  <FormControl fullWidth variant='outlined'>
+                    <InputLabel>都道府県</InputLabel>
+                    <Select
+                      value={watch("prefecture_id")}
+                      onChange={(e) =>{
+                        const selectedPrefecture = prefectures.find(
+                          (prefecture) => prefecture.name === e.target.value
+                        );
+                        if (selectedPrefecture) {
+                          setValue("prefecture_id", selectedPrefecture.id);
+                        }
+                      }}
+                      MenuProps={{
+                        PaperProps: {
+                          style: {
+                            maxHeight: 300, // ドロップダウンの最大高さ
+                            overflow: "auto", // スクロールを有効化
+                          },
                         },
-                      },
-                    }}
-                  >
-                    {prefectures.map((prefecture) => (
-                      <MenuItem key={prefecture.id} value={prefecture.name}>
-                        {prefecture.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                      }}
+                    >
+                      {prefectures.map((prefecture) => (
+                        <MenuItem key={prefecture.id} value={prefecture.name}>
+                          {prefecture.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
               </Grid>
-            </Grid>
 
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <Typography variant='body1' sx={{ fontWeight: "bold", mb: 1 }}>
-                  釣れる魚
-                </Typography>
-                <FishingSpotFishSelecter name='fish' fish={fishes} />
+              <Grid container spacing={3}>
+                {/* <Grid item xs={12} md={6}>
+                  <Typography variant='body1' sx={{ fontWeight: "bold", mb: 1 }}>
+                    釣れる魚
+                  </Typography>
+                  <FishingSpotFishSelecter name='fishes' fish={fishes} />
+                </Grid> */}
               </Grid>
-            </Grid>
-            <Box display='flex' justifyContent='flex-end' mt={2}>
-              <Button
-                variant='contained'
-                color='primary'
-                size='large'
-                onClick={handleSearch}
-                sx={{
-                  px: 4,
-                  py: 1.5,
-                  fontSize: "16px",
-                  borderRadius: "24px",
-                }}
-              >
-                検索する
-              </Button>
-            </Box>
-          </Stack>
+              <Box display='flex' justifyContent='flex-end' mt={2}>
+                <Button
+                  type='submit'
+                  variant='contained'
+                  color='primary'
+                  size='large'
+                  onClick={handleSearch}
+                  sx={{
+                    px: 4,
+                    py: 1.5,
+                    fontSize: "16px",
+                    borderRadius: "24px",
+                  }}
+                >
+                  検索する
+                </Button>
+              </Box>
+            </Stack>
+          </form>
         </FormProvider>
       </Paper>
 

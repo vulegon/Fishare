@@ -25,16 +25,23 @@ import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { SearchFishingSpot } from "interfaces/api/fishingSpots/SearchFishingSpot";
 import { searchFishingSpot } from "api/v1/fishingSpots";
+import { SearchFishingSpotResponse } from "interfaces/api/fishingSpots/SearchFishingSpotResponse";
+import { SelectChangeEvent } from "@mui/material";
 
 export const SearchFishingSpots: React.FC = () => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
   const [fishes, setFishes] = useState<Fish[]>([]);
+  const [searchResult, setSearchResult] = useState<SearchFishingSpotResponse | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const useFormMethods = useForm({
     defaultValues: {
       name: "",
       prefecture_id: "",
       // fishes: [] as Fish[],
+      offset: 0,
+      limit: 10,
     },
   });
 
@@ -46,36 +53,15 @@ export const SearchFishingSpots: React.FC = () => {
     formState: { isValid },
   } = useFormMethods;
 
-  const fishingSpots = [
-    {
-      id: 1,
-      name: "川尻港",
-      description:
-        "茨城県日立市にある川尻港は2本の堤防からなる中規模漁港。海底は岩礁帯や砂地が入り混じっており、砂地を好むハゼ、キス、カ…",
-      tags: ["トイレ設備あり", "ファミリー向け", "外灯設備あり", "駐車場あり"],
-      area: "茨城/北茨城-日立エリア",
-      imageUrl: "https://via.placeholder.com/300x200",
-    },
-    {
-      id: 2,
-      name: "大津漁港",
-      description:
-        "茨城県北茨城市にある大津漁港は大小複数の堤防からなる巨大漁港。漁港内には堤防だけでなく、車を横付けして湾内釣りができ…",
-      tags: [
-        "トイレ設備あり",
-        "ファミリー向け",
-        "外灯設備あり",
-        "近辺に釣具店",
-        "駐車場あり",
-      ],
-      area: "茨城/北茨城-日立エリア",
-      imageUrl: "https://via.placeholder.com/300x200",
-    },
-  ];
-
   const onSubmit = async (data: SearchFishingSpot) => {
     try {
-      const res = await searchFishingSpot(data);
+      const requestData = {
+        ...data,
+        offset: (currentPage - 1) * itemsPerPage,
+        limit: itemsPerPage,
+      };
+      const res = await searchFishingSpot(requestData);
+      setSearchResult(res);
     } catch (error) {
       console.error(error);
     }
@@ -90,14 +76,32 @@ export const SearchFishingSpots: React.FC = () => {
     setFishes(res.fishes);
   };
 
+  const handlePageChange = async (event: React.ChangeEvent<unknown>, value: number) => {
+    setCurrentPage(value);
+    await onSubmit({
+      ...useFormMethods.getValues(),
+      offset: (value - 1) * itemsPerPage,
+      limit: itemsPerPage,
+    });
+  };
+
+  const handleLimitChange = async (event: SelectChangeEvent<number>) => {
+    const value = Number(event.target.value); // 値を数値に変換
+    console.log(value);
+    setItemsPerPage(value); // 表示件数を更新
+    setCurrentPage(1);
+    await onSubmit({
+      ...useFormMethods.getValues(),
+      offset: 0,
+      limit: value,
+    });
+  }
+
   useEffect(() => {
     fetchPrefectures();
     fetchFish();
+    onSubmit(useFormMethods.getValues());
   }, []);
-
-  const handleSearch = () => {
-    console.log("検索ボタンがクリックされました");
-  };
 
   return (
     <Container maxWidth='lg' sx={{ mt: 4 }}>
@@ -183,7 +187,6 @@ export const SearchFishingSpots: React.FC = () => {
                   variant='contained'
                   color='primary'
                   size='large'
-                  onClick={handleSearch}
                   sx={{
                     px: 4,
                     py: 1.5,
@@ -200,11 +203,27 @@ export const SearchFishingSpots: React.FC = () => {
       </Paper>
 
       <Box mt={4}>
-        <Typography variant='h6' sx={{ fontWeight: "bold", mb: 2 }}>
-          検索結果
+      <Box display="flex" justifyContent="space-between" mb={2}>
+        <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
+          検索結果 {searchResult?.count || 0} 件
         </Typography>
+        <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+          <InputLabel id="items-per-page-label">表示件数</InputLabel>
+          <Select
+            labelId="items-per-page-label"
+            value={itemsPerPage}
+            onChange={handleLimitChange}
+          >
+            {[10, 20, 50].map((count) => (
+              <MenuItem key={count} value={count}>
+                {count} 件
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
         <Grid container spacing={3}>
-          {fishingSpots.map((spot) => (
+          {searchResult?.fishingSpots.map((spot) => (
             <Grid item xs={12} key={spot.id}>
               <Card
                 elevation={2}
@@ -219,7 +238,7 @@ export const SearchFishingSpots: React.FC = () => {
                 <CardMedia
                   component='img'
                   sx={{ width: 300, height: 200 }}
-                  image={spot.imageUrl}
+                  image={spot.images[0]?.presigned_url || "https://via.placeholder.com/300x200"}
                   alt={spot.name}
                 />
                 <CardContent sx={{ flex: 1 }}>
@@ -228,15 +247,15 @@ export const SearchFishingSpots: React.FC = () => {
                     color='primary'
                     sx={{ fontWeight: "bold", mb: 1 }}
                   >
-                    {spot.area}
+                    {spot.locations[0].prefecture.name}
                   </Typography>
                   <Box
                     sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}
                   >
-                    {spot.tags.map((tag, index) => (
+                    {spot.fishes.length > 0 && spot.fishes.map((fish, index) => (
                       <Chip
                         key={index}
-                        label={tag}
+                        label={fish.name}
                         sx={{
                           fontSize: "12px",
                           backgroundColor: "#f0f0f0",
@@ -256,7 +275,12 @@ export const SearchFishingSpots: React.FC = () => {
           ))}
         </Grid>
         <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-          <Pagination count={6} color='primary' />
+          <Pagination
+            count={Math.ceil((searchResult?.count || 0) / itemsPerPage)}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+          />
         </Box>
       </Box>
     </Container>

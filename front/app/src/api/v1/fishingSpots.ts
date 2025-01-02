@@ -10,11 +10,25 @@ import { SearchFishingSpotResponse } from 'interfaces/api/fishingSpots/SearchFis
   釣り場を検索します。
   GET api/v1/fishing_spots
 */
-export async function searchFishingSpot(data: SearchFishingSpot): Promise<SearchFishingSpotResponse[]> {
+export async function searchFishingSpot(data: SearchFishingSpot): Promise<SearchFishingSpotResponse> {
   try {
     const response = await apiClient.get('fishing_spots', { params: data });
+    // API レスポンスを整形して型に適合させる
+    const { fishing_spots, limit, offset, count } = response.data;
 
-    return response.data;
+    return {
+      fishingSpots: fishing_spots.map((spot: any) => ({
+        id: spot.id,
+        name: spot.name,
+        description: spot.description,
+        locations: spot.locations,
+        fishes: spot.fishes,
+        images: spot.images,
+      })),
+      limit,
+      offset,
+      count,
+    };
   } catch (error) {
     notifyError(error);
     throw error;

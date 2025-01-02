@@ -36,7 +36,7 @@ export const DashBoardPage: React.FC = () => {
       path: '/admin/fishing_spots/map/select'
     },
     {
-      label: 'お問い合わせの確認',
+      label: 'お問い合わせの確認(未完成)',
       backGroundColor: 'linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%)',
       icon: <SupportAgentIcon sx={{ fontSize: 40, opacity: 0.8 }} />,
       path: '/admin/contacts'

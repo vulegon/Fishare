@@ -19,7 +19,6 @@ import {
 } from "@mui/material";
 import { getFish } from "api/v1/fish";
 import { getPrefectures } from "api/v1/prefectures";
-import { FishingSpotFishSelecter } from "components/fishingSpots/FishingSpotFishSelecter";
 import { Fish, Prefecture } from "interfaces/api";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -27,6 +26,7 @@ import { SearchFishingSpot } from "interfaces/api/fishingSpots/SearchFishingSpot
 import { searchFishingSpot } from "api/v1/fishingSpots";
 import { SearchFishingSpotResponse } from "interfaces/api/fishingSpots/SearchFishingSpotResponse";
 import { SelectChangeEvent } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 
 export const SearchFishingSpots: React.FC = () => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
@@ -34,12 +34,12 @@ export const SearchFishingSpots: React.FC = () => {
   const [searchResult, setSearchResult] = useState<SearchFishingSpotResponse | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const useFormMethods = useForm({
     defaultValues: {
       name: "",
       prefecture_id: "",
-      // fishes: [] as Fish[],
       offset: 0,
       limit: 10,
     },
@@ -50,16 +50,24 @@ export const SearchFishingSpots: React.FC = () => {
     register,
     setValue,
     watch,
-    formState: { isValid },
+    formState: { isValid, isSubmitting },
   } = useFormMethods;
 
   const onSubmit = async (data: SearchFishingSpot) => {
     try {
       const requestData = {
         ...data,
+        name: encodeURIComponent(data.name || ""),
         offset: (currentPage - 1) * itemsPerPage,
         limit: itemsPerPage,
       };
+      setSearchParams({
+        name: requestData.name || "",
+        prefecture_id: requestData.prefecture_id || "",
+        offset: requestData.offset.toString(),
+        limit: requestData.limit.toString(),
+      });
+
       const res = await searchFishingSpot(requestData);
       setSearchResult(res);
     } catch (error) {
@@ -90,6 +98,19 @@ export const SearchFishingSpots: React.FC = () => {
   useEffect(() => {
     fetchPrefectures();
     fetchFish();
+
+    const initialValues = {
+      name: searchParams.get("name") || "",
+      prefecture_id: searchParams.get("prefecture_id") || "",
+      offset: parseInt(searchParams.get("offset") || "0", 10),
+      limit: parseInt(searchParams.get("limit") || "10", 10),
+    };
+
+    // フォームの初期値を設定
+    useFormMethods.reset(initialValues);
+
+    // 初期検索を実行
+    onSubmit(initialValues);
   }, []);
 
   useEffect(() => {
@@ -184,6 +205,7 @@ export const SearchFishingSpots: React.FC = () => {
                   variant='contained'
                   color='primary'
                   size='large'
+                  disabled={isSubmitting}
                   sx={{
                     px: 4,
                     py: 1.5,

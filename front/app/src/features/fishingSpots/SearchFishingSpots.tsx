@@ -28,6 +28,7 @@ import { SearchFishingSpotResponse } from "interfaces/api/fishingSpots/SearchFis
 import { SelectChangeEvent } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { CenteredLoader } from "components/common";
+import { useNavigate } from "react-router-dom";
 
 export const SearchFishingSpots: React.FC = () => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
@@ -36,6 +37,7 @@ export const SearchFishingSpots: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const useFormMethods = useForm({
     defaultValues: {
@@ -93,6 +95,10 @@ export const SearchFishingSpots: React.FC = () => {
     console.log(value);
     setItemsPerPage(value); // 表示件数を更新
     setCurrentPage(1);
+  }
+
+  const onCardClick = (id: string) => {
+    navigate(`/fishing_spots/${id}`);
   }
 
   useEffect(() => {
@@ -250,13 +256,16 @@ export const SearchFishingSpots: React.FC = () => {
           {searchResult?.fishingSpots.map((spot) => (
             <Grid item xs={12} key={spot.id}>
               <Card
+                id={spot.id}
                 elevation={2}
+                onClick={() => onCardClick(spot.id)}
                 sx={{
                   display: "flex",
                   flexDirection: "row",
                   borderRadius: "12px",
                   overflow: "hidden",
                   height: 200,
+                  cursor: "pointer",
                   transition: "transform 0.3s ease", // なめらかな拡大縮小のアニメーション
                   "&:hover": {
                     transform: "scale(1.05)", // ホバー時にカードを少し大きくする

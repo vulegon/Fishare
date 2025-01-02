@@ -14,8 +14,10 @@ module Api
         def initialize(params)
           permitted_params = params.permit(
             :name,
+            :limit,
+            :offset,
             :prefecture_id,
-            fishes: [:id]
+            fishes: [:id],
           )
           super(permitted_params.to_h.deep_symbolize_keys)
           @prefecture = ::Prefecture.find_by(id: prefecture_id)

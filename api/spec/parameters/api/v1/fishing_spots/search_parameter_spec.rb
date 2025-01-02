@@ -73,4 +73,41 @@ RSpec.describe Api::V1::FishingSpots::SearchParameter do
       end
     end
   end
+
+  describe '#limit' do
+    subject { search_parameter.limit }
+
+    let(:search_parameter) { described_class.new(ActionController::Parameters.new(params)) }
+
+    context 'limitが指定されていない場合' do
+      let(:params) { {} }
+
+      it { expect(subject).to eq 30 }
+    end
+
+    context 'limitが指定されている場合' do
+      let(:params) { { limit: 10 } }
+
+      it { expect(subject).to eq 10 }
+    end
+  end
+
+  describe '#offset' do
+    subject { search_parameter.offset }
+
+    let(:search_parameter) { described_class.new(ActionController::Parameters.new(params)) }
+
+    context 'limitが指定されていない場合' do
+      let(:params) { {} }
+
+      it { expect(subject).to eq 0 }
+    end
+
+    context 'limitが指定されている場合' do
+      let(:params) { { offset: 10 } }
+
+      it { expect(subject).to eq 10 }
+    end
+  end
+
 end

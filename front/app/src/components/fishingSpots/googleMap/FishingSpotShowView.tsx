@@ -7,7 +7,8 @@ import {
   Grid,
   Stack,
   Typography,
-  Card
+  Card,
+  Tooltip,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
@@ -21,6 +22,10 @@ import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import RotateRightIcon from '@mui/icons-material/RotateRight';
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import CloseIcon from '@mui/icons-material/Close';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import IconButton from '@mui/material/IconButton';
+import { HEADER_HEIGHT } from 'constants/index';
 
 interface FishingSpotShowViewProps {
   selectedLocation: FishingSpotLocation | null;
@@ -40,6 +45,7 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
   const [streetViewImageUrl, setStreetViewImageUrl] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [fishingSpot, setFishingSpot] = useState<FishingSpot | null>(null);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
 
   const fetchStreetViewImage = useCallback(async () => {
     if (!selectedLocation) return;
@@ -55,6 +61,17 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
     const response = await showFishingSpot(selectedLocation.id);
     setFishingSpot(response);
   }, [selectedLocation]);
+
+  const handleCopyUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setTooltipOpen(true);
+      setTimeout(() => setTooltipOpen(false), 2000); // 2秒後にツールチップを非表示
+    } catch (error) {
+      console.error("URLのコピーに失敗しました", error);
+      alert("URLのコピーに失敗しました");
+    }
+  };
 
   useEffect(() => {
     if (!selectedLocation) return;
@@ -89,11 +106,51 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
       <Stack spacing={3} useFlexGap>
         <Box sx={{ height: "400px" }}>
           {isLoaded ? (
-            <img
-              src={streetViewImageUrl ?? undefined}
-              alt='street view image'
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            />
+            <>
+              <img
+                src={streetViewImageUrl ?? undefined}
+                alt='street view image'
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+              <IconButton
+                onClick={onClose}
+                sx={{
+                  position: "absolute",
+                  top: HEADER_HEIGHT + 5,
+                  right: 8,
+                  backgroundColor: "rgba(255, 255, 255, 0.8)",
+                  "&:hover": {
+                    backgroundColor: "rgba(255, 255, 255, 1)",
+                  },
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => {
+                  const currentUrl = window.location.href; // 現在のURLを取得
+                  navigator.clipboard.writeText(currentUrl)
+                }}
+                sx={{
+                  position: "absolute",
+                  top: HEADER_HEIGHT + 5,
+                  right: 60,
+                  backgroundColor: "rgba(255, 255, 255, 0.8)",
+                  "&:hover": {
+                    backgroundColor: "rgba(255, 255, 255, 1)",
+                  },
+                }}
+              >
+                <Tooltip
+                  title="URLをコピーしました！"
+                  open={tooltipOpen}
+                  placement="top"
+                  arrow
+                >
+                  <FileCopyIcon onClick={handleCopyUrl}/>
+                </Tooltip>
+              </IconButton>
+            </>
           ) : (
             <CenteredLoader />
           )}

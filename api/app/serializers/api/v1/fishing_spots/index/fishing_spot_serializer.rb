@@ -12,18 +12,17 @@ module Api
           end
 
           def location
-            object.location.map do |location|
-              {
-                id: location.id,
-                address: location.address,
-                prefecture: {
-                  id: location.prefecture.id,
-                  name: location.prefecture.name
-                },
-                latitude: location.latitude,
-                longitude: location.longitude
-              }
-            end
+            location = object.location
+            {
+              id: location.id,
+              address: location.address,
+              prefecture: {
+                id: location.prefecture.id,
+                name: location.prefecture.name
+              },
+              latitude: location.latitude,
+              longitude: location.longitude
+            }
           end
 
           def images

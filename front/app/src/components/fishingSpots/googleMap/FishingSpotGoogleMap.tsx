@@ -53,16 +53,19 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
     fetchData();
   }, [fetchFishingSpotLocations, isLoaded]);
 
+  // マップをクリックしたときの処理
   const onMapClick = useCallback((e: google.maps.MapMouseEvent) => {
     if (!e.latLng) return;
     setNewLocation({ lat: e.latLng.lat(), lng: e.latLng.lng() });
   }, []);
 
+  // 新規作成のボタンをクリックしたときの処理
   const onAddButtonClick = useCallback(() => {
     if (!newLocation) return;
     setIsNewDrawerOpen(true);
   }, [newLocation]);
 
+  // 既存の釣り場をクリックしたときの処理
   const onExistLocationClick = useCallback((fishingSpotLocation: FishingSpotLocation) => {
     setSearchParams({
       fishing_spot_location_id: fishingSpotLocation.id,
@@ -73,9 +76,9 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
 
   return (
     <>
-    {!isLoaded ? (
-      <CenteredLoader />
-    ) : (
+      {!isLoaded ? (
+        <CenteredLoader />
+      ) : (
       <>
         <GoogleMap
           mapContainerStyle={{

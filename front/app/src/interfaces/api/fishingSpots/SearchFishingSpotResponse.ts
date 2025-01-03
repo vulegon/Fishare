@@ -6,7 +6,7 @@ interface FishingSpot {
   id: string;
   name: string;
   description: string;
-  locations: {
+  location: {
     id: string;
     address: string;
     latitude: number;

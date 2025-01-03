@@ -13,28 +13,28 @@ import {
   Pagination,
   Paper,
   Select,
+  SelectChangeEvent,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
+import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
 import { getFish } from "api/v1/fish";
+import { searchFishingSpot } from "api/v1/fishingSpots";
 import { getPrefectures } from "api/v1/prefectures";
+import { CenteredLoader } from "components/common";
 import { Fish, Prefecture } from "interfaces/api";
+import { SearchFishingSpot } from "interfaces/api/fishingSpots/SearchFishingSpot";
+import { SearchFishingSpotResponse } from "interfaces/api/fishingSpots/SearchFishingSpotResponse";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { SearchFishingSpot } from "interfaces/api/fishingSpots/SearchFishingSpot";
-import { searchFishingSpot } from "api/v1/fishingSpots";
-import { SearchFishingSpotResponse } from "interfaces/api/fishingSpots/SearchFishingSpotResponse";
-import { SelectChangeEvent } from "@mui/material";
-import { useSearchParams } from "react-router-dom";
-import { CenteredLoader } from "components/common";
-import { useNavigate } from "react-router-dom";
-import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export const SearchFishingSpots: React.FC = () => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
   const [fishes, setFishes] = useState<Fish[]>([]);
-  const [searchResult, setSearchResult] = useState<SearchFishingSpotResponse | null>(null);
+  const [searchResult, setSearchResult] =
+    useState<SearchFishingSpotResponse | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -54,9 +54,9 @@ export const SearchFishingSpots: React.FC = () => {
   const fetchStreetViewImages = async () => {
     const urls = await Promise.all(
       searchResult?.fishingSpots.map(async (spot) => {
-        const lat = spot.locations[0].latitude;
-        const lng = spot.locations[0].longitude;
-        return streetViewClient.fetchStreetViewImage(lat, lng, '300x200');
+        const lat = spot.location[0].latitude;
+        const lng = spot.location[0].longitude;
+        return streetViewClient.fetchStreetViewImage(lat, lng, "300x200");
       }) || []
     );
     setStreetViewUrls(urls);
@@ -100,7 +100,10 @@ export const SearchFishingSpots: React.FC = () => {
     setFishes(res.fishes);
   };
 
-  const handlePageChange = async (event: React.ChangeEvent<unknown>, value: number) => {
+  const handlePageChange = async (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
     setCurrentPage(value);
   };
 
@@ -109,11 +112,11 @@ export const SearchFishingSpots: React.FC = () => {
     console.log(value);
     setItemsPerPage(value); // 表示件数を更新
     setCurrentPage(1);
-  }
+  };
 
   const onCardClick = (id: string) => {
     navigate(`/fishing_spots/${id}`);
-  }
+  };
 
   useEffect(() => {
     fetchPrefectures();
@@ -136,7 +139,7 @@ export const SearchFishingSpots: React.FC = () => {
   useEffect(() => {
     if (!searchResult) return; // searchResultがnullまたはundefinedの場合は終了
     if (searchResult.fishingSpots.length === 0) return;
-      fetchStreetViewImages();
+    fetchStreetViewImages();
   }, [searchResult]);
 
   if (isSubmitting) {
@@ -165,7 +168,10 @@ export const SearchFishingSpots: React.FC = () => {
             <Stack spacing={1}>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={5.8}>
-                  <Typography variant='body1' sx={{ fontWeight: "bold", mb: 1 }}>
+                  <Typography
+                    variant='body1'
+                    sx={{ fontWeight: "bold", mb: 1 }}
+                  >
                     釣り場名
                   </Typography>
                   <TextField
@@ -177,17 +183,22 @@ export const SearchFishingSpots: React.FC = () => {
                   />
                 </Grid>
                 <Grid item xs={12} md={5.8}>
-                  <Typography variant='body1' sx={{ fontWeight: "bold", mb: 1 }}>
+                  <Typography
+                    variant='body1'
+                    sx={{ fontWeight: "bold", mb: 1 }}
+                  >
                     都道府県
                   </Typography>
                   <FormControl fullWidth variant='outlined'>
                     <InputLabel>都道府県</InputLabel>
                     <Select
                       value={
-                        prefectures.find((prefecture) => prefecture.id === watch("prefecture_id"))
-                          ?.name || "" // 選択された都道府県名を表示
+                        prefectures.find(
+                          (prefecture) =>
+                            prefecture.id === watch("prefecture_id")
+                        )?.name || "" // 選択された都道府県名を表示
                       }
-                      onChange={(e) =>{
+                      onChange={(e) => {
                         const selectedPrefecture = prefectures.find(
                           (prefecture) => prefecture.name === e.target.value
                         );
@@ -245,25 +256,25 @@ export const SearchFishingSpots: React.FC = () => {
       </Paper>
 
       <Box mt={4}>
-      <Box display="flex" justifyContent="space-between" mb={2}>
-        <Typography variant="h6" sx={{ mb: 2, fontWeight: "bold" }}>
-          検索結果 {searchResult?.count || 0} 件
-        </Typography>
-        <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-          <InputLabel id="items-per-page-label">表示件数</InputLabel>
-          <Select
-            labelId="items-per-page-label"
-            value={itemsPerPage}
-            onChange={handleLimitChange}
-          >
-            {[10, 20, 30].map((count) => (
-              <MenuItem key={count} value={count}>
-                {count} 件
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
+        <Box display='flex' justifyContent='space-between' mb={2}>
+          <Typography variant='h6' sx={{ mb: 2, fontWeight: "bold" }}>
+            検索結果 {searchResult?.count || 0} 件
+          </Typography>
+          <FormControl variant='outlined' sx={{ minWidth: 120 }}>
+            <InputLabel id='items-per-page-label'>表示件数</InputLabel>
+            <Select
+              labelId='items-per-page-label'
+              value={itemsPerPage}
+              onChange={handleLimitChange}
+            >
+              {[10, 20, 30].map((count) => (
+                <MenuItem key={count} value={count}>
+                  {count} 件
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
         <Grid container spacing={3}>
           {searchResult?.fishingSpots.map((spot, index) => (
             <Grid item xs={12} key={spot.id}>
@@ -295,7 +306,8 @@ export const SearchFishingSpots: React.FC = () => {
                     backgroundColor: "#f0f0f0",
                   }}
                   image={
-                    streetViewUrls[index] || "https://via.placeholder.com/300x200"
+                    streetViewUrls[index] ||
+                    "https://via.placeholder.com/300x200"
                   }
                   alt={spot.name}
                 />
@@ -305,21 +317,22 @@ export const SearchFishingSpots: React.FC = () => {
                     color='primary'
                     sx={{ fontWeight: "bold", mb: 1 }}
                   >
-                    {spot.locations[0].prefecture.name}
+                    {spot.location[0].prefecture.name}
                   </Typography>
                   <Box
                     sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}
                   >
-                    {spot.fishes.length > 0 && spot.fishes.map((fish, index) => (
-                      <Chip
-                        key={index}
-                        label={fish.name}
-                        sx={{
-                          fontSize: "12px",
-                          backgroundColor: "#f0f0f0",
-                        }}
-                      />
-                    ))}
+                    {spot.fishes.length > 0 &&
+                      spot.fishes.map((fish, index) => (
+                        <Chip
+                          key={index}
+                          label={fish.name}
+                          sx={{
+                            fontSize: "12px",
+                            backgroundColor: "#f0f0f0",
+                          }}
+                        />
+                      ))}
                   </Box>
                   <Typography variant='h6' sx={{ fontWeight: "bold", mb: 1 }}>
                     {spot.name}
@@ -337,7 +350,7 @@ export const SearchFishingSpots: React.FC = () => {
             count={Math.ceil((searchResult?.count || 0) / itemsPerPage)}
             page={currentPage}
             onChange={handlePageChange}
-            color="primary"
+            color='primary'
           />
         </Box>
       </Box>

@@ -14,7 +14,7 @@ class FishingSpot < ApplicationRecord
   audited
   has_many :fishing_spot_fishes, dependent: :destroy, inverse_of: :fishing_spot
   has_many :fishes, through: :fishing_spot_fishes
-  has_many :locations, class_name: 'FishingSpotLocation', dependent: :destroy, inverse_of: :fishing_spot
+  has_one :location, class_name: 'FishingSpotLocation', dependent: :destroy, inverse_of: :fishing_spot
   has_many :images, class_name: 'FishingSpotImage', dependent: :destroy, inverse_of: :fishing_spot
 
   has_many :display_order_images, -> { order_by_display_order }, class_name: 'FishingSpotImage', inverse_of: :fishing_spot

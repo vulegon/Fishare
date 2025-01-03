@@ -3,7 +3,7 @@ module Api
     module FishingSpots
       module Index
         class FishingSpotSerializer < ActiveModel::Serializer
-          attributes :id, :name, :description, :fishes, :locations, :images
+          attributes :id, :name, :description, :fishes, :location, :images
 
           def fishes
             object.fishing_spot_fishes.map do |fishing_spot_fish|
@@ -11,8 +11,8 @@ module Api
             end
           end
 
-          def locations
-            object.locations.map do |location|
+          def location
+            object.location.map do |location|
               {
                 id: location.id,
                 address: location.address,

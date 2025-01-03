@@ -138,13 +138,16 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
               </Fab>
             </div>
           )}
-          <FishingSpotShowView
+
+        </GoogleMap>
+
+        {/* 釣り場の詳細表示 */}
+        <FishingSpotShowView
             selectedLocation={selectedLocation}
             onClose={() => {
               setSelectedLocation(null);
             }}
-          />
-        </GoogleMap>
+        />
 
         {/* 釣り場を新規作成するドロワー */}
         {isNew && isNewDrawerOpen && newLocation &&(

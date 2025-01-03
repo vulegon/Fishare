@@ -93,6 +93,9 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
           boxSizing: "border-box",
         },
       }}
+      ModalProps={{
+        BackdropProps: { invisible: true },
+      }}
       anchor={"right"}
       variant='temporary'
       open={!!selectedLocation}

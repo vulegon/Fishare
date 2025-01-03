@@ -14,54 +14,44 @@ interface FishingSpotGoogleMapProps {
   isNew?: boolean;
 }
 
+const DEFAULT_CENTER = { lat: 35.681236, lng: 139.767125 }; // 東京駅
+
 // 釣り場を選択する画面で使用するGoogleMapコンポーネント
 export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
   isNew = false,
 }) => {
   const [newLocation, setNewLocation] = useState<google.maps.LatLngLiteral | null>(null);
   const [existLocation, setExistLocation] = useState<FishingSpotLocation[]>([]);
-  // const center = useRef({ lat: 35.681236, lng: 139.767125 }); // 東京駅
-  const [center, setCenter] = useState({ lat: 35.681236, lng: 139.767125 });
+  const center = useRef(DEFAULT_CENTER); // 東京駅
   const [selectedLocation, setSelectedLocation] = useState<FishingSpotLocation | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
+  // サーバーサイドから釣り場の位置情報を取得
   const fetchFishingSpotLocations = useCallback(async () => {
     const response = await getFishingSpotLocations();
     setExistLocation(response.fishingSpotLocations);
+    return response.fishingSpotLocations;
   }, []);
-
-  const fetchCenter = useCallback(async () => {
-    const fishingSpotLocationId = searchParams.get('fishing_spot_location_id');
-
-    if (!fishingSpotLocationId) return;
-
-    const selectedLocation = existLocation.find((location) => location.id === fishingSpotLocationId);
-
-    if (!selectedLocation) return;
-
-    setSelectedLocation(selectedLocation);
-  }, [searchParams, existLocation]);
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetchFishingSpotLocations();
-      await fetchCenter();
+      // useStateの値は次のレンダリングのタイミングで反映されるので、existLocationは使わない。代わりにレスポンスのデータをそのまま使う。
+      const fishingSpotLocations = await fetchFishingSpotLocations();
+      const fishingSpotLocationId = searchParams.get('fishing_spot_location_id');
+
+      if (fishingSpotLocationId){
+        const selectedLocation = fishingSpotLocations.find((location) => location.id === fishingSpotLocationId);
+        if (!selectedLocation) return; // URLにIDが指定されていないケースもあるので、その場合は何もしない
+        setSelectedLocation(selectedLocation);
+        center.current = { lat: selectedLocation.latitude, lng: selectedLocation.longitude };
+      }
       setIsLoaded(true);
     };
 
     fetchData();
-  }, [isLoaded]);
-
-  useEffect(() => {
-    if (selectedLocation) {
-      setCenter({
-        lat: selectedLocation.latitude,
-        lng: selectedLocation.longitude,
-      });
-    }
-  }, [selectedLocation]);
+  }, [searchParams, fetchFishingSpotLocations, isLoaded]);
 
   const onMapClick = useCallback((e: google.maps.MapMouseEvent) => {
     if (!e.latLng) return;
@@ -76,8 +66,6 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
   const onExistLocationClick = useCallback((fishingSpotLocation: FishingSpotLocation) => {
     setSearchParams({
       fishing_spot_location_id: fishingSpotLocation.id,
-      lat: fishingSpotLocation.latitude.toString(),
-      lng: fishingSpotLocation.longitude.toString(),
     });
     setSelectedLocation(fishingSpotLocation);
   }, []);
@@ -94,7 +82,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
             width: '100%',
           }}
           zoom={15}
-          center={center}
+          center={center.current} // useStateは値が書き換わるたびに再描画されるたる。再描画されると画面がチラつくので、refを使って再描画を抑制する
           options={{
             fullscreenControl: false,
             mapTypeId: 'hybrid',
@@ -154,6 +142,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
           />
         </GoogleMap>
 
+        {/* 釣り場を新規作成するドロワー */}
         {isNew && isDrawerOpen && (
           <FishingSpotCreateDrawer
             newLocation={newLocation}

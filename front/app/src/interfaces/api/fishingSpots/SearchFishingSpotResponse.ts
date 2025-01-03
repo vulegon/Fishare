@@ -7,6 +7,10 @@ interface FishingSpot {
   name: string;
   description: string;
   locations: {
+    id: string;
+    address: string;
+    latitude: number;
+    longitude: number;
     prefecture: Prefecture;
   }[];
   fishes: Fish[];

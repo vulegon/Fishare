@@ -14,10 +14,14 @@ module Api
           def locations
             object.locations.map do |location|
               {
+                id: location.id,
+                address: location.address,
                 prefecture: {
                   id: location.prefecture.id,
                   name: location.prefecture.name
-                }
+                },
+                latitude: location.latitude,
+                longitude: location.longitude
               }
             end
           end

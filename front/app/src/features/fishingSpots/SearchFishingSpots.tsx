@@ -29,6 +29,7 @@ import { SelectChangeEvent } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { CenteredLoader } from "components/common";
 import { useNavigate } from "react-router-dom";
+import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
 
 export const SearchFishingSpots: React.FC = () => {
   const [prefectures, setPrefectures] = useState<Prefecture[]>([]);
@@ -37,6 +38,8 @@ export const SearchFishingSpots: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [streetViewUrls, setStreetViewUrls] = useState<string[]>([]);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const navigate = useNavigate();
 
   const useFormMethods = useForm({
@@ -47,6 +50,17 @@ export const SearchFishingSpots: React.FC = () => {
       limit: 10,
     },
   });
+
+  const fetchStreetViewImages = async () => {
+    const urls = await Promise.all(
+      searchResult?.fishingSpots.map(async (spot) => {
+        const lat = spot.locations[0].latitude;
+        const lng = spot.locations[0].longitude;
+        return streetViewClient.fetchStreetViewImage(lat, lng, '300x200');
+      }) || []
+    );
+    setStreetViewUrls(urls);
+  };
 
   const {
     handleSubmit,
@@ -104,28 +118,26 @@ export const SearchFishingSpots: React.FC = () => {
   useEffect(() => {
     fetchPrefectures();
     fetchFish();
-
-    const initialValues = {
-      name: decodeURIComponent(searchParams.get("name") || ""),
-      prefecture_id: searchParams.get("prefecture_id") || "",
-      offset: parseInt(searchParams.get("offset") || "0", 10),
-      limit: parseInt(searchParams.get("limit") || "10", 10),
-    };
-
-    // フォームの初期値を設定
-    useFormMethods.reset(initialValues);
-
-    // 初期検索を実行
-    onSubmit(initialValues);
   }, []);
 
   useEffect(() => {
+    if (isFirstLoad) {
+      setIsFirstLoad(false); // 初回フラグをfalseに設定
+      return; // 初回はfetchをスキップ
+    }
+
     onSubmit({
       ...useFormMethods.getValues(),
       offset: (currentPage - 1) * itemsPerPage,
       limit: itemsPerPage,
     });
   }, [currentPage, itemsPerPage]);
+
+  useEffect(() => {
+    if (!searchResult) return; // searchResultがnullまたはundefinedの場合は終了
+    if (searchResult.fishingSpots.length === 0) return;
+      fetchStreetViewImages();
+  }, [searchResult]);
 
   if (isSubmitting) {
     // ローディング中にCenteredLoaderを表示
@@ -244,7 +256,7 @@ export const SearchFishingSpots: React.FC = () => {
             value={itemsPerPage}
             onChange={handleLimitChange}
           >
-            {[10, 25, 50].map((count) => (
+            {[10, 20, 30].map((count) => (
               <MenuItem key={count} value={count}>
                 {count} 件
               </MenuItem>
@@ -253,7 +265,7 @@ export const SearchFishingSpots: React.FC = () => {
         </FormControl>
       </Box>
         <Grid container spacing={3}>
-          {searchResult?.fishingSpots.map((spot) => (
+          {searchResult?.fishingSpots.map((spot, index) => (
             <Grid item xs={12} key={spot.id}>
               <Card
                 id={spot.id}
@@ -282,7 +294,9 @@ export const SearchFishingSpots: React.FC = () => {
                     objectFit: "contain",
                     backgroundColor: "#f0f0f0",
                   }}
-                  image={spot.images[0]?.presigned_url || "https://via.placeholder.com/300x200"}
+                  image={
+                    streetViewUrls[index] || "https://via.placeholder.com/300x200"
+                  }
                   alt={spot.name}
                 />
                 <CardContent sx={{ flex: 1 }}>

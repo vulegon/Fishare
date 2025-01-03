@@ -31,11 +31,14 @@ import * as z from "zod";
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import { HEADER_HEIGHT } from 'constants/index';
+import { FishingSpotLocation } from 'interfaces/api';
 
 interface FishingSpotCreateModalProps {
   newLocation: google.maps.LatLngLiteral;
   onClose: () => void;
   isDrawerOpen: boolean;
+  setNewLocation: (location: google.maps.LatLngLiteral | null) => void;
+  refreshLocations: () => Promise<FishingSpotLocation[]>;
 }
 
 const schema = z.object({
@@ -70,6 +73,8 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
   newLocation,
   onClose,
   isDrawerOpen,
+  setNewLocation,
+  refreshLocations
 }) => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [fish, setFish] = React.useState<Fish[]>([]);
@@ -102,9 +107,11 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
 
   const onSubmit = async (data: CreateFishingSpot) => {
     try {
-      const res = await createFishingSpot(data);
-      notifySuccess(res.message);
+      await createFishingSpot(data);
+      notifySuccess('釣り場を登録しました');
       useFormMethods.reset();
+      setNewLocation(null);
+      await refreshLocations();
       onClose();
     } catch (error) {
       console.error(error);

@@ -154,6 +154,8 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
               setIsNewDrawerOpen(false);
             }}
             isDrawerOpen={isNewDrawerOpen}
+            setNewLocation={setNewLocation}
+            refreshLocations={fetchFishingSpotLocations}
           />
         )}
       </>

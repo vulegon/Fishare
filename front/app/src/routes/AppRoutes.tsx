@@ -2,7 +2,6 @@ import { Contact, Home, NotFound, PrefectureSpots } from "pages";
 import { AdminLoginPage, ContactReviewPage, DashBoardPage } from "pages/admin";
 import {
   FishingSpotMapSelectPage,
-  FishingSpotNewPage,
 } from "pages/admin/fishingSpots";
 import { GoogleMapPage, SearchPage, ShowPage } from "pages/fishingSpots";
 import React from "react";

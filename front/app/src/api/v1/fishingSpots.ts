@@ -5,6 +5,7 @@ import { CreateFishingSpot } from 'interfaces/api/admin/fishingSpots/CreateFishi
 import { generatePreSignedUrls } from 'api/v1/fishingSpotImages';
 import { SearchFishingSpot } from 'interfaces/api/fishingSpots/SearchFishingSpot';
 import { SearchFishingSpotResponse } from 'interfaces/api/fishingSpots/SearchFishingSpotResponse';
+import { FishingSpotLocation } from 'interfaces/api';
 
 /*
   釣り場を検索します。
@@ -40,7 +41,7 @@ export async function searchFishingSpot(data: SearchFishingSpot): Promise<Search
   釣り場を作成します。
   POST api/v1/fishing_spots
 */
-export async function createFishingSpot(data: CreateFishingSpot): Promise<{ message: string }> {
+export async function createFishingSpot(data: CreateFishingSpot): Promise<{ fishing_spot_location: FishingSpotLocation }> {
   try {
     const preSignedUrlItems = await generatePreSignedUrls(data.images);
 
@@ -80,7 +81,7 @@ export async function createFishingSpot(data: CreateFishingSpot): Promise<{ mess
     };
     const response = await apiClient.post('fishing_spots', postData);
 
-    return { message: response.data.message };
+    return { fishing_spot_location: response.data.fishing_spot };
   } catch (error) {
     notifyError(error);
     throw error;

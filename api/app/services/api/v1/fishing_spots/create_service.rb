@@ -5,7 +5,7 @@ module Api
         class << self
           # 釣り場を作成する
           # @param params [Api::V1::FishingSpots::CreateParameter]
-          # @return [FishingSpot] 永続化された釣り場
+          # @return [Hash] 作成した釣り場と釣り場位置情報
           def create!(params)
             fishing_spot = ::FishingSpotFactory.new.build(params)
             fishing_spot_images = ::FishingSpotImageFactory.new.build_all(params.image_forms, fishing_spot.id)
@@ -19,7 +19,7 @@ module Api
               FishingSpotLocationRepository.save!(fishing_spot_location)
             end
 
-            fishing_spot.reload
+            { fishing_spot: fishing_spot.reload, fishing_spot_location: fishing_spot_location.reload }
           end
         end
       end

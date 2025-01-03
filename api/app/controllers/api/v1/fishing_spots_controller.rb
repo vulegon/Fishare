@@ -35,9 +35,14 @@ module Api
           render_403_error(message: create_spec.unsatisfied_reason) and return
         end
 
-        ::Api::V1::FishingSpots::CreateService.create!(create_params)
+        result = ::Api::V1::FishingSpots::CreateService.create!(create_params)
 
-        render status: :ok, json: { message: '釣り場を作成しました' }
+        json = {
+          message: '釣り場を作成しました',
+          fishing_spot_location: ::Api::V1::FishingSpotLocationSerializer.new(result[:fishing_spot_location]).as_json
+        }
+
+        render status: :ok, json: json
       end
 
       def update

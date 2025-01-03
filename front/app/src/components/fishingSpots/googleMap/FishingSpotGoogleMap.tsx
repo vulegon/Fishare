@@ -25,7 +25,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
   const center = useRef(DEFAULT_CENTER);
   const [selectedLocation, setSelectedLocation] = useState<FishingSpotLocation | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isNewDrawerOpen, setIsNewDrawerOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   // サーバーサイドから釣り場の位置情報を取得
@@ -60,7 +60,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
 
   const onAddButtonClick = useCallback(() => {
     if (!newLocation) return;
-    setIsDrawerOpen(true);
+    setIsNewDrawerOpen(true);
   }, [newLocation]);
 
   const onExistLocationClick = useCallback((fishingSpotLocation: FishingSpotLocation) => {
@@ -68,6 +68,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
       fishing_spot_location_id: fishingSpotLocation.id,
     });
     setSelectedLocation(fishingSpotLocation);
+    setIsNewDrawerOpen(false);
   }, []);
 
   return (
@@ -143,13 +144,13 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
         </GoogleMap>
 
         {/* 釣り場を新規作成するドロワー */}
-        {isNew && isDrawerOpen && (
+        {isNew && isNewDrawerOpen && (
           <FishingSpotCreateDrawer
             newLocation={newLocation}
             onClose={() => {
-              setIsDrawerOpen(false);
+              setIsNewDrawerOpen(false);
             }}
-            isDrawerOpen={isDrawerOpen}
+            isDrawerOpen={isNewDrawerOpen}
           />
         )}
       </>

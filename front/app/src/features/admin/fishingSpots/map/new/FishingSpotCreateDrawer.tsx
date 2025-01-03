@@ -33,7 +33,7 @@ import IconButton from '@mui/material/IconButton';
 import { HEADER_HEIGHT } from 'constants/index';
 import { FishingSpotLocation } from 'interfaces/api';
 import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
-import { CenteredLoader } from "components/common";
+import { BeatLoader } from 'react-spinners';
 
 interface FishingSpotCreateModalProps {
   newLocation: google.maps.LatLngLiteral;
@@ -131,6 +131,7 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
       newLocation.lat,
       newLocation.lng
     );
+    console.log(response);
     setStreetViewImageUrl(response);
   }, [newLocation]);
 
@@ -229,7 +230,16 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
             </IconButton>
           </>
         ) : (
-          <CenteredLoader />
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100%'
+            }}
+          >
+            <BeatLoader size={20} color={'#1976D2'}/>
+          </div>
         )}
       </Box>
       <Box

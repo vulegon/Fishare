@@ -3,10 +3,12 @@ import { HEADER_HEIGHT } from 'constants/index';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
-import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { FishingSpotLocation } from 'interfaces/api';
 import { FishingSpotShowView } from './FishingSpotShowView';
 import { getFishingSpotLocations } from 'api/v1/fishingSpotLocations';
+import { FishingSpotCreateDrawer } from 'features/admin/fishingSpots/map/new/FishingSpotCreateDrawer';
+import { CenteredLoader } from 'components/common';
 
 interface FishingSpotGoogleMapProps {
   isNew?: boolean;
@@ -18,18 +20,48 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
 }) => {
   const [newLocation, setNewLocation] = useState<google.maps.LatLngLiteral | null>(null);
   const [existLocation, setExistLocation] = useState<FishingSpotLocation[]>([]);
-  const center = useRef({ lat: 35.681236, lng: 139.767125 }); // 東京駅
-  const navigate = useNavigate();
+  // const center = useRef({ lat: 35.681236, lng: 139.767125 }); // 東京駅
+  const [center, setCenter] = useState({ lat: 35.681236, lng: 139.767125 });
   const [selectedLocation, setSelectedLocation] = useState<FishingSpotLocation | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   const fetchFishingSpotLocations = useCallback(async () => {
     const response = await getFishingSpotLocations();
     setExistLocation(response.fishingSpotLocations);
   }, []);
 
+  const fetchCenter = useCallback(async () => {
+    const fishingSpotLocationId = searchParams.get('fishing_spot_location_id');
+
+    if (!fishingSpotLocationId) return;
+
+    const selectedLocation = existLocation.find((location) => location.id === fishingSpotLocationId);
+
+    if (!selectedLocation) return;
+
+    setSelectedLocation(selectedLocation);
+  }, [searchParams, existLocation]);
+
   useEffect(() => {
-    fetchFishingSpotLocations();
-  }, []);
+    const fetchData = async () => {
+      await fetchFishingSpotLocations();
+      await fetchCenter();
+      setIsLoaded(true);
+    };
+
+    fetchData();
+  }, [isLoaded]);
+
+  useEffect(() => {
+    if (selectedLocation) {
+      setCenter({
+        lat: selectedLocation.latitude,
+        lng: selectedLocation.longitude,
+      });
+    }
+  }, [selectedLocation]);
 
   const onMapClick = useCallback((e: google.maps.MapMouseEvent) => {
     if (!e.latLng) return;
@@ -38,84 +70,101 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
 
   const onAddButtonClick = useCallback(() => {
     if (!newLocation) return;
-    navigate(`/admin/fishing_spots/map/new?lat=${newLocation.lat}&lng=${newLocation.lng}`);
-  }, [newLocation, navigate]);
+    setIsDrawerOpen(true);
+  }, [newLocation]);
 
-  const onExistLocationClick = useCallback((fishingSpot: FishingSpotLocation) => {
-    setSelectedLocation(fishingSpot);
+  const onExistLocationClick = useCallback((fishingSpotLocation: FishingSpotLocation) => {
+    setSearchParams({
+      fishing_spot_location_id: fishingSpotLocation.id,
+      lat: fishingSpotLocation.latitude.toString(),
+      lng: fishingSpotLocation.longitude.toString(),
+    });
+    setSelectedLocation(fishingSpotLocation);
   }, []);
 
   return (
-    <GoogleMap
-      mapContainerStyle={{
-        height: `calc(100vh - ${HEADER_HEIGHT}px)`,
-        width: '100%',
-      }}
-      // optionsに入れない。クリックするとズームが変わる
-      zoom={15}
-      // optionsに入れないこと。また、クリックすると中心が変わらないようにuseRefで管理する
-      center={center.current}
-      options={{
-        fullscreenControl: false,
-        mapTypeId: 'hybrid'
-      }}
-      onClick={(event: google.maps.MapMouseEvent) => {
-        if (isNew) {
-          onMapClick(event);
-        }
-      }}
-    >
-      {/* クリックしたマーカー */}
-      {newLocation && (
-        <MarkerF
-          position={newLocation}
-          icon={{
-            // マーカーのアイコンを変更
-            // https://www.single-life.tokyo/google-maps%EF%BC%88%E3%82%B0%E3%83%BC%E3%82%B0%E3%83%AB%E3%83%9E%E3%83%83%E3%83%97%EF%BC%89%E3%81%A7%E4%BD%BF%E3%81%88%E3%82%8B%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3/#i-5
-            url: 'https://maps.google.com/mapfiles/kml/paddle/grn-circle.png', // カスタムアイコンURL
-            scaledSize: new window.google.maps.Size(50, 50)
+    <>
+    {!isLoaded ? (
+      <CenteredLoader />
+    ) : (
+      <>
+        <GoogleMap
+          mapContainerStyle={{
+            height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+            width: '100%',
           }}
-        />
-      )}
-
-      {/* APIから取得した釣り場 */}
-      {existLocation.map((fishingSpot) => (
-        <MarkerF
-          key={fishingSpot.id}
-          position={{ lat: fishingSpot.latitude, lng: fishingSpot.longitude }}
-          onClick={()=>{
-            onExistLocationClick(fishingSpot)
+          zoom={15}
+          center={center}
+          options={{
+            fullscreenControl: false,
+            mapTypeId: 'hybrid',
           }}
-        />
-      ))}
+          onClick={(event: google.maps.MapMouseEvent) => {
+            if (isNew) {
+              onMapClick(event);
+            }
+          }}
+        >
+          {/* クリックしたマーカー */}
+          {newLocation && (
+            <MarkerF
+              position={newLocation}
+              icon={{
+                url: 'https://maps.google.com/mapfiles/kml/paddle/grn-circle.png',
+                scaledSize: new window.google.maps.Size(50, 50),
+              }}
+            />
+          )}
 
-      {/* 釣り場追加ボタン */}
-      { isNew && (
-        <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
-          <Fab
-            disabled={!newLocation}
-            color='primary'
-            aria-label='add'
-            sx={{
-              '&.Mui-disabled': {
-                backgroundColor: 'rgba(0, 123, 255, 0.5)',
-                color: 'rgba(255, 255, 255, 0.7)',
-              },
+          {/* 既存の釣り場 */}
+          {existLocation.map((fishingSpot) => (
+            <MarkerF
+              key={fishingSpot.id}
+              position={{ lat: fishingSpot.latitude, lng: fishingSpot.longitude }}
+              onClick={() => {
+                onExistLocationClick(fishingSpot);
+              }}
+            />
+          ))}
+
+          {/* 新規作成のボタン */}
+          {isNew && (
+            <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
+              <Fab
+                disabled={!newLocation}
+                color="primary"
+                aria-label="add"
+                sx={{
+                  '&.Mui-disabled': {
+                    backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                    color: 'rgba(255, 255, 255, 0.7)',
+                  },
+                }}
+                onClick={onAddButtonClick}
+              >
+                <AddIcon />
+              </Fab>
+            </div>
+          )}
+          <FishingSpotShowView
+            selectedLocation={selectedLocation}
+            onClose={() => {
+              setSelectedLocation(null);
             }}
-            onClick={onAddButtonClick}
-          >
-            <AddIcon />
-          </Fab>
-        </div>
-      )}
+          />
+        </GoogleMap>
 
-      {/* 釣り場の情報 */}
-      <FishingSpotShowView
-        selectedLocation={selectedLocation}
-        onClose={() => {
-          setSelectedLocation(null)
-        }}
-      />
-    </GoogleMap>
+        {isNew && isDrawerOpen && (
+          <FishingSpotCreateDrawer
+            newLocation={newLocation}
+            onClose={() => {
+              setIsDrawerOpen(false);
+            }}
+            isDrawerOpen={isDrawerOpen}
+          />
+        )}
+      </>
+    )}
+  </>
   );
 };

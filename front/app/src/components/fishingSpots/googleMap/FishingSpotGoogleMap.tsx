@@ -51,7 +51,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
     };
 
     fetchData();
-  }, [searchParams, fetchFishingSpotLocations, isLoaded]);
+  }, [fetchFishingSpotLocations, isLoaded]);
 
   const onMapClick = useCallback((e: google.maps.MapMouseEvent) => {
     if (!e.latLng) return;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Button,
   Box,
@@ -32,6 +32,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import { HEADER_HEIGHT } from 'constants/index';
 import { FishingSpotLocation } from 'interfaces/api';
+import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
+import { CenteredLoader } from "components/common";
 
 interface FishingSpotCreateModalProps {
   newLocation: google.maps.LatLngLiteral;
@@ -76,6 +78,7 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
   setNewLocation,
   refreshLocations
 }) => {
+  const [streetViewImageUrl, setStreetViewImageUrl] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [fish, setFish] = React.useState<Fish[]>([]);
   const navigate = useNavigate();
@@ -122,6 +125,15 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
     }
   };
 
+  const fetchStreetViewImage = useCallback(async () => {
+    if (!newLocation) return;
+    const response = await streetViewClient.fetchStreetViewImage(
+      newLocation.lat,
+      newLocation.lng
+    );
+    setStreetViewImageUrl(response);
+  }, [newLocation]);
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoaded(false);
@@ -142,6 +154,7 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
 
     const loadData = async () => {
       await fetchData(); // fetchDataの完了を待つ
+      fetchStreetViewImage(); // fetchDataが完了したらfetchStreetViewImageを実行
       setIsLoaded(true); // 完了後にLoadingをtrueにする
     };
 
@@ -183,41 +196,72 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
       anchor="right"
       open={isDrawerOpen}
       variant="persistent"
+      sx={{
+        width: DRAWER_WIDTH,
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
+          width: DRAWER_WIDTH,
+          boxSizing: "border-box"
+        }
+      }}
     >
+      <Box sx={{ height: "400px" }}>
+        {isLoaded ? (
+          <>
+            <img
+              src={streetViewImageUrl ?? undefined}
+              alt='street view image'
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+            <IconButton
+              onClick={onClose}
+              sx={{
+                position: "absolute",
+                top: HEADER_HEIGHT + 5,
+                right: 8,
+                backgroundColor: "rgba(255, 255, 255, 0.8)",
+                "&:hover": {
+                  backgroundColor: "rgba(255, 255, 255, 1)",
+                },
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </>
+        ) : (
+          <CenteredLoader />
+        )}
+      </Box>
       <Box
         sx={{
-          marginTop: `${HEADER_HEIGHT}px`,
-          width: DRAWER_WIDTH,
           padding: 4,
           overflowY: "auto",
-          position: "relative",
           left:'unset'
         }}
       >
+        <IconButton
+          onClick={onClose}
+          sx={{
+            position: "absolute",
+            top: 8,
+            right: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
         <Box
           sx={{
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
             textAlign: "center",
-            mt: 1,
             mb: 1,
           }}
         >
-          <Typography variant='h4' gutterBottom sx={{ fontWeight: "bold" }}>
-            釣り場登録
+          <Typography variant='h5' gutterBottom sx={{ fontWeight: "bold" }}>
+            釣り場の登録
           </Typography>
-          <IconButton
-            onClick={onClose}
-            sx={{
-              position: "absolute",
-              top: 8,
-              right: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
         </Box>
 
         <FormProvider {...useFormMethods}>

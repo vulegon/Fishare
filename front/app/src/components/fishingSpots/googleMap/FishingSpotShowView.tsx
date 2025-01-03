@@ -37,9 +37,7 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
   selectedLocation,
   onClose,
 }) => {
-  const [streetViewImageUrl, setStreetViewImageUrl] = useState<string | null>(
-    null
-  );
+  const [streetViewImageUrl, setStreetViewImageUrl] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [fishingSpot, setFishingSpot] = useState<FishingSpot | null>(null);
 

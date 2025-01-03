@@ -144,7 +144,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
         </GoogleMap>
 
         {/* 釣り場を新規作成するドロワー */}
-        {isNew && isNewDrawerOpen && (
+        {isNew && isNewDrawerOpen && newLocation &&(
           <FishingSpotCreateDrawer
             newLocation={newLocation}
             onClose={() => {

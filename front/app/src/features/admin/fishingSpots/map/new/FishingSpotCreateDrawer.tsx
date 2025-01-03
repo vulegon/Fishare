@@ -41,7 +41,7 @@ import IconButton from '@mui/material/IconButton';
 import { HEADER_HEIGHT } from 'constants/index';
 
 interface FishingSpotCreateModalProps {
-  newLocation: google.maps.LatLngLiteral | null;
+  newLocation: google.maps.LatLngLiteral;
   onClose: () => void;
   isDrawerOpen: boolean;
 }

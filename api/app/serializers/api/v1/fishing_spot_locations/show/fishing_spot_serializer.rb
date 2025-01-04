@@ -33,7 +33,7 @@ module Api
           end
 
           def images
-            object.images.order(display_order: :asc).map do |image|
+            object.display_order_images.map do |image|
               FishingSpotImageSerializer.new(image).as_json
             end
           end

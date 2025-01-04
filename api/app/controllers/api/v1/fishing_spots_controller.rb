@@ -68,16 +68,22 @@ module Api
         render status: :ok, json: { message: '釣り場を更新しました' }
       end
 
+      # 釣り場位置から釣り場の詳細を取得する
       def show
-        fishing_spot = FishingSpot.find_by(id: params[:id])
+        fishing_spot = ::FishingSpot.find_by(id: params[:id])
 
         if fishing_spot.nil?
-          render_404_error(message: '釣り場が見つかりませんでした') and return
+          render_404_error(message: '釣り場が見つかりません') and return
         end
 
-        json = ::Api::V1::FishingSpots::Show::FishingSpotSerializer.new(fishing_spot).as_json
+        fishing_spot_location = fishing_spot.fishing_spot_location
 
-        render status: :ok, json: json
+        serialized_fishing_spot = ::Api::V1::FishingSpotLocations::Show::FishingSpotSerializer.new(
+          fishing_spot,
+          fishing_spot_location: fishing_spot_location
+        ).as_json
+
+        render status: :ok, json: { fishing_spot: serialized_fishing_spot }
       end
     end
   end

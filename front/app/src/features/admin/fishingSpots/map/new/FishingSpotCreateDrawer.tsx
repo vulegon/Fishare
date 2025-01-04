@@ -27,44 +27,18 @@ import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { notifySuccess } from "utils/toast/notifySuccess";
-import * as z from "zod";
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import { HEADER_HEIGHT } from 'constants/index';
 import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
 import { BeatLoader } from 'react-spinners';
 import { useGoogleMap } from 'features/fishingSpots/googleMap/context/GoogleMapContext';
+import { fishingSpotSchema } from "schemas/fishingSpotSchema";
 
 interface FishingSpotCreateModalProps {
   onClose: () => void;
   open: boolean;
 }
-
-const schema = z.object({
-  name: z
-    .string()
-    .min(2, "名前は2文字以上である必要があります")
-    .max(50, "名前は100文字以内で入力してください"),
-  images: z.array(z.instanceof(File)).max(9, "画像は最大9枚までです"),
-  location: z.object({
-    prefecture: z.object({
-      id: z.string().nonempty("都道府県を選択してください"),
-      name: z.string().nonempty("都道府県名を入力してください"),
-    }),
-    address: z.string().min(1, "住所を入力してください"),
-    latitude: z.number(),
-    longitude: z.number(),
-  }),
-  fish: z
-    .array(
-      z.object({
-        id: z.string(),
-        name: z.string(),
-      })
-    )
-    .min(1, "釣れる魚を選択してください"),
-  description: z.string().min(10, "説明は10文字以上入力してください"),
-});
 
 const DRAWER_WIDTH = 500;
 
@@ -91,7 +65,7 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
       images: [] as File[],
       fish: [] as Fish[],
     },
-    resolver: zodResolver(schema),
+    resolver: zodResolver(fishingSpotSchema),
     mode: "onChange",
   });
 
@@ -126,7 +100,6 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
       newLocation.lat,
       newLocation.lng
     );
-    console.log(response);
     setStreetViewImageUrl(response);
   }, [newLocation]);
 

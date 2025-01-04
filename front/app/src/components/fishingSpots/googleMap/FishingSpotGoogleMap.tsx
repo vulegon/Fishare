@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useSearchParams } from 'react-router-dom';
 import { FishingSpotLocation } from 'interfaces/api';
-import { DetailView } from './DetailView/DetailView';
+import { DetailDrawer } from './DetailDrawer/DetailDrawer';
 import { getFishingSpotLocations } from 'api/v1/fishingSpotLocations';
 import { FishingSpotCreateDrawer } from 'features/admin/fishingSpots/map/new/FishingSpotCreateDrawer';
 import { CenteredLoader } from 'components/common';
@@ -143,7 +143,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
         </GoogleMap>
 
         {/* 釣り場の詳細表示 */}
-        <DetailView
+        <DetailDrawer
           onClose={() => {
             setSearchParams({});
             setSelectedExistLocation(null);

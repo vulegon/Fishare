@@ -31,7 +31,6 @@ import * as z from "zod";
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import { HEADER_HEIGHT } from 'constants/index';
-import { FishingSpotLocation } from 'interfaces/api';
 import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
 import { BeatLoader } from 'react-spinners';
 import { useGoogleMap } from 'features/fishingSpots/googleMap/context/GoogleMapContext';

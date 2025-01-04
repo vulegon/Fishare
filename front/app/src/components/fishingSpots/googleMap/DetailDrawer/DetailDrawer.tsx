@@ -56,7 +56,7 @@ const FishingSpotBox = styled(Box)({
   marginLeft: "16px",
 });
 
-export const DetailView: React.FC<FishingSpotShowViewProps> = ({
+export const DetailDrawer: React.FC<FishingSpotShowViewProps> = ({
   onClose,
   open,
   isAdminPage = false,
@@ -67,7 +67,7 @@ export const DetailView: React.FC<FishingSpotShowViewProps> = ({
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const { user } = useUser();
   const [diaLogOpen, setDiaLogOpen] = React.useState(false);
-  const { selectedExistLocation, fetchFishingSpotLocations } = useGoogleMap();
+  const { selectedExistLocation, fetchFishingSpotLocations, setMode } = useGoogleMap();
 
   const fetchStreetViewImage = useCallback(async () => {
     if (!selectedExistLocation) return;
@@ -113,6 +113,11 @@ export const DetailView: React.FC<FishingSpotShowViewProps> = ({
     fetchFishingSpotLocations();
     setDiaLogOpen(false);
     onClose();
+  }
+
+  const handleEdit = () => {
+    if (!selectedExistLocation) return;
+    setMode('edit');
   }
 
   return (
@@ -171,7 +176,7 @@ export const DetailView: React.FC<FishingSpotShowViewProps> = ({
               />
               { user?.isAdmin && isAdminPage && (
                 <DetailIconButton
-                  onClick={onClose}
+                  onClick={handleEdit}
                   right={112}
                   children={<EditIcon />}
                 />

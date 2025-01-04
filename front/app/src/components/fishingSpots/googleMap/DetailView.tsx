@@ -46,7 +46,7 @@ const FishingSpotBox = styled(Box)({
   marginLeft: "16px",
 });
 
-export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
+export const DetailView: React.FC<FishingSpotShowViewProps> = ({
   selectedLocation,
   onClose,
   isAdminPage = false,

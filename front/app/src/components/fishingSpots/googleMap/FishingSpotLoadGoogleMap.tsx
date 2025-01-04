@@ -4,13 +4,11 @@ import React from "react";
 import { FishingSpotGoogleMap } from "./FishingSpotGoogleMap";
 
 interface FishingSpotSelectLoadMapProps {
-  isNew?: boolean;
   isAdminPage?: boolean;
 }
 
 // 釣り場を選択する画面で使用するGoogleMapを読み込むコンポーネント
 export const FishingSpotLoadGoogleMap: React.FC<FishingSpotSelectLoadMapProps> = ({
-  isNew = false,
   isAdminPage = false
 }) => {
   const apiKey = process.env.REACT_APP_GOOGLE_MAP_API_KEY || "";
@@ -24,13 +22,11 @@ export const FishingSpotLoadGoogleMap: React.FC<FishingSpotSelectLoadMapProps> =
           loadingElement={<CenteredLoader />}
         >
           <FishingSpotGoogleMap
-            isNew={isNew}
             isAdminPage={isAdminPage}
           />
         </LoadScript>
       ) : (
         <FishingSpotGoogleMap
-          isNew={isNew}
           isAdminPage={isAdminPage}
         />
       )}

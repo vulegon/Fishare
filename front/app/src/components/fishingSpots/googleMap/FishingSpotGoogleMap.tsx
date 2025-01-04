@@ -11,7 +11,6 @@ import { FishingSpotCreateDrawer } from 'features/admin/fishingSpots/map/new/Fis
 import { CenteredLoader } from 'components/common';
 
 interface FishingSpotGoogleMapProps {
-  isNew?: boolean;
   isAdminPage?: boolean;
 }
 
@@ -19,7 +18,6 @@ const DEFAULT_CENTER = { lat: 35.681236, lng: 139.767125 }; // 東京駅
 
 // 釣り場を選択する画面で使用するGoogleMapコンポーネント
 export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
-  isNew = false,
   isAdminPage = false
 }) => {
   const [newLocation, setNewLocation] = useState<google.maps.LatLngLiteral | null>(null);
@@ -94,7 +92,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
             mapTypeId: 'hybrid',
           }}
           onClick={(event: google.maps.MapMouseEvent) => {
-            if (isNew) {
+            if (isAdminPage) {
               onMapClick(event);
             }
           }}
@@ -122,7 +120,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
           ))}
 
           {/* 新規作成のボタン */}
-          {isNew && (
+          {isAdminPage && (
             <div style={{ position: 'absolute', bottom: '20px', right: '70px' }}>
               <Fab
                 disabled={!newLocation}
@@ -153,7 +151,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
         />
 
         {/* 釣り場を新規作成するドロワー */}
-        {isNew && isNewDrawerOpen && newLocation &&(
+        {isAdminPage && isNewDrawerOpen && newLocation &&(
           <FishingSpotCreateDrawer
             newLocation={newLocation}
             onClose={() => {

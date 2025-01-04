@@ -1,7 +1,7 @@
 module Api
   module V1
     class FishingSpotsController < ApplicationController
-      before_action :authenticate_user!, only: %i[create]
+      before_action :authenticate_user!, only: %i[create destroy update]
 
       # 釣り場を検索します。
       def index
@@ -52,18 +52,12 @@ module Api
           render_form_error(update_params) and return
         end
 
-        fishing_spot = FishingSpot.find_by(id: params[:id])
-
-        if fishing_spot.nil?
-          render_404_error(message: '釣り場が見つかりませんでした') and return
-        end
-
         update_spec = ::FishingSpots::CreateSpecification.new
-        unless update_spec.satisfied_by?(current_user, fishing_spot)
+        unless update_spec.satisfied_by?(current_user)
           render_403_error(message: update_spec.unsatisfied_reason) and return
         end
 
-        ::Api::V1::FishingSpots::UpdateService.update!(fishing_spot, update_params)
+        ::Api::V1::FishingSpots::UpdateService.update!(update_params)
 
         render status: :ok, json: { message: '釣り場を更新しました' }
       end
@@ -94,7 +88,7 @@ module Api
         end
 
         delete_spec = ::FishingSpots::CreateSpecification.new
-        unless delete_spec.satisfied_by?(current_user, fishing_spot)
+        unless delete_spec.satisfied_by?(current_user)
           render_403_error(message: delete_spec.unsatisfied_reason) and return
         end
 

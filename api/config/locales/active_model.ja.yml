@@ -28,3 +28,10 @@ ja:
         name: 釣り場名称
         prefecture_id: 都道府県
         fishes: 魚種
+      api/v1/fishing_spots/update_parameter:
+        id: 釣り場ID
+        name: 釣り場名称
+        description: 釣り場説明
+        location: 釣り場住所
+        fishes: 魚種
+        images: 画像

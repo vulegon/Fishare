@@ -148,6 +148,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
             setSelectedLocation(null);
           }}
           isAdminPage={isAdminPage}
+          refreshLocations={fetchFishingSpotLocations}
         />
 
         {/* 釣り場を新規作成するドロワー */}

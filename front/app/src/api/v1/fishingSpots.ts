@@ -87,3 +87,16 @@ export async function createFishingSpot(data: CreateFishingSpot): Promise<{ fish
     throw error;
   }
 }
+
+/*
+  釣り場を削除します
+  DELETE api/v1/fishing_spots/:id
+*/
+export async function deleteFishingSpot(id: string): Promise<void> {
+  try {
+    const response = await apiClient.delete(`fishing_spots/${id}`);
+  } catch (error) {
+    notifyError(error);
+    throw error;
+  }
+}

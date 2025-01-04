@@ -6,7 +6,6 @@ import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useSearchParams } from 'react-router-dom';
 import { FishingSpotLocation } from 'interfaces/api';
 import { DetailDrawer } from './DetailDrawer/DetailDrawer';
-import { getFishingSpotLocations } from 'api/v1/fishingSpotLocations';
 import { FishingSpotCreateDrawer } from 'features/admin/fishingSpots/map/new/FishingSpotCreateDrawer';
 import { CenteredLoader } from 'components/common';
 import { useGoogleMap } from 'features/fishingSpots/googleMap/context/GoogleMapContext';
@@ -28,7 +27,6 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
     selectedExistLocation,
     setSelectedExistLocation,
     fetchFishingSpotLocations,
-    mode,
     setMode,
     isMode
   } = useGoogleMap();

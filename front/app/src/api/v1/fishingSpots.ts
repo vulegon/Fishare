@@ -96,36 +96,30 @@ export async function createFishingSpot(data: CreateFishingSpot): Promise<{ fish
 export async function updateFishingSpot(data: UpdateFishingSpot): Promise<{ fishing_spot_location: FishingSpotLocation }> {
   try {
     // 画像のうち、File オブジェクトのものだけを抽出
-    const uploadFiles = data.images
-      .map((image, index) => (image instanceof File ? { file: image, index } : null))
-      .filter((item): item is { file: File; index: number } => item !== null);
-    const preSignedUrlItems = await generatePreSignedUrls(uploadFiles.map((item) => item.file));
+    const preSignedUrlItems = await generatePreSignedUrls(data.newImages);
 
     const uploadFileS3Params = preSignedUrlItems.map((item, idx) => ({
-      file: uploadFiles[idx].file,
+      file: data.newImages[idx],
       preSignedUrl: item.url,
     }));
 
     await s3Client.uploadAllFileS3(uploadFileS3Params);
 
-    const updateFishingSpotImages = data.images.map((item, index) => {
-      if (item instanceof File) {
-        // アップロード後のs3_keyを取得
-        const fileIndex = uploadFiles.find((uploadItem) => uploadItem.index === index);
-        const s3Key = fileIndex ? preSignedUrlItems[fileIndex.index].s3_key : "";
+    const updateFishingSpotImages = data.imageOrders.map((order) => {
+      if (order.isNew) {
+        // 新規画像
+        const newImage = preSignedUrlItems[order.index];
         return {
-          s3_key: s3Key,
-          file_name: item.name,
-          content_type: item.type,
-          file_size: item.size,
-          display_order: index,
+          s3_key: newImage.s3_key,
+          file_name: data.newImages[order.index].name,
+          content_type: data.newImages[order.index].type,
+          file_size: data.newImages[order.index].size,
         };
       } else {
-        // 既存画像はそのまま返す
-        return item;
+        // 既存画像
+        return data.existImages[order.index];
       }
     });
-
     const postData = {
       name: data.name,
       description: data.description,

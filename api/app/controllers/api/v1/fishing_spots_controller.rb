@@ -85,6 +85,23 @@ module Api
 
         render status: :ok, json: { fishing_spot: serialized_fishing_spot }
       end
+
+      def destroy
+        fishing_spot = FishingSpot.find_by(id: params[:id])
+
+        if fishing_spot.nil?
+          render_404_error(message: '釣り場が見つかりませんでした') and return
+        end
+
+        delete_spec = ::FishingSpots::CreateSpecification.new
+        unless delete_spec.satisfied_by?(current_user, fishing_spot)
+          render_403_error(message: delete_spec.unsatisfied_reason) and return
+        end
+
+        ::Api::V1::FishingSpots::DestroyService.destroy!(fishing_spot)
+
+        render status: :ok, json: { message: '釣り場を削除しました' }
+      end
     end
   end
 end

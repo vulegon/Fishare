@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useSearchParams } from 'react-router-dom';
 import { FishingSpotLocation } from 'interfaces/api';
-import { DetailView } from './DetailView';
+import { DetailView } from './DetailView/DetailView';
 import { getFishingSpotLocations } from 'api/v1/fishingSpotLocations';
 import { FishingSpotCreateDrawer } from 'features/admin/fishingSpots/map/new/FishingSpotCreateDrawer';
 import { CenteredLoader } from 'components/common';

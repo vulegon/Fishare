@@ -33,6 +33,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import EditIcon from '@mui/icons-material/Edit';
 import { useUser } from "contexts/UserContext";
+import { DetailIconButton } from "./DetailIconButton";
 
 interface FishingSpotShowViewProps {
   selectedLocation: FishingSpotLocation | null;
@@ -125,59 +126,34 @@ export const DetailView: React.FC<FishingSpotShowViewProps> = ({
                 alt='street view image'
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
-              <IconButton
+              <DetailIconButton
                 onClick={onClose}
-                sx={{
-                  position: "absolute",
-                  top: HEADER_HEIGHT + 5,
-                  right: 8,
-                  backgroundColor: "rgba(255, 255, 255, 0.8)",
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 255, 255, 1)",
-                  },
-                }}
-              >
-                <CloseIcon />
-              </IconButton>
-              <IconButton
+                right={8}
+                children={<CloseIcon />}
+              />
+              <DetailIconButton
                 onClick={() => {
                   const currentUrl = window.location.href; // 現在のURLを取得
                   navigator.clipboard.writeText(currentUrl)
                 }}
-                sx={{
-                  position: "absolute",
-                  top: HEADER_HEIGHT + 5,
-                  right: 60,
-                  backgroundColor: "rgba(255, 255, 255, 0.8)",
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 255, 255, 1)",
-                  },
-                }}
-              >
-                <Tooltip
-                  title="URLをコピーしました！"
-                  open={tooltipOpen}
-                  placement="top"
-                  arrow
-                >
-                  <FileCopyIcon onClick={handleCopyUrl}/>
-                </Tooltip>
-              </IconButton>
+                right={60}
+                children={
+                  <Tooltip
+                    title="URLをコピーしました！"
+                    open={tooltipOpen}
+                    placement="top"
+                    arrow
+                  >
+                    <FileCopyIcon onClick={handleCopyUrl}/>
+                  </Tooltip>
+                }
+              />
               { user?.isAdmin && isAdminPage && (
-                <IconButton
+                <DetailIconButton
                   onClick={onClose}
-                  sx={{
-                    position: "absolute",
-                    top: HEADER_HEIGHT + 5,
-                    right: 112,
-                    backgroundColor: "rgba(255, 255, 255, 0.8)",
-                    "&:hover": {
-                      backgroundColor: "rgba(255, 255, 255, 1)",
-                    },
-                  }}
-                >
-                  <EditIcon />
-                </IconButton>
+                  right={112}
+                  children={<EditIcon />}
+                />
               )}
             </>
           ) : (

@@ -132,7 +132,7 @@ export const JapanMap: React.FC = () => {
           (prefecture) => prefecture.name === prefectureName
         );
         if (!target_prefecture) return;
-        navigate(`/prefectures/${target_prefecture.id}/fishing_spots`);
+        navigate(`/fishing_spots/search?prefecture_id=${target_prefecture.id}`);
       })
 
       /**

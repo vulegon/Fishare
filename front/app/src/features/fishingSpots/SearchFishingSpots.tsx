@@ -122,6 +122,17 @@ export const SearchFishingSpots: React.FC = () => {
   useEffect(() => {
     fetchPrefectures();
     fetchFish();
+
+    const initialData: SearchFishingSpot = {
+      name: searchParams.get("name") || "",
+      prefecture_id: searchParams.get("prefecture_id") || "",
+      offset: 0,
+      limit: itemsPerPage,
+    };
+
+    if (initialData.prefecture_id || initialData.name) {
+      onSubmit(initialData); // クエリパラメータがある場合は検索を実行
+    }
   }, []);
 
   useEffect(() => {

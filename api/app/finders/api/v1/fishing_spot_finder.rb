@@ -26,7 +26,7 @@ module Api
       end
 
       def join_to_fishing_spots(fishing_spots, search_parameter)
-        fishing_spots = fishing_spots.joins(:locations) if search_parameter.prefecture.present?
+        fishing_spots = fishing_spots.joins(:location) if search_parameter.prefecture.present?
         fishing_spots = fishing_spots.joins(:fishing_spot_fishes) if search_parameter.fishing_spot_fishes.present?
         fishing_spots
       end

@@ -26,6 +26,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import IconButton from '@mui/material/IconButton';
 import { HEADER_HEIGHT } from 'constants/index';
+import { Label } from "features/admin/fishingSpots/map/new/";
+import InfoIcon from "@mui/icons-material/Info";
+import { faFish } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+
 
 interface FishingSpotShowViewProps {
   selectedLocation: FishingSpotLocation | null;
@@ -169,16 +175,22 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
         </FishingSpotBox>
         <Divider />
         <FishingSpotBox>
-          <Typography variant='subtitle1' sx={{ fontWeight: 600 }} gutterBottom>
-            説明
-          </Typography>
-          <Typography variant='subtitle1'>{fishingSpot?.description}</Typography>
+          <Box>
+            <Label label={"説明"} icon={<InfoIcon />} />
+            <Typography variant='subtitle1'>{fishingSpot?.description}</Typography>
+          </Box>
         </FishingSpotBox>
         <Divider />
         <FishingSpotBox>
-          <Typography variant='subtitle1' sx={{ fontWeight: 600 }} gutterBottom>
-            釣れる魚
-          </Typography>
+          <Label
+            label={"釣れる魚"}
+            icon={
+              <FontAwesomeIcon
+                icon={faFish}
+                style={{ fontSize: "23px" }}
+              />
+            }
+          />
           <Stack direction='row' spacing={1}>
             {fishingSpot?.fishes.map((fish) => (
               <Chip key={fish.id} label={fish.name} color='primary' />
@@ -187,9 +199,7 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
         </FishingSpotBox>
         <Divider />
         <FishingSpotBox>
-          <Typography variant='subtitle1' sx={{ fontWeight: 600 }} gutterBottom>
-            写真
-          </Typography>
+          <Label label={'写真'} icon={<AddAPhotoIcon />} />
           <PhotoProvider
             toolbarRender={({ rotate, onRotate, onScale, scale }) => {
               return (

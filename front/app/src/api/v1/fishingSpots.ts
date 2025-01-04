@@ -6,6 +6,7 @@ import { CreateFishingSpot } from 'interfaces/api/admin/fishingSpots/CreateFishi
 import { SearchFishingSpot } from 'interfaces/api/fishingSpots/SearchFishingSpot';
 import { SearchFishingSpotResponse } from 'interfaces/api/fishingSpots/SearchFishingSpotResponse';
 import { notifyError } from 'utils/toast/notifyError';
+import { UpdateFishingSpot } from 'interfaces/api/admin/fishingSpots/UpdateFishingSpot';
 
 /*
   釣り場を検索します。
@@ -87,6 +88,68 @@ export async function createFishingSpot(data: CreateFishingSpot): Promise<{ fish
     throw error;
   }
 }
+
+/*
+  釣り場を更新します。
+  PUT api/v1/fishing_spots
+*/
+export async function updateFishingSpot(data: UpdateFishingSpot): Promise<{ fishing_spot_location: FishingSpotLocation }> {
+  try {
+    // 画像のうち、File オブジェクトのものだけを抽出
+    const uploadFiles = data.images
+      .map((image, index) => (image instanceof File ? { file: image, index } : null))
+      .filter((item): item is { file: File; index: number } => item !== null);
+    const preSignedUrlItems = await generatePreSignedUrls(uploadFiles.map((item) => item.file));
+
+    const uploadFileS3Params = preSignedUrlItems.map((item, idx) => ({
+      file: uploadFiles[idx].file,
+      preSignedUrl: item.url,
+    }));
+
+    await s3Client.uploadAllFileS3(uploadFileS3Params);
+
+    const updateFishingSpotImages = data.images.map((item, index) => {
+      if (item instanceof File) {
+        // アップロード後のs3_keyを取得
+        const fileIndex = uploadFiles.find((uploadItem) => uploadItem.index === index);
+        const s3Key = fileIndex ? preSignedUrlItems[fileIndex.index].s3_key : "";
+        return {
+          s3_key: s3Key,
+          file_name: item.name,
+          content_type: item.type,
+          file_size: item.size,
+          display_order: index,
+        };
+      } else {
+        // 既存画像はそのまま返す
+        return item;
+      }
+    });
+
+    const postData = {
+      name: data.name,
+      description: data.description,
+      location: {
+        prefecture: {
+          id: data.location.prefecture.id,
+          name: data.location.prefecture.name,
+        },
+        address: data.location.address,
+        latitude: data.location.latitude,
+        longitude: data.location.longitude,
+      },
+      images: updateFishingSpotImages,
+      fishes: data.fish
+    };
+    const response = await apiClient.put('fishing_spots', postData);
+
+    return { fishing_spot_location: response.data.fishing_spot };
+  } catch (error) {
+    notifyError(error);
+    throw error;
+  }
+}
+
 
 /*
   釣り場を削除します

@@ -20,21 +20,19 @@ export const DetailIconButton: React.FC<DetailIconButtonProps> = ({
   children,
 }) => {
   return (
-    <>
-      <IconButton
-        onClick={onClick}
-        sx={{
-          position: "absolute",
-          top: top,
-          right: right,
-          backgroundColor: backgroundColor,
-          "&:hover": {
-            backgroundColor: hoverBackgroundColor,
-          },
-        }}
-      >
-        {children}
-      </IconButton>
-    </>
+    <IconButton
+      onClick={onClick}
+      sx={{
+        position: "absolute",
+        top: top,
+        right: right,
+        backgroundColor: backgroundColor,
+        "&:hover": {
+          backgroundColor: hoverBackgroundColor,
+        },
+      }}
+    >
+      {children}
+    </IconButton>
   );
 };

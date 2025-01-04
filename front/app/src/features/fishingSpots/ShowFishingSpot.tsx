@@ -17,6 +17,7 @@ import {
   Chip
 } from "@mui/material";
 
+// このコンポーネントは使っていません。
 export const ShowFishingSpot: React.FC = () => {
   const fishingSpot = {
     name: "高須海浜公園",

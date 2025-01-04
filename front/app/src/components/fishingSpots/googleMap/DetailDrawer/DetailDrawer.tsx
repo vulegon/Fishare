@@ -36,14 +36,9 @@ import { DetailIconButton } from "./DetailIconButton";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteFishingSpot } from "api/v1/fishingSpots";
 import { notifySuccess } from "utils/toast/notifySuccess";
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { Button } from "@mui/material";
 import { useGoogleMap } from "features/fishingSpots/googleMap/context/GoogleMapContext";
 import { EditDrawer } from "features/admin/fishingSpots/EditDrawer";
+import { ConfirmDialog } from "components/common/ConfirmDialog";
 
 interface FishingSpotShowViewProps {
   onClose: () => void;
@@ -293,25 +288,13 @@ export const DetailDrawer: React.FC<FishingSpotShowViewProps> = ({
           </FishingSpotBox>
         </Stack>
 
-        <Dialog
+        <ConfirmDialog
           open={diaLogOpen}
           onClose={() => setDiaLogOpen(false)}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="fishing-spot-delete-dialog-title">
-            確認画面
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="fishing-spot-delete-dialog-description">
-              削除すると元に戻すことはできません。本当に削除しますか？
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={()=> setDiaLogOpen(false) } autoFocus>キャンセル</Button>
-            <Button onClick={handleDelete} color="error" variant="contained">削除</Button>
-          </DialogActions>
-        </Dialog>
+          content="本当に削除しますか？削除しますと元に戻すことはできません。"
+          handleExecute={handleDelete}
+          executeButtonTitle="削除"
+        />
       </Drawer>
       {/* { isAdminPage && isMode('edit') && !!fishingSpot && (
         <EditDrawer

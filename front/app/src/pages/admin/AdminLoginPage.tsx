@@ -115,6 +115,13 @@ export const AdminLoginPage: React.FC = () => {
           >
             ここは管理者ログインページです。<br/>一般の方はログインできません。
           </Typography>
+          <Typography
+            component="p"
+            variant="body1"
+            sx={{ width: '100%', fontSize: 'clamp(1rem, 1vw, 1rem)', color: 'grey' }}
+          >
+            試験用として管理者アカウントを開放しています。詳細はGitHubのREADMEをご覧ください。
+          </Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Box
               sx={{

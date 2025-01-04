@@ -34,6 +34,7 @@ import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
 import { BeatLoader } from 'react-spinners';
 import { useGoogleMap } from 'features/fishingSpots/googleMap/context/GoogleMapContext';
 import { fishingSpotSchema } from "schemas/fishingSpotSchema";
+import { ConfirmDialog } from "components/common/ConfirmDialog";
 
 interface FishingSpotCreateModalProps {
   onClose: () => void;
@@ -51,6 +52,7 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
   const [fish, setFish] = React.useState<Fish[]>([]);
   const navigate = useNavigate();
   const { newLocation, setNewLocation, fetchFishingSpotLocations } = useGoogleMap();
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState<boolean>(false);
 
   const useFormMethods = useForm({
     defaultValues: {
@@ -84,6 +86,7 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
       useFormMethods.reset();
       setNewLocation(null);
       await fetchFishingSpotLocations();
+      setIsConfirmDialogOpen(false);
       onClose();
     } catch (error) {
       console.error(error);
@@ -311,12 +314,13 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
                     キャンセル
                   </Button>
                   <Button
-                    type='submit'
                     variant='contained'
                     color='primary'
                     size='large'
                     fullWidth
-                    onClick={handleSubmit(onSubmit)}
+                    onClick={() => {
+                      setIsConfirmDialogOpen(true);
+                    }}
                     disabled={!isValid || isSubmitting || !isLoaded}
                   >
                     登録
@@ -324,6 +328,15 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
                 </Stack>
               </Box>
             </Stack>
+            <ConfirmDialog
+              open={isConfirmDialogOpen}
+              onClose={() => {
+                setIsConfirmDialogOpen(false);
+              }}
+              handleExecute={handleSubmit(onSubmit)}
+              content={"この内容で登録します。よろしいですか？"}
+              executeButtonTitle={"登録"}
+            />
           </form>
         </FormProvider>
       </Box>

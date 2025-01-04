@@ -66,9 +66,9 @@ export const FileUploader: React.FC<FileUploaderProps> = (
               {field.value.map((image: File, index: number) => (
                 <Grid
                   item
-                  xs={2}
-                  sm={2}
-                  md={2}
+                  xs={4}
+                  sm={4}
+                  md={4}
                   key={index}
                   sx={{
                     display: "flex",

@@ -54,8 +54,8 @@ export const SearchFishingSpots: React.FC = () => {
   const fetchStreetViewImages = async () => {
     const urls = await Promise.all(
       searchResult?.fishingSpots.map(async (spot) => {
-        const lat = spot.location[0].latitude;
-        const lng = spot.location[0].longitude;
+        const lat = spot.location.latitude;
+        const lng = spot.location.longitude;
         return streetViewClient.fetchStreetViewImage(lat, lng, "300x200");
       }) || []
     );
@@ -115,7 +115,8 @@ export const SearchFishingSpots: React.FC = () => {
   };
 
   const onCardClick = (id: string) => {
-    navigate(`/fishing_spots/${id}`);
+    const url = `/fishing_spots?fishing_spot_location_id=${id}`
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   useEffect(() => {
@@ -125,8 +126,8 @@ export const SearchFishingSpots: React.FC = () => {
 
   useEffect(() => {
     if (isFirstLoad) {
-      setIsFirstLoad(false); // 初回フラグをfalseに設定
-      return; // 初回はfetchをスキップ
+      setIsFirstLoad(false);
+      return;
     }
 
     onSubmit({
@@ -137,7 +138,7 @@ export const SearchFishingSpots: React.FC = () => {
   }, [currentPage, itemsPerPage]);
 
   useEffect(() => {
-    if (!searchResult) return; // searchResultがnullまたはundefinedの場合は終了
+    if (!searchResult) return;
     if (searchResult.fishingSpots.length === 0) return;
     fetchStreetViewImages();
   }, [searchResult]);
@@ -281,7 +282,7 @@ export const SearchFishingSpots: React.FC = () => {
               <Card
                 id={spot.id}
                 elevation={2}
-                onClick={() => onCardClick(spot.id)}
+                onClick={() => onCardClick(spot.location.id)}
                 sx={{
                   display: "flex",
                   flexDirection: "row",
@@ -317,7 +318,7 @@ export const SearchFishingSpots: React.FC = () => {
                     color='primary'
                     sx={{ fontWeight: "bold", mb: 1 }}
                   >
-                    {spot.location[0].prefecture.name}
+                    {spot.location.prefecture.name}
                   </Typography>
                   <Box
                     sx={{ display: "flex", flexWrap: "wrap", gap: 1, mb: 2 }}

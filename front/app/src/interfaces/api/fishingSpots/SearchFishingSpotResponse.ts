@@ -12,7 +12,7 @@ interface FishingSpot {
     latitude: number;
     longitude: number;
     prefecture: Prefecture;
-  }[];
+  };
   fishes: Fish[];
   images: S3Image[];
 }

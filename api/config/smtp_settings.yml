@@ -1,0 +1,4 @@
+production:
+  gmail:
+    user_name: <%= Aws::SSM::Client.new.get_parameter(name: "/#{Rails.application.config.x.service_name}/#{Rails.env}/smtp/gmail/USER_NAME", with_decryption: true).parameter.value rescue nil %>
+    password: <%= Aws::SSM::Client.new.get_parameter(name: "/#{Rails.application.config.x.service_name}/#{Rails.env}/smtp/gmail/PASSWORD", with_decryption: true).parameter.value rescue nil %>

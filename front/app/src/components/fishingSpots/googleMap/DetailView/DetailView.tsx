@@ -25,7 +25,6 @@ import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 import CloseIcon from '@mui/icons-material/Close';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import IconButton from '@mui/material/IconButton';
-import { HEADER_HEIGHT } from 'constants/index';
 import { Label } from "features/admin/fishingSpots/map/new/";
 import InfoIcon from "@mui/icons-material/Info";
 import { faFish } from "@fortawesome/free-solid-svg-icons";
@@ -34,6 +33,7 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import EditIcon from '@mui/icons-material/Edit';
 import { useUser } from "contexts/UserContext";
 import { DetailIconButton } from "./DetailIconButton";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface FishingSpotShowViewProps {
   selectedLocation: FishingSpotLocation | null;
@@ -154,6 +154,29 @@ export const DetailView: React.FC<FishingSpotShowViewProps> = ({
                   right={112}
                   children={<EditIcon />}
                 />
+              )}
+
+              { user?.isAdmin && isAdminPage && (
+                <IconButton
+                  onClick={onClose}
+                  sx={{
+                    position: "absolute",
+                    bottom: 20,
+                    right: 20,
+                    backgroundColor: "rgba(255, 0, 0, 0.8)", // 初期は赤色に
+                    color: "white", // アイコンの色
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 0, 0, 1)", // ホバー時に明るい赤
+                    },
+                    "&:active": {
+                      backgroundColor: "rgba(200, 0, 0, 1)", // 押したときは濃い赤
+                    },
+                    transition: "background-color 0.3s ease", // 色のスムーズな変化
+                    boxShadow: "0px 4px 10px rgba(255, 0, 0, 0.5)", // ボタンに立体感
+                  }}
+                >
+                  <DeleteIcon />
+                </IconButton>
               )}
             </>
           ) : (

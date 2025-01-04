@@ -11,6 +11,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { Controller, useFormContext } from "react-hook-form";
 import { Label } from 'features/admin/fishingSpots/map/new'
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 interface FileUploaderProps {
   name: string;
@@ -18,6 +19,7 @@ interface FileUploaderProps {
   icon?: JSX.Element;
   handleOnAddFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleOnDeleteFile: (index: number) => void;
+  handleOnDragEnd: (result: any) => void; // ここを追加
 }
 
 export const FileUploader: React.FC<FileUploaderProps> = (
@@ -26,7 +28,8 @@ export const FileUploader: React.FC<FileUploaderProps> = (
     label = "画像",
     icon = <AddAPhotoIcon />,
     handleOnAddFile,
-    handleOnDeleteFile
+    handleOnDeleteFile,
+    handleOnDragEnd
   }
 ) => {
   const {
@@ -38,16 +41,16 @@ export const FileUploader: React.FC<FileUploaderProps> = (
     <Stack spacing={1}>
       <Box>
         <Label label={label} icon={icon} />
-        <label htmlFor='file-upload'>
+        <label htmlFor="file-upload">
           <input
-            id='file-upload'
-            type='file'
+            id="file-upload"
+            type="file"
             style={{ display: "none" }}
-            accept='image/*,.png,.jpg,.jpeg,.gif'
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => { handleOnAddFile(e) }}
+            accept="image/*,.png,.jpg,.jpeg,.gif"
+            onChange={handleOnAddFile}
             multiple
           />
-          <Button variant='contained' component='span'>
+          <Button variant="contained" component="span">
             ファイルを選択
           </Button>
         </label>
@@ -57,52 +60,69 @@ export const FileUploader: React.FC<FileUploaderProps> = (
         control={control}
         render={({ field }) => (
           <>
-            <Grid
-              container
-              spacing={{ xs: 2, md: 3 }}
-              columns={{ xs: 8, sm: 12, md: 12 }}
-              sx={{ margin: 3 }}
-            >
-              {field.value.map((image: File, index: number) => (
-                <Grid
-                  item
-                  xs={4}
-                  sm={4}
-                  md={4}
-                  key={index}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "start",
-                    alignItems: "center",
-                    position: "relative",
-                    margin: 0,
-                  }}
-                >
-                  <IconButton
-                    area-label='画像削除'
-                    style={{
-                      position: "absolute",
-                      top: 10,
-                      right: 0,
-                      color: "#aaa",
-                    }}
-                    onClick={() => { handleOnDeleteFile(index) }}
+            <DragDropContext onDragEnd={handleOnDragEnd}>
+              <Droppable droppableId="drop-images" direction="horizontal">
+                {(provided) => (
+                  <Grid
+                    container
+                    spacing={2}
+                    {...provided.droppableProps}
+                    ref={provided.innerRef}
+                    sx={{ margin: 3 }}
                   >
-                    <CancelIcon />
-                  </IconButton>
-                  <img
-                    src={URL.createObjectURL(image)}
-                    alt='アップロード済み画像'
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                      aspectRatio: "1/1",
-                    }}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+                    {field.value.map((image: File, index: number) => (
+                      <Draggable
+                        key={index}
+                        draggableId={`image-${index}`}
+                        index={index}
+                      >
+                        {(provided) => (
+                          <Grid
+                            item
+                            xs={4}
+                            sm={4}
+                            md={4}
+                            sx={{
+                              display: "flex",
+                              justifyContent: "start",
+                              alignItems: "center",
+                              position: "relative",
+                            }}
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <IconButton
+                              area-label="画像削除"
+                              style={{
+                                position: "absolute",
+                                top: 10,
+                                right: 0,
+                                color: "#aaa",
+                              }}
+                              onClick={() => handleOnDeleteFile(index)}
+                            >
+                              <CancelIcon />
+                            </IconButton>
+                            <img
+                              src={URL.createObjectURL(image)}
+                              alt="アップロード済み画像"
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "contain",
+                                aspectRatio: "1/1",
+                              }}
+                            />
+                          </Grid>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </Grid>
+                )}
+              </Droppable>
+            </DragDropContext>
             {errors.images && (
               <Typography color="error" variant="body2" sx={{ mt: 1 }}>
                 {errors.images.message?.toString()}

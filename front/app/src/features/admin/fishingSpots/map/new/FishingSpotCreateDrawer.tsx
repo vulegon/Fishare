@@ -192,6 +192,16 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
     setValue("images", updatedImages);
   };
 
+  const handleOnDragEnd = (result: any) => {
+    if (!result.destination) return; // ドロップ先がない場合は終了
+
+    const reorderedFiles = Array.from(images); // 現在のファイルリストをコピー
+    const [movedFile] = reorderedFiles.splice(result.source.index, 1); // 元の位置から削除
+    reorderedFiles.splice(result.destination.index, 0, movedFile); // 新しい位置に挿入
+
+    setValue("images", reorderedFiles);
+  };
+
   return (
     <Drawer
       anchor="right"
@@ -294,6 +304,7 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
                     label='写真を追加'
                     handleOnAddFile={handleOnAddFile}
                     handleOnDeleteFile={handleOnDeleteFile}
+                    handleOnDragEnd={handleOnDragEnd}
                   />
                 </Box>
 

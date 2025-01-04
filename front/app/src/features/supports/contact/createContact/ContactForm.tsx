@@ -19,6 +19,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { FileUploaderField, FormButton, InputFieldGroup, SectionTitle, SelectBoxGroup } from './components';
 import { ContactData } from './interfaces/ContactData';
 import { createContact } from 'api/v1/supports/contacts';
+import { DropResult } from 'react-beautiful-dnd';
 
 const schema = z.object({
   name: z.string().min(2, '名前は2文字以上である必要があります').max(50, '名前は50文字以内で入力してください'),
@@ -105,6 +106,16 @@ export const ContactForm: React.FC = () => {
     setValue('images', updatedImages);
   };
 
+  const handleOnDragEnd = (result: DropResult) => {
+    if (!result.destination) return;
+
+    const reorderedImages = Array.from(images);
+    const [removed] = reorderedImages.splice(result.source.index, 1);
+    reorderedImages.splice(result.destination.index, 0, removed);
+
+    setValue('images', reorderedImages);
+  };
+
   // zodのバリデーションを効かせるためにhandleSubmitをラップ
   const handleNext = handleSubmit(() => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -156,6 +167,7 @@ export const ContactForm: React.FC = () => {
                       handleOnAddFile={handleOnAddFile}
                       handleOnDeleteFile={handleOnDeleteFile}
                       activeStep={activeStep}
+                      handleOnDragEnd={handleOnDragEnd}
                     />
                     <SectionTitle text={`お客様情報を${activeStep === 0 ? '入力' : '確認'}してください`} />
                     <InputFieldGroup

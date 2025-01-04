@@ -35,6 +35,7 @@ import { BeatLoader } from 'react-spinners';
 import { useGoogleMap } from 'features/fishingSpots/googleMap/context/GoogleMapContext';
 import { fishingSpotSchema } from "schemas/fishingSpotSchema";
 import { ConfirmDialog } from "components/common/ConfirmDialog";
+import { DropResult } from "react-beautiful-dnd";
 
 interface FishingSpotCreateModalProps {
   onClose: () => void;
@@ -164,7 +165,7 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
     setValue("images", updatedImages);
   };
 
-  const handleOnDragEnd = (result: any) => {
+  const handleOnDragEnd = (result: DropResult) => {
     if (!result.destination) return; // ドロップ先がない場合は終了
 
     const reorderedFiles = Array.from(images); // 現在のファイルリストをコピー

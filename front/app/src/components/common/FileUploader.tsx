@@ -11,7 +11,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { Controller, useFormContext } from "react-hook-form";
 import { Label } from 'features/admin/fishingSpots/map/new'
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 
 interface FileUploaderProps {
   name: string;
@@ -19,7 +19,7 @@ interface FileUploaderProps {
   icon?: JSX.Element;
   handleOnAddFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleOnDeleteFile: (index: number) => void;
-  handleOnDragEnd: (result: any) => void; // ここを追加
+  handleOnDragEnd: (result: DropResult) => void; // ここを追加
 }
 
 export const FileUploader: React.FC<FileUploaderProps> = (

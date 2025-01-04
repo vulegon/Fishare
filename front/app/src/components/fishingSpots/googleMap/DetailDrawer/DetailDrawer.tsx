@@ -44,7 +44,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { Button } from "@mui/material";
 import { useGoogleMap } from "features/fishingSpots/googleMap/context/GoogleMapContext";
 import { EditDrawer } from "features/admin/fishingSpots/EditDrawer";
-import { on } from "events";
 
 interface FishingSpotShowViewProps {
   onClose: () => void;
@@ -131,6 +130,7 @@ export const DetailDrawer: React.FC<FishingSpotShowViewProps> = ({
           "& .MuiDrawer-paper": {
             width: DRAWER_WIDTH,
             boxSizing: "border-box",
+            height: "100vh",
           },
         }}
         ModalProps={{
@@ -179,7 +179,9 @@ export const DetailDrawer: React.FC<FishingSpotShowViewProps> = ({
                 />
                 { user?.isAdmin && isAdminPage && (
                   <DetailIconButton
-                    onClick={onClose}
+                    onClick={()=>{
+                      alert("実装途中です");
+                    }}
                     right={112}
                     children={<EditIcon />}
                   />
@@ -189,19 +191,19 @@ export const DetailDrawer: React.FC<FishingSpotShowViewProps> = ({
                   <IconButton
                     onClick={() => setDiaLogOpen(true)}
                     sx={{
-                      position: "absolute",
+                      position: "fixed",
                       bottom: 20,
                       right: 20,
-                      backgroundColor: "rgba(255, 0, 0, 0.8)", // 初期は赤色に
-                      color: "white", // アイコンの色
+                      backgroundColor: "rgba(255, 0, 0, 0.8)",
+                      color: "white",
                       "&:hover": {
-                        backgroundColor: "rgba(255, 0, 0, 1)", // ホバー時に明るい赤
+                        backgroundColor: "rgba(255, 0, 0, 1)",
                       },
                       "&:active": {
-                        backgroundColor: "rgba(200, 0, 0, 1)", // 押したときは濃い赤
+                        backgroundColor: "rgba(200, 0, 0, 1)",
                       },
-                      transition: "background-color 0.3s ease", // 色のスムーズな変化
-                      boxShadow: "0px 4px 10px rgba(255, 0, 0, 0.5)", // ボタンに立体感
+                      transition: "background-color 0.3s ease",
+                      boxShadow: "0px 4px 10px rgba(255, 0, 0, 0.5)",
                     }}
                   >
                     <DeleteIcon />

@@ -8,6 +8,7 @@ export const FishingSpotMapSelectPage: React.FC = () => {
       <MainLayout mainContainerPadding={0}>
         <FishingSpotLoadGoogleMap
           isNew={true}
+          isAdminPage={true}
         />
       </MainLayout>
     </>

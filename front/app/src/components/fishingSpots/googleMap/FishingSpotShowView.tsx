@@ -31,11 +31,13 @@ import InfoIcon from "@mui/icons-material/Info";
 import { faFish } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-
+import EditIcon from '@mui/icons-material/Edit';
+import { useUser } from "contexts/UserContext";
 
 interface FishingSpotShowViewProps {
   selectedLocation: FishingSpotLocation | null;
   onClose: () => void;
+  isAdminPage?: boolean;
 }
 
 const DRAWER_WIDTH = "500px";
@@ -47,11 +49,13 @@ const FishingSpotBox = styled(Box)({
 export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
   selectedLocation,
   onClose,
+  isAdminPage = false,
 }) => {
   const [streetViewImageUrl, setStreetViewImageUrl] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [fishingSpot, setFishingSpot] = useState<FishingSpot | null>(null);
   const [tooltipOpen, setTooltipOpen] = useState(false);
+  const { user } = useUser();
 
   const fetchStreetViewImage = useCallback(async () => {
     if (!selectedLocation) return;
@@ -159,6 +163,22 @@ export const FishingSpotShowView: React.FC<FishingSpotShowViewProps> = ({
                   <FileCopyIcon onClick={handleCopyUrl}/>
                 </Tooltip>
               </IconButton>
+              { user?.isAdmin && isAdminPage && (
+                <IconButton
+                  onClick={onClose}
+                  sx={{
+                    position: "absolute",
+                    top: HEADER_HEIGHT + 5,
+                    right: 112,
+                    backgroundColor: "rgba(255, 255, 255, 0.8)",
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 255, 255, 1)",
+                    },
+                  }}
+                >
+                  <EditIcon />
+                </IconButton>
+              )}
             </>
           ) : (
             <CenteredLoader />

@@ -14,7 +14,7 @@ import { styled } from "@mui/material/styles";
 import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
 import { showFishingSpot } from "api/v1/fishingSpotLocations";
 import { CenteredLoader } from "components/common";
-import { FishingSpot, FishingSpotLocation } from "interfaces/api";
+import { FishingSpot } from "interfaces/api";
 import React, { useCallback, useEffect, useState } from "react";
 import 'react-photo-view/dist/react-photo-view.css';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
@@ -42,12 +42,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Button } from "@mui/material";
+import { useGoogleMap } from "features/fishingSpots/googleMap/context/GoogleMapContext";
 
 interface FishingSpotShowViewProps {
-  selectedLocation: FishingSpotLocation | null;
   onClose: () => void;
+  open: boolean;
   isAdminPage?: boolean;
-  refreshLocations: () => Promise<FishingSpotLocation[]>;
 }
 
 const DRAWER_WIDTH = "500px";
@@ -57,10 +57,9 @@ const FishingSpotBox = styled(Box)({
 });
 
 export const DetailView: React.FC<FishingSpotShowViewProps> = ({
-  selectedLocation,
   onClose,
+  open,
   isAdminPage = false,
-  refreshLocations
 }) => {
   const [streetViewImageUrl, setStreetViewImageUrl] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -68,21 +67,22 @@ export const DetailView: React.FC<FishingSpotShowViewProps> = ({
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const { user } = useUser();
   const [diaLogOpen, setDiaLogOpen] = React.useState(false);
+  const { selectedExistLocation, fetchFishingSpotLocations } = useGoogleMap();
 
   const fetchStreetViewImage = useCallback(async () => {
-    if (!selectedLocation) return;
+    if (!selectedExistLocation) return;
     const response = await streetViewClient.fetchStreetViewImage(
-      selectedLocation.latitude,
-      selectedLocation.longitude
+      selectedExistLocation.latitude,
+      selectedExistLocation.longitude
     );
     setStreetViewImageUrl(response);
-  }, [selectedLocation]);
+  }, [selectedExistLocation]);
 
   const fetchFishingSpot = useCallback(async () => {
-    if (!selectedLocation) return;
-    const response = await showFishingSpot(selectedLocation.id);
+    if (!selectedExistLocation) return;
+    const response = await showFishingSpot(selectedExistLocation.id);
     setFishingSpot(response);
-  }, [selectedLocation]);
+  }, [selectedExistLocation]);
 
   const handleCopyUrl = async () => {
     try {
@@ -96,7 +96,7 @@ export const DetailView: React.FC<FishingSpotShowViewProps> = ({
   };
 
   useEffect(() => {
-    if (!selectedLocation) return;
+    if (!selectedExistLocation) return;
 
     const fetchData = async () => {
       await Promise.all([fetchStreetViewImage(), fetchFishingSpot()]);
@@ -104,13 +104,13 @@ export const DetailView: React.FC<FishingSpotShowViewProps> = ({
     };
 
     fetchData();
-  }, [selectedLocation]);
+  }, [selectedExistLocation]);
 
   const handleDelete = async () => {
-    if (!selectedLocation) return;
-    await deleteFishingSpot(selectedLocation.fishing_spot_id);
+    if (!selectedExistLocation) return;
+    await deleteFishingSpot(selectedExistLocation.fishing_spot_id);
     notifySuccess("釣り場を削除しました");
-    refreshLocations();
+    fetchFishingSpotLocations();
     setDiaLogOpen(false);
     onClose();
   }
@@ -130,7 +130,7 @@ export const DetailView: React.FC<FishingSpotShowViewProps> = ({
       }}
       anchor={"right"}
       variant='temporary'
-      open={!!selectedLocation}
+      open={open}
       onClose={() => {
         if (streetViewImageUrl) {
           URL.revokeObjectURL(streetViewImageUrl);

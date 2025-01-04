@@ -2,6 +2,7 @@ import { LoadScript } from "@react-google-maps/api";
 import { CenteredLoader } from "components/common";
 import React from "react";
 import { FishingSpotGoogleMap } from "./FishingSpotGoogleMap";
+import { GoogleMapProvider } from "features/fishingSpots/googleMap/context/GoogleMapContext";
 
 interface FishingSpotSelectLoadMapProps {
   isAdminPage?: boolean;
@@ -15,21 +16,23 @@ export const FishingSpotLoadGoogleMap: React.FC<FishingSpotSelectLoadMapProps> =
 
   return (
     <>
-      {/* google api is already presented のエラー対策 */}
-      {window.google === undefined ? (
-        <LoadScript
-          googleMapsApiKey={apiKey}
-          loadingElement={<CenteredLoader />}
-        >
+      <GoogleMapProvider>
+        {/* google api is already presented のエラー対策 */}
+        {window.google === undefined ? (
+          <LoadScript
+            googleMapsApiKey={apiKey}
+            loadingElement={<CenteredLoader />}
+          >
+            <FishingSpotGoogleMap
+              isAdminPage={isAdminPage}
+            />
+          </LoadScript>
+        ) : (
           <FishingSpotGoogleMap
             isAdminPage={isAdminPage}
           />
-        </LoadScript>
-      ) : (
-        <FishingSpotGoogleMap
-          isAdminPage={isAdminPage}
-        />
-      )}
+        )}
+      </GoogleMapProvider>
     </>
   );
 };

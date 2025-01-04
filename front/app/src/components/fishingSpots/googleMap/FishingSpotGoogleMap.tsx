@@ -9,6 +9,7 @@ import { DetailView } from './DetailView/DetailView';
 import { getFishingSpotLocations } from 'api/v1/fishingSpotLocations';
 import { FishingSpotCreateDrawer } from 'features/admin/fishingSpots/map/new/FishingSpotCreateDrawer';
 import { CenteredLoader } from 'components/common';
+import { useGoogleMap } from 'features/fishingSpots/googleMap/context/GoogleMapContext';
 
 interface FishingSpotGoogleMapProps {
   isAdminPage?: boolean;
@@ -20,20 +21,20 @@ const DEFAULT_CENTER = { lat: 35.681236, lng: 139.767125 }; // 東京駅
 export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
   isAdminPage = false
 }) => {
-  const [newLocation, setNewLocation] = useState<google.maps.LatLngLiteral | null>(null);
-  const [existLocation, setExistLocation] = useState<FishingSpotLocation[]>([]);
+  const {
+    existLocation,
+    newLocation,
+    setNewLocation,
+    selectedExistLocation,
+    setSelectedExistLocation,
+    fetchFishingSpotLocations,
+    mode,
+    setMode,
+    isMode
+  } = useGoogleMap();
   const center = useRef(DEFAULT_CENTER);
-  const [selectedLocation, setSelectedLocation] = useState<FishingSpotLocation | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isNewDrawerOpen, setIsNewDrawerOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
-
-  // サーバーサイドから釣り場の位置情報を取得
-  const fetchFishingSpotLocations = useCallback(async () => {
-    const response = await getFishingSpotLocations();
-    setExistLocation(response.fishingSpotLocations);
-    return response.fishingSpotLocations;
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,10 +43,10 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
       const fishingSpotLocationId = searchParams.get('fishing_spot_location_id');
 
       if (fishingSpotLocationId){
-        const selectedLocation = fishingSpotLocations.find((location) => location.id === fishingSpotLocationId);
-        if (!selectedLocation) return; // URLにIDが指定されていないケースもあるので、その場合は何もしない
-        setSelectedLocation(selectedLocation);
-        center.current = { lat: selectedLocation.latitude, lng: selectedLocation.longitude };
+        const fishingSpotLocation = fishingSpotLocations.find((location) => location.id === fishingSpotLocationId);
+        if (!fishingSpotLocation) return; // URLにIDが指定されていないケースもあるので、その場合は何もしない
+        setSelectedExistLocation(fishingSpotLocation);
+        center.current = { lat: fishingSpotLocation.latitude, lng: fishingSpotLocation.longitude };
       }
       setIsLoaded(true);
     };
@@ -62,7 +63,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
   // 新規作成のボタンをクリックしたときの処理
   const onAddButtonClick = useCallback(() => {
     if (!newLocation) return;
-    setIsNewDrawerOpen(true);
+    setMode('create');
   }, [newLocation]);
 
   // 既存の釣り場をクリックしたときの処理
@@ -70,8 +71,8 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
     setSearchParams({
       fishing_spot_location_id: fishingSpotLocation.id,
     });
-    setSelectedLocation(fishingSpotLocation);
-    setIsNewDrawerOpen(false);
+    setSelectedExistLocation(fishingSpotLocation);
+    setMode('detail');
   }, []);
 
   return (
@@ -143,26 +144,23 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
 
         {/* 釣り場の詳細表示 */}
         <DetailView
-          selectedLocation={selectedLocation}
           onClose={() => {
-            setSelectedLocation(null);
+            setSearchParams({});
+            setSelectedExistLocation(null);
+            setMode(null);
           }}
+          open={isMode('detail') && !!selectedExistLocation}
           isAdminPage={isAdminPage}
-          refreshLocations={fetchFishingSpotLocations}
         />
 
         {/* 釣り場を新規作成するドロワー */}
-        {isAdminPage && isNewDrawerOpen && newLocation &&(
-          <FishingSpotCreateDrawer
-            newLocation={newLocation}
-            onClose={() => {
-              setIsNewDrawerOpen(false);
-            }}
-            isDrawerOpen={isNewDrawerOpen}
-            setNewLocation={setNewLocation}
-            refreshLocations={fetchFishingSpotLocations}
-          />
-        )}
+        <FishingSpotCreateDrawer
+          onClose={() => {
+            setNewLocation(null);
+            setMode(null);
+          }}
+          open={isMode('create') && isAdminPage && !!newLocation}
+        />
       </>
     )}
   </>

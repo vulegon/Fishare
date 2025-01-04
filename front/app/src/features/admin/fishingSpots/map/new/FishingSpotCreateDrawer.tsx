@@ -34,13 +34,11 @@ import { HEADER_HEIGHT } from 'constants/index';
 import { FishingSpotLocation } from 'interfaces/api';
 import { streetViewClient } from "api/lib/libGoogle/streetViewClient";
 import { BeatLoader } from 'react-spinners';
+import { useGoogleMap } from 'features/fishingSpots/googleMap/context/GoogleMapContext';
 
 interface FishingSpotCreateModalProps {
-  newLocation: google.maps.LatLngLiteral;
   onClose: () => void;
-  isDrawerOpen: boolean;
-  setNewLocation: (location: google.maps.LatLngLiteral | null) => void;
-  refreshLocations: () => Promise<FishingSpotLocation[]>;
+  open: boolean;
 }
 
 const schema = z.object({
@@ -72,16 +70,14 @@ const schema = z.object({
 const DRAWER_WIDTH = 500;
 
 export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
-  newLocation,
   onClose,
-  isDrawerOpen,
-  setNewLocation,
-  refreshLocations
+  open
 }) => {
   const [streetViewImageUrl, setStreetViewImageUrl] = useState<string | null>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [fish, setFish] = React.useState<Fish[]>([]);
   const navigate = useNavigate();
+  const { newLocation, setNewLocation, fetchFishingSpotLocations } = useGoogleMap();
 
   const useFormMethods = useForm({
     defaultValues: {
@@ -114,7 +110,7 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
       notifySuccess('釣り場を登録しました');
       useFormMethods.reset();
       setNewLocation(null);
-      await refreshLocations();
+      await fetchFishingSpotLocations();
       onClose();
     } catch (error) {
       console.error(error);
@@ -138,6 +134,7 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
   useEffect(() => {
     const fetchData = async () => {
       setIsLoaded(false);
+      if (!newLocation) return;
       const addressResponse = await fetchAddress(newLocation.lat, newLocation.lng);
       const prefectureData = await getPrefectures();
       const findPrefecture = prefectureData.prefectures.find(
@@ -205,7 +202,7 @@ export const FishingSpotCreateDrawer: React.FC<FishingSpotCreateModalProps> = ({
   return (
     <Drawer
       anchor="right"
-      open={isDrawerOpen}
+      open={open}
       variant="persistent"
       sx={{
         width: DRAWER_WIDTH,

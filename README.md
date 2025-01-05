@@ -7,7 +7,7 @@ FIshareは、釣り場を閲覧・共有できるアプリケーションです�
 試験用として触る方は下記アカウントを用意しています。ご自由にお使いください。
 
 - **Email:** test_admin1@fishare.com
-- **Password:** FIshare1
+- **Password:** Password123
 
 ## 使用技術
 

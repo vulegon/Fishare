@@ -94,4 +94,5 @@ Rails.application.configure do
    authentication:       'plain',
    enable_starttls_auto:  true
   }
+  config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
 end

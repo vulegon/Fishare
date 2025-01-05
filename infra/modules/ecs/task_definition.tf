@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "api" {
         },
         {
           name = "REDIS_URL"
-          value = "redis://localhost:6379/1"
+          value = "redis://${var.env}-${var.product_name}-redis:6379/1"
         }
       ]
       secrets = [
@@ -76,7 +76,7 @@ resource "aws_ecs_task_definition" "api" {
         },
         {
           name = "REDIS_URL"
-          value = "redis://localhost:6379/1"
+          value = "redis://${var.env}-${var.product_name}-redis:6379/1"
         }
       ]
       secrets = [

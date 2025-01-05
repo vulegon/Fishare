@@ -44,6 +44,7 @@ export const FishingSpotGoogleMap: React.FC<FishingSpotGoogleMapProps> = ({
         const fishingSpotLocation = fishingSpotLocations.find((location) => location.id === fishingSpotLocationId);
         if (!fishingSpotLocation) return; // URLにIDが指定されていないケースもあるので、その場合は何もしない
         setSelectedExistLocation(fishingSpotLocation);
+        setMode('detail');
         center.current = { lat: fishingSpotLocation.latitude, lng: fishingSpotLocation.longitude };
       }
       setIsLoaded(true);

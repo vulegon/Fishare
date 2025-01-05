@@ -34,10 +34,6 @@ const AppRoutes: React.FC = () => {
                   path='fishing_spots/map/new'
                   element={<FishingSpotMapSelectPage />}
                 />
-                {/* <Route
-                  path='fishing_spots/map/new'
-                  element={<FishingSpotNewPage />}
-                /> */}
                 <Route path='*' element={<NotFound />} />
               </Routes>
             </AdminRoutes>

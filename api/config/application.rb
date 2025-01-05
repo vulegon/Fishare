@@ -25,7 +25,7 @@ module Api
 
     config.x.cors = Rails.application.config_for(:cors)
     config.x.lib_aws = Rails.application.config_for(:lib_aws)
-    congig.x.smtp_settings = Rails.application.config_for(:smtp_settings)
+    config.x.smtp_settings = Rails.application.config_for(:smtp_settings)
 
     Faker::Config.locale = :ja
   end

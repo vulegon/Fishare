@@ -1,4 +1,4 @@
-import { LoadScript } from "@react-google-maps/api";
+import { LoadScript, useJsApiLoader } from "@react-google-maps/api";
 import { CenteredLoader } from "components/common";
 import React from "react";
 import { FishingSpotGoogleMap } from "./FishingSpotGoogleMap";
@@ -13,6 +13,21 @@ export const FishingSpotLoadGoogleMap: React.FC<FishingSpotSelectLoadMapProps> =
   isAdminPage = false
 }) => {
   const apiKey = process.env.REACT_APP_GOOGLE_MAP_API_KEY || "";
+
+  /*
+    本番の環境で以下のエラーが発生するため、useJsApiLoaderを使用している
+    ReferenceError: google is not defined
+    https://stackoverflow.com/questions/69676563/react-google-maps-api-referenceerror-google-is-not-defined
+  */
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: apiKey,
+    region: "JP",
+    language: "ja",
+  });
+
+  if (!isLoaded) {
+    return <CenteredLoader />;
+  }
 
   return (
     <>

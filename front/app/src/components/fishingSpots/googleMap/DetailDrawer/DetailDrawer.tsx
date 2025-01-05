@@ -107,6 +107,7 @@ export const DetailDrawer: React.FC<FishingSpotShowViewProps> = ({
     await deleteFishingSpot(selectedExistLocation.fishing_spot_id);
     notifySuccess("釣り場を削除しました");
     fetchFishingSpotLocations();
+    setFishingSpot(null);
     setDiaLogOpen(false);
     onClose();
   }
@@ -138,6 +139,8 @@ export const DetailDrawer: React.FC<FishingSpotShowViewProps> = ({
           if (streetViewImageUrl) {
             URL.revokeObjectURL(streetViewImageUrl);
           }
+          setFishingSpot(null);
+          setMode(null);
           onClose();
         }}
       >

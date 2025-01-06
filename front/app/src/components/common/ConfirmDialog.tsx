@@ -12,6 +12,7 @@ interface ConfirmDialogProps {
   handleExecute: () => void;
   content: string;
   executeButtonTitle: string;
+  disabled?: boolean;
 }
 
 export const ConfirmDialog:React.FC<ConfirmDialogProps> = ({
@@ -19,7 +20,8 @@ export const ConfirmDialog:React.FC<ConfirmDialogProps> = ({
   onClose,
   handleExecute,
   content,
-  executeButtonTitle
+  executeButtonTitle,
+  disabled = false
 }) => {
   return (
     <Dialog
@@ -38,7 +40,7 @@ export const ConfirmDialog:React.FC<ConfirmDialogProps> = ({
     </DialogContent>
     <DialogActions>
       <Button onClick={onClose} autoFocus>キャンセル</Button>
-      <Button onClick={handleExecute} color="error" variant="contained">{executeButtonTitle}</Button>
+      <Button onClick={handleExecute} color="error" variant="contained" disabled={disabled}>{executeButtonTitle}</Button>
     </DialogActions>
   </Dialog>
   )
